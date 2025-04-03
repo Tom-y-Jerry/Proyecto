@@ -1,17 +1,28 @@
 package es.ulpgc.dacd;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import es.ulpgc.dacd.domain.port.Stations;
+import es.ulpgc.dacd.domain.port.StationsRepository;
+import es.ulpgc.dacd.infrastructure.api.ApiKeyLoader;
+import es.ulpgc.dacd.infrastructure.api.BlaBlaCarAPIClient;
+import es.ulpgc.dacd.infrastructure.api.BlaBlaCarStations;
+import es.ulpgc.dacd.infrastructure.adapter.SQLiteStationsRepository;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class Main {
+    private static final String DB_URL = "jdbc:sqlite:data.db";
+
+    public static void main(String[] args) {
+        String apiKey = ApiKeyLoader.loadApiKey("apikeyblablacar.txt");
+        BlaBlaCarAPIClient apiClient = new BlaBlaCarAPIClient(apiKey);
+        Stations stations = new BlaBlaCarStations(apiClient);
+        StationsRepository repository = new SQLiteStationsRepository(DB_URL);
+        BlaBlaCarServiceController service = new BlaBlaCarServiceController(stations, repository);
+
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(service::run, 0, 1, TimeUnit.HOURS);
+
     }
 }
