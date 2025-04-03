@@ -7,7 +7,6 @@ import es.ulpgc.dacd.infrastructure.api.ApiKeyLoader;
 import es.ulpgc.dacd.infrastructure.api.BlaBlaCarAPIClient;
 import es.ulpgc.dacd.infrastructure.api.BlaBlaCarStations;
 import es.ulpgc.dacd.infrastructure.adapter.SQLiteStationsRepository;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
