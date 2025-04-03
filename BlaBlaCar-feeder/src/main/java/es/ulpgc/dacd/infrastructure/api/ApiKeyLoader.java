@@ -1,39 +1,19 @@
 package es.ulpgc.dacd.infrastructure.api;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class ApiKeyLoader {
-    public static String loadApiKey(String filePath) {
-        try {
-            Path path = Path.of(filePath);
+    public static String loadApiKey() {
+        Dotenv dotenv = Dotenv.configure()
+                .directory("./")  // cambia si tu .env está en otro lugar
+                .ignoreIfMissing()
+                .load();
+        String key = dotenv.get("BLABLACAR_API_KEY");
 
-            if (!Files.exists(path)) {
-                System.err.println("❌ El archivo no existe: " + filePath);
-                return null;
-            }
-
-            if (!Files.isReadable(path)) {
-                System.err.println("❌ No se puede leer el archivo: " + filePath);
-                return null;
-            }
-
-            String key = Files.readAllLines(path).get(0).trim();
-
-            if (key.isEmpty()) {
-                System.err.println("❌ El archivo está vacío o mal formateado.");
-                return null;
-            }
-
-            return key;
-
-        } catch (IOException e) {
-            System.err.println("❌ Error leyendo el archivo: " + e.getMessage());
-            return null;
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println("❌ El archivo no contiene ninguna línea.");
+        if (key == null || key.isEmpty()) {
+            System.err.println("❌ API key not found in .env file.");
             return null;
         }
+        return key;
     }
 }

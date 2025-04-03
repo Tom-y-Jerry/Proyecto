@@ -11,7 +11,7 @@ public class BlaBlaCarAPIClient {
 
     public BlaBlaCarAPIClient(String apiKey) {
         // Ruta externa al archivo que contiene la API key
-        this.apiKey = ApiKeyLoader.loadApiKey("C:\\Users\\carlo\\Desktop\\Proyecto\\apikeyblablacar.txt");
+        this.apiKey = ApiKeyLoader.loadApiKey();
     }
 
     public String fetchStopsJson() throws Exception {

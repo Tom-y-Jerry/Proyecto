@@ -16,7 +16,7 @@ public class Main {
     private static final String DB_URL = "jdbc:sqlite:data.db";
 
     public static void main(String[] args) {
-        String apiKey = ApiKeyLoader.loadApiKey("apikeyblablacar.txt");
+        String apiKey = ApiKeyLoader.loadApiKey();
         BlaBlaCarAPIClient apiClient = new BlaBlaCarAPIClient(apiKey);
         Stations stations = new BlaBlaCarStations(apiClient);
         StationsRepository repository = new SQLiteStationsRepository(DB_URL);
