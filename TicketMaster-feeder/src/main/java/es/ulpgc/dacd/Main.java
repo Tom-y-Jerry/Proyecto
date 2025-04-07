@@ -3,7 +3,6 @@ package es.ulpgc.dacd;
 import es.ulpgc.dacd.controller.TicketMasterServiceController;
 import es.ulpgc.dacd.domain.port.Events;
 import es.ulpgc.dacd.domain.port.EventsRepository;
-import es.ulpgc.dacd.infrastructure.api.ApiKeyLoader;
 import es.ulpgc.dacd.infrastructure.api.TicketMasterAPIClient;
 import es.ulpgc.dacd.infrastructure.api.TicketMasterEvents;
 import es.ulpgc.dacd.infrastructure.adapter.SQLiteEventsRepository;

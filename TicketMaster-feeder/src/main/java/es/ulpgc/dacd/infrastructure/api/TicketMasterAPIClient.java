@@ -5,22 +5,24 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class TicketMasterAPIClient {
+    private final String apiUrl;
     private final String apiKey;
     private final OkHttpClient client = new OkHttpClient();
 
     public TicketMasterAPIClient() {
-        this.apiKey = ApiKeyLoader.loadApiKey();
+        this.apiUrl = EnvLoader.load("TICKETMASTER_API_URL");
+        this.apiKey = EnvLoader.load("TICKETMASTER_API_KEY");
+
+        if (apiUrl == null || apiKey == null) {
+            throw new IllegalStateException("❌ Missing API configuration. Check your .env file.");
+        }
     }
 
     public String fetchEventsJson() throws Exception {
-        if (apiKey == null || apiKey.isEmpty()) {
-            throw new Exception("❌ API key is null or empty. Check your .env file.");
-        }
-
-        String apiUrl = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + apiKey + "&countryCode=ES";
+        String fullUrl = apiUrl + "?apikey=" + apiKey + "&countryCode=ES";
 
         Request request = new Request.Builder()
-                .url(apiUrl)
+                .url(fullUrl)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {

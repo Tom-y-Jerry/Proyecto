@@ -3,7 +3,6 @@ package es.ulpgc.dacd;
 import es.ulpgc.dacd.controller.BlaBlaCarServiceController;
 import es.ulpgc.dacd.domain.port.Stations;
 import es.ulpgc.dacd.domain.port.StationsRepository;
-import es.ulpgc.dacd.infrastructure.api.ApiKeyLoader;
 import es.ulpgc.dacd.infrastructure.api.BlaBlaCarAPIClient;
 import es.ulpgc.dacd.infrastructure.api.BlaBlaCarStations;
 import es.ulpgc.dacd.infrastructure.adapter.SQLiteStationsRepository;
@@ -15,14 +14,12 @@ public class Main {
     private static final String DB_URL = "jdbc:sqlite:data.db";
 
     public static void main(String[] args) {
-        String apiKey = ApiKeyLoader.loadApiKey();
-        BlaBlaCarAPIClient apiClient = new BlaBlaCarAPIClient(apiKey);
+        BlaBlaCarAPIClient apiClient = new BlaBlaCarAPIClient();
         Stations stations = new BlaBlaCarStations(apiClient);
         StationsRepository repository = new SQLiteStationsRepository(DB_URL);
         BlaBlaCarServiceController service = new BlaBlaCarServiceController(stations, repository);
 
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(service::run, 0, 1, TimeUnit.HOURS);
-
     }
 }

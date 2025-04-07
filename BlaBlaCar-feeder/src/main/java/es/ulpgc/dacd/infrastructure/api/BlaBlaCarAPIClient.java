@@ -5,20 +5,24 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class BlaBlaCarAPIClient {
-    private static final String API_URL = "https://bus-api.blablacar.com/v3/stops";
+    private final String apiUrl;
     private final String apiKey;
     private final OkHttpClient client = new OkHttpClient();
 
-    public BlaBlaCarAPIClient(String apiKey) {
-        // Ruta externa al archivo que contiene la API key
-        this.apiKey = ApiKeyLoader.loadApiKey();
+    public BlaBlaCarAPIClient() {
+        this.apiUrl = EnvLoader.load("BLABLACAR_API_URL");
+        this.apiKey = EnvLoader.load("BLABLACAR_API_KEY");
+
+        if (apiUrl == null || apiKey == null) {
+            throw new IllegalStateException("❌ Missing BlaBlaCar API configuration. Check your .env file.");
+        }
     }
 
     public String fetchStopsJson() throws Exception {
         Request request = new Request.Builder()
-                .url(API_URL)
+                .url(apiUrl)
                 .addHeader("Authorization", "Token " + apiKey)
-                .addHeader("apikeyblablacar.txt" , apiKey)
+                .addHeader("apikeyblablacar.txt", apiKey) // opcional, si tu API lo requiere
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
