@@ -8,7 +8,7 @@ public class ApiKeyLoader {
                 .directory("./")
                 .ignoreIfMissing()
                 .load();
-        String key = dotenv.get("BLABLACAR_API_KEY");
+        String key = dotenv.get("TICKETMASTER_API_KEY");
 
         if (key == null || key.isEmpty()) {
             System.err.println("❌ API key not found in .env file.");
