@@ -1,7 +1,6 @@
 package es.ulpgc.dacd.controller;
 
 import es.ulpgc.dacd.domain.model.Event;
-import es.ulpgc.dacd.domain.port.Subscriber;
 import es.ulpgc.dacd.domain.port.Publisher;
 import es.ulpgc.dacd.infrastructure.api.TicketMasterAPIClient;
 import es.ulpgc.dacd.infrastructure.api.TicketMasterEvents;
@@ -10,11 +9,9 @@ import java.util.List;
 
 public class TicketmasterFeederService {
     private final Publisher publisher;
-    private final Subscriber store;
 
-    public TicketmasterFeederService(Publisher publisher, Subscriber store) {
+    public TicketmasterFeederService(Publisher publisher) {
         this.publisher = publisher;
-        this.store = store;
     }
 
     public void run() {
@@ -24,16 +21,13 @@ public class TicketmasterFeederService {
 
             List<Event> listEvents = events.getCleanEvents();
 
-            for (Event e : listEvents) {
-                Event event = new Event(
-                        e.getId(), e.getName(), e.getDate(), e.getCity()
-                );
+            for (Event event : listEvents) {
                 publisher.publish(event);
-                store.store(event);
             }
+
+            System.out.println("✅ Eventos publicados al broker correctamente.");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
-
