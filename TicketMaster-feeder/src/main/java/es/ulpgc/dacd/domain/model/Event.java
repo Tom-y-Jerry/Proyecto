@@ -1,5 +1,5 @@
 package es.ulpgc.dacd.domain.model;
-import java.util.List;
+
 
 public class Event {
     private final String id;
