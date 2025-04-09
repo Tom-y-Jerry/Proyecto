@@ -4,8 +4,8 @@ Este proyecto corresponde al Sprint 2 de la asignatura **Desarrollo de Aplicacio
 
 ## 👥 Autoras
 
-- Nombre Alumna 1
-- Nombre Alumna 2
+- Carlota Ayala
+- Lucía Cruz
 
 ---
 
