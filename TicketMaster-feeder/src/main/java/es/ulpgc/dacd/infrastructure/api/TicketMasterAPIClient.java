@@ -14,7 +14,7 @@ public class TicketMasterAPIClient {
         this.apiKey = EnvLoader.load("TICKETMASTER_API_KEY");
 
         if (apiUrl == null || apiKey == null) {
-            throw new IllegalStateException("❌ Missing API configuration. Check your .env file.");
+            throw new IllegalStateException("❌ Missing TicketMaster API configuration. Check your .env file.");
         }
     }
 
@@ -33,4 +33,3 @@ public class TicketMasterAPIClient {
         }
     }
 }
-
