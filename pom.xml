@@ -9,8 +9,9 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>BlaBlaCar-feeder</module>
-        <module>TicketMaster-feeder</module>
+        <module>blablacar-feeder</module>
+        <module>ticketmaster-feeder</module>
+        <module>event-store-builder</module>
     </modules>
 
     <properties>

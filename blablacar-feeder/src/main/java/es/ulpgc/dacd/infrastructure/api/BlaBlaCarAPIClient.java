@@ -22,7 +22,7 @@ public class BlaBlaCarAPIClient {
         Request request = new Request.Builder()
                 .url(apiUrl)
                 .addHeader("Authorization", "Token " + apiKey)
-                .addHeader("apikeyblablacar.txt", apiKey) // opcional, si tu API lo requiere
+                .addHeader("apikeyblablacar.txt", apiKey)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
