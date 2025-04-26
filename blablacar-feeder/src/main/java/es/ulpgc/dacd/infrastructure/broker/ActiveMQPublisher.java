@@ -1,7 +1,6 @@
 package es.ulpgc.dacd.infrastructure.broker;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.*;
 
 public class ActiveMQPublisher {
@@ -18,9 +17,14 @@ public class ActiveMQPublisher {
     public void publish(String topic, String jsonMessage) throws JMSException {
         Destination destination = session.createTopic(topic);
         MessageProducer producer = session.createProducer(destination);
-        TextMessage message = session.createTextMessage(jsonMessage);
-        producer.send(message);
+        try {
+            TextMessage message = session.createTextMessage(jsonMessage);
+            producer.send(message);
+        } finally {
+            producer.close();
+        }
     }
+
 
     public void close() throws JMSException {
         session.close();

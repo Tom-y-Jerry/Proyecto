@@ -1,6 +1,10 @@
 package es.ulpgc.dacd.infrastructure.api;
+import es.ulpgc.dacd.config.EnvLoader;
 
-import okhttp3.*;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class BlaBlaCarBusAPIClient {
     private final OkHttpClient client = new OkHttpClient();
@@ -8,28 +12,29 @@ public class BlaBlaCarBusAPIClient {
     private final String apiKey;
 
     public BlaBlaCarBusAPIClient() {
-        this.apiUrl = EnvLoader.load("BLABLACAR_SEARCH_API"); // Debe ser https://bus-api.blablacar.com/v1/fares
+        this.apiUrl = EnvLoader.load("BLABLACAR_SEARCH_API");
         this.apiKey = EnvLoader.load("BLABLACAR_API_KEY");
-
-        if (apiKey == null || apiUrl == null) {
-            throw new IllegalStateException("❌ Missing API configuration. Check your .env file.");
-        }
+        validateConfig();
     }
 
     public String fetchFaresByDate(String date) throws Exception {
         String fullUrl = apiUrl + "?date=" + date;
-
         Request request = new Request.Builder()
                 .url(fullUrl)
                 .addHeader("Authorization", "Token " + apiKey)
                 .addHeader("Accept", "application/json")
                 .build();
-
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new Exception("❌ GET API error: " + response);
+                throw new Exception("❌ Error en API BlaBlaCar Bus: " + response);
             }
             return response.body().string();
+        }
+    }
+
+    private void validateConfig() {
+        if (apiUrl == null || apiKey == null) {
+            throw new IllegalStateException("❌ Faltan variables BLABLACAR_SEARCH_API o BLABLACAR_API_KEY en .env");
         }
     }
 }

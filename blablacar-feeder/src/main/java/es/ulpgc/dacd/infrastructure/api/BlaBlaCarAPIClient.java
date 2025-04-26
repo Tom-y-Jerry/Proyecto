@@ -1,4 +1,5 @@
 package es.ulpgc.dacd.infrastructure.api;
+import es.ulpgc.dacd.config.EnvLoader;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -12,24 +13,25 @@ public class BlaBlaCarAPIClient {
     public BlaBlaCarAPIClient() {
         this.apiUrl = EnvLoader.load("BLABLACAR_API_URL");
         this.apiKey = EnvLoader.load("BLABLACAR_API_KEY");
-
-        if (apiUrl == null || apiKey == null) {
-            throw new IllegalStateException("❌ Missing BlaBlaCar API configuration. Check your .env file.");
-        }
+        validateConfig();
     }
 
     public String fetchStopsJson() throws Exception {
         Request request = new Request.Builder()
                 .url(apiUrl)
                 .addHeader("Authorization", "Token " + apiKey)
-                .addHeader("apikeyblablacar.txt", apiKey)
                 .build();
-
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new Exception("API error: " + response);
+                throw new Exception("❌ Error en API BlaBlaCar: " + response);
             }
             return response.body().string();
+        }
+    }
+
+    private void validateConfig() {
+        if (apiUrl == null || apiKey == null) {
+            throw new IllegalStateException("❌ Faltan variables BLABLACAR_API_URL o BLABLACAR_API_KEY en .env");
         }
     }
 }
