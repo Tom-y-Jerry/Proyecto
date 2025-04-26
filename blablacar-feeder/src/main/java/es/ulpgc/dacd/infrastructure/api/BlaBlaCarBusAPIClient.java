@@ -32,22 +32,4 @@ public class BlaBlaCarBusAPIClient {
             return response.body().string();
         }
     }
-
-
-    public String searchTrips(String date) throws Exception {
-        String fullUrl = apiUrl + "?date=" + date;
-
-        Request request = new Request.Builder()
-                .url(fullUrl)
-                .addHeader("Authorization", "Token " + apiKey)
-                .addHeader("Accept", "application/json")
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new Exception("❌ GET API error: " + response);
-            }
-            return response.body().string();
-        }
-    }
 }
