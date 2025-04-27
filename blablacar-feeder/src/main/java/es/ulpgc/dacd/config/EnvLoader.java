@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.infrastructure.api;
+package es.ulpgc.dacd.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -10,12 +10,10 @@ public class EnvLoader {
 
     public static String load(String keyName) {
         String value = dotenv.get(keyName);
-
         if (value == null || value.isEmpty()) {
-            System.err.println("❌ Environment variable '" + keyName + "' not found in .env file.");
+            System.err.println("❌ Variable de entorno '" + keyName + "' no encontrada en .env");
             return null;
         }
-
         return value;
     }
 }
