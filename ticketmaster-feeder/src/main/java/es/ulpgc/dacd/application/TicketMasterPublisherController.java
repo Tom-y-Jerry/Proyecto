@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.controller;
+package es.ulpgc.dacd.application;
 
 import com.google.gson.Gson;
 import es.ulpgc.dacd.domain.model.TicketmasterEvent;

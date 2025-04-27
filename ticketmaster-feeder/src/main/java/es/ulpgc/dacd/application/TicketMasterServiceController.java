@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.controller;
+package es.ulpgc.dacd.application;
 
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.domain.port.Events;
