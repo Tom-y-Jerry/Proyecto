@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.infrastructure.adapter;
+package es.ulpgc.dacd.infrastructure.persistence;
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.domain.port.EventsRepository;
 
