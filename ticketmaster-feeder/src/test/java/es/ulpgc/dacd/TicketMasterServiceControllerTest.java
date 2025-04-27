@@ -1,12 +1,11 @@
 package es.ulpgc.dacd;
 
-import es.ulpgc.dacd.controller.TicketMasterServiceController;
+import es.ulpgc.dacd.application.TicketMasterServiceController;
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.domain.port.Events;
 import es.ulpgc.dacd.domain.port.EventsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 

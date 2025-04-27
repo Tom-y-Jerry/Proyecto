@@ -1,7 +1,7 @@
 package es.ulpgc.dacd;
 
 import es.ulpgc.dacd.domain.model.Event;
-import es.ulpgc.dacd.infrastructure.adapter.SQLiteEventsRepository;
+import es.ulpgc.dacd.infrastructure.persistence.SQLiteEventsRepository;
 import org.junit.jupiter.api.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
