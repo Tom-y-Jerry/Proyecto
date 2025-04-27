@@ -3,14 +3,12 @@ package es.ulpgc.dacd.infrastructure.api;
 import com.google.gson.*;
 import es.ulpgc.dacd.domain.model.Station;
 import es.ulpgc.dacd.domain.port.Stations;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class BlaBlaCarStations implements Stations {
     private final BlaBlaCarAPIClient apiClient;
     private final Gson gson = new Gson();
-
     private static final Set<String> POPULAR_CITIES = Set.of(
             "Paris", "Lyon", "Marseille", "Toulouse", "Bordeaux",
             "Lille", "Nantes", "Strasbourg", "Brussels", "Madrid",
@@ -23,22 +21,24 @@ public class BlaBlaCarStations implements Stations {
 
     @Override
     public List<Station> getCleanStations() {
-        List<Station> stations = new ArrayList<>();
         try {
             String json = apiClient.fetchStopsJson();
-            JsonArray stops = gson.fromJson(json, JsonObject.class).getAsJsonArray("stops");
-
-            for (JsonElement el : stops) {
-                JsonObject stop = el.getAsJsonObject();
-                Station station = parseStation(stop);
-                if (isPopularCity(station.getLongName()) && station.getAddress() != null) {
-                    stations.add(station);
-                }
-            }
+            return parseAndFilterStations(json);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("❌ Error obteniendo estaciones: " + e.getMessage());
+            return Collections.emptyList();
         }
+    }
 
+    private List<Station> parseAndFilterStations(String json) {
+        JsonArray stops = gson.fromJson(json, JsonObject.class).getAsJsonArray("stops");
+        List<Station> stations = new ArrayList<>();
+        for (JsonElement el : stops) {
+            Station station = parseStation(el.getAsJsonObject());
+            if (isPopularCity(station.getLongName()) && station.getAddress() != null) {
+                stations.add(station);
+            }
+        }
         return removeDuplicatesById(stations);
     }
 
@@ -61,14 +61,6 @@ public class BlaBlaCarStations implements Stations {
                 .anyMatch(city -> cityName.toLowerCase().contains(city.toLowerCase()));
     }
 
-    private String getAsString(JsonObject obj, String key) {
-        return obj.has(key) ? obj.get(key).getAsString() : null;
-    }
-
-    private double getAsDouble(JsonObject obj, String key) {
-        return obj.has(key) ? obj.get(key).getAsDouble() : 0.0;
-    }
-
     private List<Station> removeDuplicatesById(List<Station> stations) {
         return stations.stream()
                 .collect(Collectors.toMap(
@@ -77,5 +69,13 @@ public class BlaBlaCarStations implements Stations {
                         (s1, s2) -> s1
                 ))
                 .values().stream().toList();
+    }
+
+    private String getAsString(JsonObject obj, String key) {
+        return obj.has(key) ? obj.get(key).getAsString() : null;
+    }
+
+    private double getAsDouble(JsonObject obj, String key) {
+        return obj.has(key) ? obj.get(key).getAsDouble() : 0.0;
     }
 }

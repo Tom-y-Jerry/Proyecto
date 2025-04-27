@@ -1,6 +1,6 @@
 package es.ulpgc.dacd;
 
-import es.ulpgc.dacd.controller.TicketMasterPublisherController;
+import es.ulpgc.dacd.application.TicketMasterPublisherController;
 import es.ulpgc.dacd.infrastructure.api.TicketMasterAPIClient;
 import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
 
