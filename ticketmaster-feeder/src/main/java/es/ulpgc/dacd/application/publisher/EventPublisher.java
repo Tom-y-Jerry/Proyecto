@@ -5,9 +5,8 @@ import es.ulpgc.dacd.domain.event.TicketmasterEvent;
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.infrastructure.api.TicketMasterEvents;
 import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
-import java.util.List;
 
-public class EventPublisher {
+public final class EventPublisher {
 
     private final TicketMasterEvents source;
     private final ActiveMQPublisher  broker;

@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLiteTripsRepository implements TripsRepository {
+public final class SQLiteTripsRepository implements TripsRepository {
     private final String dbUrl;
 
     public SQLiteTripsRepository(String dbUrl) {

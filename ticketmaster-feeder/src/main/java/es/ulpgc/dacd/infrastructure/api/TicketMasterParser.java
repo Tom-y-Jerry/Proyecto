@@ -4,7 +4,7 @@ import com.google.gson.*;
 import es.ulpgc.dacd.domain.model.Event;
 import java.util.*;
 
-public class TicketMasterParser {
+public final class TicketMasterParser {
 
     private final Gson gson = new Gson();
 

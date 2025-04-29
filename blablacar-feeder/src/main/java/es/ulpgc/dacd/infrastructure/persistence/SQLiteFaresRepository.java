@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class  SQLiteFaresRepository implements FaresRepository {
+public final class  SQLiteFaresRepository implements FaresRepository {
     private final String dbUrl;
 
     public SQLiteFaresRepository(String dbUrl) {

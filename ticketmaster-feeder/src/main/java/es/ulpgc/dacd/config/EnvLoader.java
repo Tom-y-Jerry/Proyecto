@@ -2,7 +2,7 @@ package es.ulpgc.dacd.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class EnvLoader {
+public final class EnvLoader {
 
     private static final Dotenv ENV = Dotenv.configure()
             .directory("./")

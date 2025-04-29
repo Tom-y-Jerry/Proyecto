@@ -1,6 +1,6 @@
 package es.ulpgc.dacd.domain.model;
 
-public class Fare {
+public final class Fare {
     public final int id;
     public final int originId;
     public final int destinationId;

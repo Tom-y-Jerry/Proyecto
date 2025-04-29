@@ -5,7 +5,7 @@ import es.ulpgc.dacd.domain.port.Fares;
 import es.ulpgc.dacd.domain.port.FaresRepository;
 import java.util.List;
 
-public class FareService {
+public final class FareService {
     private final Fares fares;
     private final FaresRepository repository;
 

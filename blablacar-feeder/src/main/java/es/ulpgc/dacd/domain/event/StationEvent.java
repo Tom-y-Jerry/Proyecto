@@ -2,7 +2,7 @@ package es.ulpgc.dacd.domain.event;
 
 import java.time.Instant;
 
-public class StationEvent {
+public final class StationEvent {
     public final String ts;
     public final String ss;
     public final String id;

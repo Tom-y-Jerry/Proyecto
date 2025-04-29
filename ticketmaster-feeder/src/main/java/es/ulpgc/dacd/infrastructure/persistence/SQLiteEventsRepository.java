@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLiteEventsRepository implements EventsRepository {
+public final class SQLiteEventsRepository implements EventsRepository {
     private final String dbUrl;
 
     public SQLiteEventsRepository(String dbUrl) {

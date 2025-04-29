@@ -3,7 +3,7 @@ package es.ulpgc.dacd.infrastructure.api;
 import es.ulpgc.dacd.config.EnvLoader;
 import okhttp3.*;
 
-public class TicketMasterAPIClient {
+public final class TicketMasterAPIClient {
 
     private static final OkHttpClient HTTP = new OkHttpClient();
     private final String url = EnvLoader.get("TICKETMASTER_API_URL");

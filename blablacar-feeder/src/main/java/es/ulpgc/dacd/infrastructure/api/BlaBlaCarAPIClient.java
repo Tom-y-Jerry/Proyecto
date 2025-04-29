@@ -5,7 +5,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class BlaBlaCarAPIClient {
+public final class BlaBlaCarAPIClient {
     private final String apiUrl;
     private final String apiKey;
     private final OkHttpClient client = new OkHttpClient();

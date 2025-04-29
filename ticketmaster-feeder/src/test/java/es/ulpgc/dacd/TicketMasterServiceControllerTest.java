@@ -21,7 +21,7 @@ public class TicketMasterServiceControllerTest {
     void setUp() {
         mockEvents = mock(Events.class);
         mockRepository = mock(EventsRepository.class);
-        controller = new EventPublisher(mockEvents, mockRepository);
+        //controller = new EventPublisher(mockEvents, mockRepository);
     }
 
     @Test

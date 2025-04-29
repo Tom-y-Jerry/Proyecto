@@ -2,7 +2,7 @@ package es.ulpgc.dacd.domain.model;
 
 import java.util.List;
 
-public class Trip {
+public final class Trip {
     private final String origin;
     private final String destination;
     private final String departure;

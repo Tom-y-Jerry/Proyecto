@@ -6,7 +6,7 @@ import es.ulpgc.dacd.domain.port.Stations;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BlaBlaCarStations implements Stations {
+public final class BlaBlaCarStations implements Stations {
     private final BlaBlaCarAPIClient apiClient;
     private final Gson gson = new Gson();
 

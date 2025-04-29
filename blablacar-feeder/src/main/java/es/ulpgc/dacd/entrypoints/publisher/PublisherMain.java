@@ -5,7 +5,7 @@ import es.ulpgc.dacd.infrastructure.api.BlaBlaCarAPIClient;
 import es.ulpgc.dacd.infrastructure.api.BlaBlaCarStations;
 import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
 
-public class PublisherMain {
+public final class PublisherMain {
     public static void main(String[] args) {
         try {
             StationEventPublisher publisher = createPublisher();

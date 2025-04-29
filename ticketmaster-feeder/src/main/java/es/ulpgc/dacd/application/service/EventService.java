@@ -5,7 +5,7 @@ import es.ulpgc.dacd.domain.port.Events;
 import es.ulpgc.dacd.domain.port.EventsRepository;
 import java.util.List;
 
-public class EventService {
+public final class EventService {
 
     private final Events source;
     private final EventsRepository repo;

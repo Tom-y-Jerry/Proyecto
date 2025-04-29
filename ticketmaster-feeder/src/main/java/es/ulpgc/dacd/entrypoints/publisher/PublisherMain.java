@@ -4,7 +4,7 @@ import es.ulpgc.dacd.application.publisher.EventPublisher;
 import es.ulpgc.dacd.infrastructure.api.*;
 import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
 
-public class PublisherMain {
+public final class PublisherMain {
 
     public static void main(String[] args) {
         try (ActiveMQPublisher mq = new ActiveMQPublisher("tcp://localhost:61616")) {

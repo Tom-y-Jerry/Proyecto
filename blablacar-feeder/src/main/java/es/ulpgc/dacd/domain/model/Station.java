@@ -1,6 +1,6 @@
 package es.ulpgc.dacd.domain.model;
 
-public class Station {
+public final class Station {
     private final int id;
     private final String carrierId;
     private final String shortName;

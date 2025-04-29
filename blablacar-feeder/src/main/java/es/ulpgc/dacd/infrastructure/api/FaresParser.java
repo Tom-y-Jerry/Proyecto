@@ -5,7 +5,7 @@ import es.ulpgc.dacd.domain.model.Fare;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FaresParser {
+public final class FaresParser {
     public static List<Fare> parse(String json) {
         JsonArray array = JsonParser.parseString(json)
                 .getAsJsonObject()

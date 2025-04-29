@@ -8,7 +8,7 @@ import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
 import javax.jms.JMSException;
 import java.util.List;
 
-public class StationEventPublisher {
+public final class StationEventPublisher {
     private final Stations stations;
     private final ActiveMQPublisher publisher;
     private final Gson gson = new Gson();

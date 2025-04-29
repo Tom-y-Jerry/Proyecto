@@ -3,7 +3,7 @@ package es.ulpgc.dacd.domain.event;
 import es.ulpgc.dacd.domain.model.Event;
 import java.time.Instant;
 
-public class TicketmasterEvent {
+public final class TicketmasterEvent {
 
     public final String ts = Instant.now().toString();
     public final String ss;

@@ -5,7 +5,7 @@ import es.ulpgc.dacd.domain.port.Fares;
 import java.util.Collections;
 import java.util.List;
 
-public class BlaBlaCarBusFares implements Fares {
+public final class BlaBlaCarBusFares implements Fares {
     private final BlaBlaCarBusAPIClient apiClient;
 
     public BlaBlaCarBusFares(BlaBlaCarBusAPIClient apiClient) {

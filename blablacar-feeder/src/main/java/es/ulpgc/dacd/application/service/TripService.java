@@ -6,7 +6,7 @@ import es.ulpgc.dacd.domain.port.TripsRepository;
 
 import java.util.List;
 
-public class TripService {
+public final class TripService {
     private final Trips trips;
     private final TripsRepository repository;
 

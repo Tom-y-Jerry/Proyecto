@@ -7,7 +7,7 @@ import es.ulpgc.dacd.domain.port.Trips;
 import java.sql.*;
 import java.util.*;
 
-public class BlaBlaCarTrips implements Trips {
+public final class BlaBlaCarTrips implements Trips {
     private final String dbUrl;
 
     public BlaBlaCarTrips(String dbUrl) {

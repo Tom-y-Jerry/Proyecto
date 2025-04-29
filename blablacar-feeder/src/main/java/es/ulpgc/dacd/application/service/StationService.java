@@ -5,7 +5,7 @@ import es.ulpgc.dacd.domain.port.Stations;
 import es.ulpgc.dacd.domain.port.StationsRepository;
 import java.util.List;
 
-public class StationService {
+public final class StationService {
     private final Stations stations;
     private final StationsRepository repository;
 

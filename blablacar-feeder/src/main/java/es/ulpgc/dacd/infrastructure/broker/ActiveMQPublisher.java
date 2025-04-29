@@ -3,7 +3,7 @@ package es.ulpgc.dacd.infrastructure.broker;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.*;
 
-public class ActiveMQPublisher {
+public final class ActiveMQPublisher {
     private final Connection connection;
     private final Session session;
 
