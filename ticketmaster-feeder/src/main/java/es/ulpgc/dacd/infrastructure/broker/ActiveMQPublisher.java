@@ -4,7 +4,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-public class ActiveMQPublisher {
+public class ActiveMQPublisher implements AutoCloseable {
     private final Connection connection;
     private final Session session;
 
