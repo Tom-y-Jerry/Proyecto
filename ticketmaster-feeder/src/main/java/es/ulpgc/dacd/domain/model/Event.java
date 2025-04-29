@@ -29,5 +29,6 @@ public class Event {
     public String getCity() {
         return city;
     }
+
 }
 
