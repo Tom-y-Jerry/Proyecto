@@ -1,6 +1,6 @@
 package es.ulpgc.dacd;
 
-import es.ulpgc.dacd.application.TicketMasterServiceController;
+import es.ulpgc.dacd.application.publisher.EventPublisher;
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.domain.port.Events;
 import es.ulpgc.dacd.domain.port.EventsRepository;
@@ -15,13 +15,13 @@ public class TicketMasterServiceControllerTest {
 
     private Events mockEvents;
     private EventsRepository mockRepository;
-    private TicketMasterServiceController controller;
+    private EventPublisher controller;
 
     @BeforeEach
     void setUp() {
         mockEvents = mock(Events.class);
         mockRepository = mock(EventsRepository.class);
-        controller = new TicketMasterServiceController(mockEvents, mockRepository);
+        controller = new EventPublisher(mockEvents, mockRepository);
     }
 
     @Test
