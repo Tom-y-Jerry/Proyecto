@@ -20,8 +20,4 @@ public class Fare {
         this.priceCents = priceCents;
         this.currency = currency;
     }
-
-    public double getPriceEuros() {
-        return priceCents / 100.0;
-    }
 }

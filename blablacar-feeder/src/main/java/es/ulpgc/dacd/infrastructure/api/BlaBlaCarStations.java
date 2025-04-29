@@ -9,11 +9,6 @@ import java.util.stream.Collectors;
 public class BlaBlaCarStations implements Stations {
     private final BlaBlaCarAPIClient apiClient;
     private final Gson gson = new Gson();
-    private static final Set<String> POPULAR_CITIES = Set.of(
-            "Paris", "Lyon", "Marseille", "Toulouse", "Bordeaux",
-            "Lille", "Nantes", "Strasbourg", "Brussels", "Madrid",
-            "Barcelona", "Milan", "Frankfurt", "Munich"
-    );
 
     public BlaBlaCarStations(BlaBlaCarAPIClient apiClient) {
         this.apiClient = apiClient;
@@ -35,7 +30,7 @@ public class BlaBlaCarStations implements Stations {
         List<Station> stations = new ArrayList<>();
         for (JsonElement el : stops) {
             Station station = parseStation(el.getAsJsonObject());
-            if (isPopularCity(station.getLongName()) && station.getAddress() != null) {
+            if (station.getAddress() != null) { // Ahora solo se filtra por tener address
                 stations.add(station);
             }
         }
@@ -56,11 +51,6 @@ public class BlaBlaCarStations implements Stations {
         );
     }
 
-    private boolean isPopularCity(String cityName) {
-        return cityName != null && POPULAR_CITIES.stream()
-                .anyMatch(city -> cityName.toLowerCase().contains(city.toLowerCase()));
-    }
-
     private List<Station> removeDuplicatesById(List<Station> stations) {
         return stations.stream()
                 .collect(Collectors.toMap(
@@ -79,3 +69,4 @@ public class BlaBlaCarStations implements Stations {
         return obj.has(key) ? obj.get(key).getAsDouble() : 0.0;
     }
 }
+
