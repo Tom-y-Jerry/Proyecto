@@ -5,7 +5,7 @@ import es.ulpgc.dacd.domain.port.Events;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public final class TicketMasterEvents implements Events {
+public class TicketMasterEvents implements Events {
 
     private static final Set<String> POPULAR = Set.of(
             "Madrid","Barcelona","Valencia","Seville","Bilbao",

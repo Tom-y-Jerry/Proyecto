@@ -5,7 +5,7 @@ import es.ulpgc.dacd.infrastructure.api.*;
 import es.ulpgc.dacd.infrastructure.persistence.SQLiteEventsRepository;
 import java.util.concurrent.*;
 
-public final class SchedulerMain {
+public class SchedulerMain {
 
     private static final String DB = "jdbc:sqlite:data.db";
 
