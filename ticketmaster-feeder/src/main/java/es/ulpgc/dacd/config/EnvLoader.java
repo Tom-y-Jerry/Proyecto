@@ -3,16 +3,17 @@ package es.ulpgc.dacd.config;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public final class EnvLoader {
-
-    private static final Dotenv ENV = Dotenv.configure()
+    private static final Dotenv dotenv = Dotenv.configure()
             .directory("./")
             .ignoreIfMissing()
             .load();
 
-    public static String get(String key) {
-        String v = ENV.get(key);
-        if (v == null || v.isEmpty())
-            System.err.printf("⚠️  Env var %s not found%n", key);
-        return v;
+    public static String load(String keyName) {
+        String value = dotenv.get(keyName);
+        if (value == null || value.isEmpty()) {
+            System.err.println("❌ Variable de entorno '" + keyName + "' no encontrada en .env");
+            return null;
+        }
+        return value;
     }
 }

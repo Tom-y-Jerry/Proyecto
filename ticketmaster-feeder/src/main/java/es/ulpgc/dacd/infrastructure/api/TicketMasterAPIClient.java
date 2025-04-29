@@ -6,8 +6,8 @@ import okhttp3.*;
 public final class TicketMasterAPIClient {
 
     private static final OkHttpClient HTTP = new OkHttpClient();
-    private final String url = EnvLoader.get("TICKETMASTER_API_URL");
-    private final String key = EnvLoader.get("TICKETMASTER_API_KEY");
+    private final String url = EnvLoader.load("TICKETMASTER_API_URL");
+    private final String key = EnvLoader.load("TICKETMASTER_API_KEY");
 
     public String fetchJson() throws Exception {
         Request r = new Request.Builder()
