@@ -31,6 +31,6 @@ class SQLiteFaresRepositoryTest {
 
         List<Fare> result = repository.findAll();
         assertEquals(1, result.size());
-        assertEquals(1, result.get(0).id);
+        assertEquals(1, result.getFirst().getId());
     }
 }
