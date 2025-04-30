@@ -2,7 +2,7 @@ package es.ulpgc.dacd.entrypoints.publisher;
 
 import es.ulpgc.dacd.application.publisher.StationEventPublisher;
 import es.ulpgc.dacd.infrastructure.api.BlaBlaCarAPIClient;
-import es.ulpgc.dacd.infrastructure.api.BlaBlaCarStations;
+import es.ulpgc.dacd.infrastructure.adapter.BlaBlaCarStations;
 import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
 
 public final class PublisherMain {
