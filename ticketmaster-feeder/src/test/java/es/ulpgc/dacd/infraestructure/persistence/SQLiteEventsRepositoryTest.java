@@ -1,4 +1,4 @@
-package es.ulpgc.dacd;
+package es.ulpgc.dacd.infraestructure.persistence;
 
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.infrastructure.persistence.SQLiteEventsRepository;

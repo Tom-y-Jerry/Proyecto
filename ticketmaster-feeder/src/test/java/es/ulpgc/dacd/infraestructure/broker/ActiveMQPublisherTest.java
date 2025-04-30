@@ -1,12 +1,10 @@
-package es.ulpgc.dacd;
+package es.ulpgc.dacd.infraestructure.broker;
 
 import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.apache.activemq.broker.BrokerService;
-import org.junit.jupiter.api.*;
-import javax.jms.*;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 

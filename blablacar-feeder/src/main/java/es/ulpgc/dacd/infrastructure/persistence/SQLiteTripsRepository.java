@@ -12,7 +12,7 @@ public final class SQLiteTripsRepository implements TripsRepository {
 
     public SQLiteTripsRepository(String dbUrl) {
         this.dbUrl = dbUrl;
-        createTableIfNotExists(); // 🛠️ Se asegura de que la tabla exista al crear el repositorio
+        createTableIfNotExists();
     }
 
     private void createTableIfNotExists() {

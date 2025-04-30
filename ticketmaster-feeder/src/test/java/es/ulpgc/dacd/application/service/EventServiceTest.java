@@ -1,9 +1,8 @@
-package es.ulpgc.dacd;
+package es.ulpgc.dacd.application.service;
 
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.domain.port.Events;
 import es.ulpgc.dacd.domain.port.EventsRepository;
-import es.ulpgc.dacd.application.service.EventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
