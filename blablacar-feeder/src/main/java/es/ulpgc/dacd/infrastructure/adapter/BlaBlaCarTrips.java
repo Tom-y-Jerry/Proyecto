@@ -1,6 +1,5 @@
-package es.ulpgc.dacd.infrastructure.api;
+package es.ulpgc.dacd.infrastructure.adapter;
 
-import com.google.gson.*;
 import es.ulpgc.dacd.domain.model.Trip;
 import es.ulpgc.dacd.domain.port.Trips;
 

@@ -1,7 +1,9 @@
-package es.ulpgc.dacd.infrastructure.api;
+package es.ulpgc.dacd.infrastructure.adapter;
 
 import es.ulpgc.dacd.domain.model.Fare;
 import es.ulpgc.dacd.domain.port.Fares;
+import es.ulpgc.dacd.infrastructure.api.BlaBlaCarBusAPIClient;
+
 import java.util.Collections;
 import java.util.List;
 
