@@ -1,4 +1,5 @@
 package es.ulpgc.dacd.infrastructure.persistence;
+
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.domain.port.EventsRepository;
 
@@ -11,24 +12,7 @@ public final class SQLiteEventsRepository implements EventsRepository {
 
     public SQLiteEventsRepository(String dbUrl) {
         this.dbUrl = dbUrl;
-        createTableIfNotExists();
-    }
-
-    private void createTableIfNotExists() {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS events (
-                id TEXT PRIMARY KEY,
-                nombre TEXT,
-                fecha TEXT,
-                ciudad TEXT
-            );
-        """;
-        try (Connection conn = DriverManager.getConnection(dbUrl);
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        new EventsTableManager(dbUrl).ensureTableExists();
     }
 
     @Override
@@ -45,6 +29,7 @@ public final class SQLiteEventsRepository implements EventsRepository {
 
         try (Connection conn = DriverManager.getConnection(dbUrl);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             for (Event e : events) {
                 stmt.setString(1, e.getId());
                 stmt.setString(2, e.getName());
@@ -52,8 +37,9 @@ public final class SQLiteEventsRepository implements EventsRepository {
                 stmt.setString(4, e.getCity());
                 stmt.executeUpdate();
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("❌ Error guardando eventos: " + e.getMessage());
         }
     }
 
@@ -74,11 +60,11 @@ public final class SQLiteEventsRepository implements EventsRepository {
                         rs.getString("ciudad")
                 ));
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("❌ Error leyendo eventos: " + e.getMessage());
         }
 
         return events;
     }
 }
-
