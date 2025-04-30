@@ -1,6 +1,7 @@
 package es.ulpgc.dacd.entrypoints.scheduler;
 
 import es.ulpgc.dacd.application.service.EventService;
+import es.ulpgc.dacd.infrastructure.adapter.TicketMasterEvents;
 import es.ulpgc.dacd.infrastructure.api.*;
 import es.ulpgc.dacd.infrastructure.persistence.SQLiteEventsRepository;
 import java.util.concurrent.*;

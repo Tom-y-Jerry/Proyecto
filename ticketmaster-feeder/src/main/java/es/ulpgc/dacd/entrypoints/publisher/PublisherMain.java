@@ -1,6 +1,7 @@
 package es.ulpgc.dacd.entrypoints.publisher;
 
 import es.ulpgc.dacd.application.publisher.EventPublisher;
+import es.ulpgc.dacd.infrastructure.adapter.TicketMasterEvents;
 import es.ulpgc.dacd.infrastructure.api.*;
 import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
 

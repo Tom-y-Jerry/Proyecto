@@ -4,7 +4,7 @@ package es.ulpgc.dacd.application.publisher;
 import com.google.gson.Gson;
 import es.ulpgc.dacd.domain.event.TicketmasterEvent;
 import es.ulpgc.dacd.domain.model.Event;
-import es.ulpgc.dacd.infrastructure.api.TicketMasterEvents;
+import es.ulpgc.dacd.infrastructure.adapter.TicketMasterEvents;
 import es.ulpgc.dacd.infrastructure.broker.ActiveMQPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

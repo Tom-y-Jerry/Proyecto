@@ -1,7 +1,9 @@
-package es.ulpgc.dacd.infrastructure.api;
+package es.ulpgc.dacd.infrastructure.adapter;
 
 import es.ulpgc.dacd.domain.model.Event;
 import es.ulpgc.dacd.domain.port.Events;
+import es.ulpgc.dacd.infrastructure.api.TicketMasterAPIClient;
+
 import java.util.stream.Collectors;
 
 import java.util.List;
