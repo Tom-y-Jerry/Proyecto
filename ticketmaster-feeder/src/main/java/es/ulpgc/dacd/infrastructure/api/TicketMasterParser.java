@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.infrastructure.adapter;
+package es.ulpgc.dacd.infrastructure.api;
 
 import com.google.gson.*;
 import es.ulpgc.dacd.domain.model.Event;
