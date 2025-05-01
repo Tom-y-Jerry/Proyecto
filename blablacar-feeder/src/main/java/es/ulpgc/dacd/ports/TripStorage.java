@@ -1,0 +1,7 @@
+package es.ulpgc.dacd.ports;
+
+import es.ulpgc.dacd.domain.Trip;
+
+public interface TripStorage {
+    void save(Trip trip);
+}
