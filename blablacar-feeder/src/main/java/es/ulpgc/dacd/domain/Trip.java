@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.adapters;
+package es.ulpgc.dacd.domain;
 
 import java.time.Instant;
 
