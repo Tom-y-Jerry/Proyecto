@@ -1,4 +1,8 @@
 package es.ulpgc.dacd.ports;
 
-public class TripProvider {
+import es.ulpgc.dacd.domain.Trip;
+import java.util.List;
+
+public interface TripProvider {
+    List<Trip> provide();
 }
