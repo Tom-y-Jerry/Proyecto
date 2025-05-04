@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.domain.model;
+package es.ulpgc.dacd.domain;
 
 
 public class Event {
