@@ -2,7 +2,7 @@ package es.ulpgc.dacd.adapters;
 
 import com.google.gson.*;
 import es.ulpgc.dacd.domain.Event;
-import es.ulpgc.dacd.ports.EventsProvider;
+import es.ulpgc.dacd.ports.EventProvider;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -10,14 +10,14 @@ import okhttp3.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketmasterEventProvider implements EventsProvider {
+public class TicketMasterEventProvider implements EventProvider {
     private final OkHttpClient client = new OkHttpClient();
     private final Gson gson = new Gson();
 
     private final String eventsUrl;
     private final String apiKey;
 
-    public TicketmasterEventProvider(String eventsUrl, String apiKey) {
+    public TicketMasterEventProvider(String eventsUrl, String apiKey) {
         this.eventsUrl = eventsUrl;
         this.apiKey = apiKey;
     }
@@ -62,4 +62,5 @@ public class TicketmasterEventProvider implements EventsProvider {
         return events;
     }
 }
+
 
