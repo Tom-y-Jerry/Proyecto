@@ -2,8 +2,8 @@ package es.ulpgc.dacd.infrastructure.adapter;
 
 import com.google.gson.*;
 import es.ulpgc.dacd.domain.Event;
-import es.ulpgc.dacd.infrastructure.ports.EventProvider;
 import es.ulpgc.dacd.infrastructure.TicketMasterApiClient;
+import es.ulpgc.dacd.infrastructure.ports.EventProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class TicketMasterEventProvider implements EventProvider {
             String json = client.fetchEventsJson();
             return parseEvents(json);
         } catch (Exception e) {
-            System.err.println("Error getting events: " + e.getMessage());
+            System.err.println("Error al obtener eventos: " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -38,9 +38,16 @@ public class TicketMasterEventProvider implements EventProvider {
 
             String id = obj.get("id").getAsString();
             String name = obj.get("name").getAsString();
+
             String date = obj.getAsJsonObject("dates")
                     .getAsJsonObject("start")
                     .get("localDate").getAsString();
+
+            String time = obj.getAsJsonObject("dates")
+                    .getAsJsonObject("start")
+                    .has("localTime") ?
+                    obj.getAsJsonObject("dates").getAsJsonObject("start").get("localTime").getAsString() :
+                    "Not specified";
 
             String city = obj.getAsJsonObject("_embedded")
                     .getAsJsonArray("venues")
@@ -48,12 +55,15 @@ public class TicketMasterEventProvider implements EventProvider {
                     .getAsJsonObject("city")
                     .get("name").getAsString();
 
-            events.add(new Event(id, name, date, city));
+            events.add(new Event(id, name, date, time, city));
         }
 
         return events;
     }
 }
+
+
+
 
 
 

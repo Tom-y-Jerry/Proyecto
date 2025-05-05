@@ -33,7 +33,7 @@ public class EventConsumer {
                 if (message instanceof TextMessage textMsg) {
                     try {
                         String json = textMsg.getText();
-                        System.out.println("Evento recibido desde " + topicName + ": " + json);
+                        System.out.println("Evento recibido desde " + topicName + ": " + json); // 👈 Imprime evento
                         saveEvent(topicName, json);
                     } catch (IOException e) {
                         System.err.println("Error guardando evento: " + e.getMessage());
