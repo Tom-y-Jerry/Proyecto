@@ -1,24 +1,18 @@
-package es.ulpgc.dacd.adapters;
+package es.ulpgc.dacd.infrastructure.adapter;
 
-import com.google.gson.*;
 import es.ulpgc.dacd.domain.Event;
-import es.ulpgc.dacd.ports.EventStorage;
+import es.ulpgc.dacd.infrastructure.ports.EventStorage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 import java.time.Instant;
 
 public class ActiveMQEventStorage implements EventStorage {
-    private final String brokerUrl = "tcp://localhost:61616";
-
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, typeOfSrc, context) ->
-                    new JsonPrimitive(src.toString()))
-            .create();
 
     @Override
     public void save(Event event) {
         try {
+            String brokerUrl = "tcp://localhost:61616";
             ConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
             Connection connection = factory.createConnection();
             connection.start();
