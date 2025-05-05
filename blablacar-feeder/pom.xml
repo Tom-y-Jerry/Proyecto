@@ -12,6 +12,22 @@
     <artifactId>blablacar-feeder</artifactId>
 
     <dependencies>
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- HTTP client for API calls -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
