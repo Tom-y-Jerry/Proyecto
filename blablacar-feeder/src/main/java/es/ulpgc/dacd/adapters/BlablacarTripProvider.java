@@ -1,29 +1,21 @@
 package es.ulpgc.dacd.adapters;
 
-import com.google.gson.*;
 import es.ulpgc.dacd.domain.Trip;
+import es.ulpgc.dacd.infrastructure.api.BlablacarApiClient;
 import es.ulpgc.dacd.ports.TripProvider;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.*;
 
 public class BlablacarTripProvider implements TripProvider {
-    private final OkHttpClient client = new OkHttpClient();
-    private final Gson gson = new Gson();
-
-    private final String stopsUrl;
-    private final String faresUrl;
-    private final String apiKey;
+    private final BlablacarApiClient apiClient;
     private final int originId;
 
     public BlablacarTripProvider(String stopsUrl, String faresUrl, String apiKey, int originId) {
-        this.stopsUrl = stopsUrl;
-        this.faresUrl = faresUrl;
-        this.apiKey = apiKey;
+        this.apiClient = new BlablacarApiClient(stopsUrl, faresUrl, apiKey);
         this.originId = originId;
     }
 
@@ -31,9 +23,13 @@ public class BlablacarTripProvider implements TripProvider {
     public List<Trip> provide() {
         List<Trip> trips = new ArrayList<>();
         try {
-            List<Destination> destinos = getAvailableDestinations();
-            for (Destination dest : destinos) {
-                getTripFor(originId, dest.id(), dest.name()).ifPresent(trips::add);
+            Map<Integer, String> names = new HashMap<>();
+            List<Destination> destinations = extractDestinations(names);
+
+            for (Destination dest : destinations) {
+                apiClient.fetchFare(originId, dest.id()).ifPresent(fare -> {
+                    trips.add(mapToTrip(fare, names.get(originId), dest.name()));
+                });
             }
         } catch (Exception e) {
             System.err.println("Error en provider: " + e.getMessage());
@@ -41,49 +37,31 @@ public class BlablacarTripProvider implements TripProvider {
         return trips;
     }
 
-    public List<Destination> getAvailableDestinations() {
-        List<Destination> destinos = new ArrayList<>();
-        Map<Integer, String> names = new HashMap<>();
+    private List<Destination> extractDestinations(Map<Integer, String> names) throws Exception {
+        List<Destination> result = new ArrayList<>();
+        JsonArray stops = apiClient.fetchStops();
 
-        try {
-            Request request = new Request.Builder()
-                    .url(stopsUrl)
-                    .addHeader("Authorization", "Token " + apiKey)
-                    .build();
-
-            Response response = client.newCall(request).execute();
-            JsonArray stops = gson.fromJson(response.body().string(), JsonObject.class)
-                    .getAsJsonArray("stops");
-
-
-            for (JsonElement el : stops) {
-                collectStopNames(el.getAsJsonObject(), names);
-            }
-
-            for (JsonElement el : stops) {
-                JsonObject stop = el.getAsJsonObject();
-                if (stop.has("id") && stop.get("id").getAsInt() == originId && stop.has("destinations_ids")) {
-                    for (JsonElement d : stop.getAsJsonArray("destinations_ids")) {
-                        int destId = d.getAsInt();
-                        destinos.add(new Destination(destId, names.getOrDefault(destId, "ID_" + destId)));
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error al obtener destinos: " + e.getMessage());
+        for (JsonElement el : stops) {
+            collectStopNames(el.getAsJsonObject(), names);
         }
 
-        return destinos;
+        for (JsonElement el : stops) {
+            JsonObject stop = el.getAsJsonObject();
+            if (stop.has("id") && stop.get("id").getAsInt() == originId && stop.has("destinations_ids")) {
+                for (JsonElement d : stop.getAsJsonArray("destinations_ids")) {
+                    int destId = d.getAsInt();
+                    result.add(new Destination(destId, names.getOrDefault(destId, "ID_" + destId)));
+                }
+            }
+        }
+
+        return result;
     }
 
     private void collectStopNames(JsonObject stop, Map<Integer, String> names) {
         if (stop.has("id") && stop.has("short_name")) {
-            int id = stop.get("id").getAsInt();
-            String name = stop.get("short_name").getAsString();
-            names.put(id, name);
+            names.put(stop.get("id").getAsInt(), stop.get("short_name").getAsString());
         }
-
         if (stop.has("stops")) {
             for (JsonElement child : stop.getAsJsonArray("stops")) {
                 collectStopNames(child.getAsJsonObject(), names);
@@ -91,46 +69,18 @@ public class BlablacarTripProvider implements TripProvider {
         }
     }
 
-    private Optional<Trip> getTripFor(int origin, int destId, String destName) {
-        String date = LocalDate.now().toString();
-        String url = faresUrl + "?origin_id=" + origin + "&destination_id=" + destId + "&date=" + date;
-
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Authorization", "Token " + apiKey)
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            JsonArray fares = gson.fromJson(response.body().string(), JsonObject.class)
-                    .getAsJsonArray("fares");
-
-            if (fares.isEmpty()) return Optional.empty();
-
-            JsonObject f = fares.get(0).getAsJsonObject();
-            String originName = destNameFromId(origin);
-
-            return Optional.of(new Trip(
-                    "feeder-blablacar",
-                    originName,
-                    destName,
-                    Instant.parse(f.get("departure").getAsString()),
-                    Instant.parse(f.get("arrival").getAsString()),
-                    f.get("price_cents").getAsInt(),
-                    f.get("price_currency").getAsString()
-            ));
-        } catch (Exception e) {
-            System.err.println("Error destino " + destId + ": " + e.getMessage());
-            return Optional.empty();
-        }
+    private Trip mapToTrip(JsonObject f, String originName, String destName) {
+        return new Trip(
+                "feeder-blablacar",
+                originName,
+                destName,
+                Instant.parse(f.get("departure").getAsString()),
+                Instant.parse(f.get("arrival").getAsString()),
+                price,
+                f.get("price_currency").getAsString()
+        );
     }
 
-    private String destNameFromId(int id) {
-        return getAvailableDestinations().stream()
-                .filter(d -> d.id() == id)
-                .map(Destination::name)
-                .findFirst()
-                .orElse("ID_" + id);
-    }
 
     public record Destination(int id, String name) {}
 }
