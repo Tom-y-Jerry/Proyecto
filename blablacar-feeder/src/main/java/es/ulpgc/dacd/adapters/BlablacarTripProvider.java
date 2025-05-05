@@ -70,6 +70,7 @@ public class BlablacarTripProvider implements TripProvider {
     }
 
     private Trip mapToTrip(JsonObject f, String originName, String destName) {
+        double price = f.get("price_cents").getAsInt() / 100.0;
         return new Trip(
                 "feeder-blablacar",
                 originName,
