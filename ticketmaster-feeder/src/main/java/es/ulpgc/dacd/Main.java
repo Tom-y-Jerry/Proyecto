@@ -1,5 +1,6 @@
 package es.ulpgc.dacd;
 
+import es.ulpgc.dacd.adapters.TicketMasterEventProvider;
 import es.ulpgc.dacd.adapters.ActiveMQEventStorage;
 
 public class Main {
@@ -12,6 +13,7 @@ public class Main {
         String eventsUrl = args[0];
         String apiKey = args[1];
 
+        var provider = new TicketMasterEventProvider(eventsUrl, apiKey);
         var storage = new ActiveMQEventStorage();
 
         new Controller(provider, storage).execute();

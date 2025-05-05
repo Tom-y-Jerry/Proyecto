@@ -1,6 +1,7 @@
 package es.ulpgc.dacd;
 
 import es.ulpgc.dacd.domain.Event;
+import es.ulpgc.dacd.ports.EventProvider;
 import es.ulpgc.dacd.ports.EventStorage;
 
 import java.util.List;
@@ -9,8 +10,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Controller {
+    private final EventProvider eventProvider;
     private final EventStorage storage;
 
+    public Controller(EventProvider eventProvider, EventStorage storage) {
+        this.eventProvider = eventProvider;
         this.storage = storage;
     }
 
@@ -19,6 +23,7 @@ public class Controller {
 
         scheduler.scheduleAtFixedRate(() -> {
             System.out.println("Ejecutando consulta de eventos...");
+            List<Event> events = eventProvider.provide();
             for (Event event : events) {
                 storage.save(event);
                 System.out.printf(formatEvent(event));
