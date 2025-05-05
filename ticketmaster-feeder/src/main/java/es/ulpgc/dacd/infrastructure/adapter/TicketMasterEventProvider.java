@@ -22,7 +22,7 @@ public class TicketMasterEventProvider implements EventProvider {
             String json = client.fetchEventsJson();
             return parseEvents(json);
         } catch (Exception e) {
-            System.err.println("❌ Error al obtener eventos: " + e.getMessage());
+            System.err.println("Error getting events: " + e.getMessage());
             return new ArrayList<>();
         }
     }

@@ -22,20 +22,12 @@ public class Controller {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
         scheduler.scheduleAtFixedRate(() -> {
-            System.out.println("Ejecutando consulta de eventos...");
+            System.out.println("Executing events...");
             List<Event> events = eventProvider.provide();
             for (Event event : events) {
                 storage.save(event);
-                System.out.printf(formatEvent(event));
+                System.out.printf(String.valueOf(event));
             }
         }, 0, 1, TimeUnit.HOURS);
-    }
-
-    private String formatEvent(Event event) {
-        return String.format("Evento: %s | %s | %s | %s\n",
-                event.getId(),
-                event.getName(),
-                event.getDate(),
-                event.getCity());
     }
 }
