@@ -1,8 +1,8 @@
-package es.ulpgc.dacd.adapters;
+package es.ulpgc.dacd.infrastructure.adapters;
 
 import com.google.gson.*;
 import es.ulpgc.dacd.domain.Trip;
-import es.ulpgc.dacd.ports.TripStorage;
+import es.ulpgc.dacd.infrastructure.ports.TripStorage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;

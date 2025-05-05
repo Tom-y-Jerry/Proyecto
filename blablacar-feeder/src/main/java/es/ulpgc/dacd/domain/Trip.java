@@ -9,17 +9,17 @@ public final class Trip {
     private final String destination;
     private final Instant departure;
     private final Instant arrival;
-    private final int priceCents;
+    private final double price;
     private final String currency;
 
-    public Trip(String ss, String origin, String destination, Instant departure, Instant arrival, int priceCents, String currency) {
+    public Trip(String ss, String origin, String destination, Instant departure, Instant arrival, double price, String currency) {
         this.ts = Instant.now(); // timestamp de creación del evento
         this.ss = ss;            // quién genera el evento
         this.origin = origin;
         this.destination = destination;
         this.departure = departure;
         this.arrival = arrival;
-        this.priceCents = priceCents;
+        this.price = price;
         this.currency = currency;
     }
 
@@ -47,8 +47,8 @@ public final class Trip {
         return arrival;
     }
 
-    public int getPriceCents() {
-        return priceCents;
+    public double getPrice() {
+        return price;
     }
 
     public String getCurrency() {

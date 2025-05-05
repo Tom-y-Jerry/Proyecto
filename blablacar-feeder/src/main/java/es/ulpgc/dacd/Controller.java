@@ -1,8 +1,8 @@
 package es.ulpgc.dacd;
 
 import es.ulpgc.dacd.domain.Trip;
-import es.ulpgc.dacd.ports.TripProvider;
-import es.ulpgc.dacd.ports.TripStorage;
+import es.ulpgc.dacd.infrastructure.ports.TripProvider;
+import es.ulpgc.dacd.infrastructure.ports.TripStorage;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -26,32 +26,8 @@ public class Controller {
             List<Trip> trips = tripProvider.provide();
             for (Trip trip : trips) {
                 store.save(trip);
-                System.out.printf(formatTrip(trip));
             }
         }, 0, 1, TimeUnit.HOURS);
-    }
-
-    private String formatTrip(Trip trip) {
-        double euros = trip.getPriceCents() / 100.0;
-
-        String departure = trip.getDeparture().atZone(java.time.ZoneId.systemDefault())
-                .toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
-        String arrival = trip.getArrival().atZone(java.time.ZoneId.systemDefault())
-                .toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
-
-        java.time.Duration duration = java.time.Duration.between(trip.getDeparture(), trip.getArrival());
-        long hours = duration.toHours();
-        long minutes = duration.toMinutes() % 60;
-
-        return String.format("Viaje: %s → %s | %s - %s | %dh %02dmin | %.2f %s\n",
-                trip.getOrigin(),
-                trip.getDestination(),
-                departure,
-                arrival,
-                hours,
-                minutes,
-                euros,
-                trip.getCurrency());
     }
 
 }
