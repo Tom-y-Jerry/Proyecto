@@ -1,8 +1,8 @@
 package es.ulpgc.dacd;
 
 import es.ulpgc.dacd.domain.Event;
-import es.ulpgc.dacd.ports.EventProvider;
-import es.ulpgc.dacd.ports.EventStorage;
+import es.ulpgc.dacd.infrastructure.ports.EventProvider;
+import es.ulpgc.dacd.infrastructure.ports.EventStorage;
 
 import java.util.List;
 import java.util.concurrent.Executors;

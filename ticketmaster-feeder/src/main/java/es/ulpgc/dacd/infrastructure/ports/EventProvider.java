@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.ports;
+package es.ulpgc.dacd.infrastructure.ports;
 import es.ulpgc.dacd.domain.Event;
 import java.util.List;
 

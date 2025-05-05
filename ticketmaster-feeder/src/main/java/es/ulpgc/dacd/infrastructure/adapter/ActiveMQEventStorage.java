@@ -1,8 +1,8 @@
-package es.ulpgc.dacd.adapters;
+package es.ulpgc.dacd.infrastructure.adapter;
 
 import com.google.gson.*;
 import es.ulpgc.dacd.domain.Event;
-import es.ulpgc.dacd.ports.EventStorage;
+import es.ulpgc.dacd.infrastructure.ports.EventStorage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
