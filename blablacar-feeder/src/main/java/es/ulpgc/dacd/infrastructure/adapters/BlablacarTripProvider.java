@@ -1,8 +1,8 @@
-package es.ulpgc.dacd.adapters;
+package es.ulpgc.dacd.infrastructure.adapters;
 
 import es.ulpgc.dacd.domain.Trip;
-import es.ulpgc.dacd.infrastructure.api.BlablacarApiClient;
-import es.ulpgc.dacd.ports.TripProvider;
+import es.ulpgc.dacd.infrastructure.BlablacarApiClient;
+import es.ulpgc.dacd.infrastructure.ports.TripProvider;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

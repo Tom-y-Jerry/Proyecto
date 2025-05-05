@@ -47,7 +47,7 @@ public final class Trip {
         return arrival;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 

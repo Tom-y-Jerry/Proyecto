@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.infrastructure.api;
+package es.ulpgc.dacd.infrastructure;
 
 import com.google.gson.*;
 import okhttp3.*;

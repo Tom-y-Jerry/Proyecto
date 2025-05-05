@@ -1,6 +1,8 @@
 package es.ulpgc.dacd;
 
-import es.ulpgc.dacd.adapters.*;
+
+import es.ulpgc.dacd.infrastructure.adapters.ActiveMqTripStorage;
+import es.ulpgc.dacd.infrastructure.adapters.BlablacarTripProvider;
 
 public class Main {
     public static void main(String[] args) {
