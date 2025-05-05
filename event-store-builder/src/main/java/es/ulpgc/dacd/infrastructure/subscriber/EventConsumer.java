@@ -20,7 +20,7 @@ public class EventConsumer {
             this.connection.start();
             this.session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         } catch (Exception e) {
-            throw new RuntimeException("❌ Error al conectar al broker", e);
+            throw new RuntimeException("Error al conectar al broker", e);
         }
     }
 
@@ -33,17 +33,17 @@ public class EventConsumer {
                 if (message instanceof TextMessage textMsg) {
                     try {
                         String json = textMsg.getText();
-                        System.out.println("📩 Evento recibido desde " + topicName + ": " + json); // 👈 Imprime evento
+                        System.out.println("Evento recibido desde " + topicName + ": " + json); // 👈 Imprime evento
                         saveEvent(topicName, json);
                     } catch (IOException e) {
-                        System.err.println("❌ Error guardando evento: " + e.getMessage());
+                        System.err.println("Error guardando evento: " + e.getMessage());
                     } catch (JMSException e) {
-                        System.err.println("❌ Error leyendo mensaje JMS: " + e.getMessage());
+                        System.err.println("Error leyendo mensaje JMS: " + e.getMessage());
                     }
                 }
             });
         } catch (Exception e) {
-            throw new RuntimeException("❌ Error al suscribirse al topic " + topicName, e);
+            throw new RuntimeException("Error al suscribirse al topic " + topicName, e);
         }
     }
 

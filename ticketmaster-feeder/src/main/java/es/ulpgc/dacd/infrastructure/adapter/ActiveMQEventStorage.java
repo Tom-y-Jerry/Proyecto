@@ -22,11 +22,20 @@ public class ActiveMQEventStorage implements EventStorage {
             MessageProducer producer = session.createProducer(topic);
 
             String json = String.format(
-                    "{\"ts\":\"%s\",\"ss\":\"ticketmaster\",\"id\":\"%s\",\"nombre\":\"%s\",\"fecha\":\"%s\",\"ciudad\":\"%s\"}",
+                    "{" +
+                            "\"ts\":\"%s\"," +
+                            "\"ss\":\"ticketmaster\"," +
+                            "\"id\":\"%s\"," +
+                            "\"nombre\":\"%s\"," +
+                            "\"fecha\":\"%s\"," +
+                            "\"hora\":\"%s\"," +
+                            "\"ciudad\":\"%s\"," +
+                            "}",
                     Instant.now(),
                     event.getId(),
                     event.getName(),
                     event.getDate(),
+                    event.getTime(),
                     event.getCity()
             );
 
@@ -38,8 +47,9 @@ public class ActiveMQEventStorage implements EventStorage {
             connection.close();
 
         } catch (Exception e) {
-            System.err.println("Error publicando evento: " + e.getMessage());
+            System.err.println("❌ Error publicando evento: " + e.getMessage());
         }
     }
 }
+
 

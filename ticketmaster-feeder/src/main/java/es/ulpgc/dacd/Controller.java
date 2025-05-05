@@ -26,7 +26,6 @@ public class Controller {
             List<Event> events = eventProvider.provide();
             for (Event event : events) {
                 storage.save(event);
-                System.out.printf(String.valueOf(event));
             }
         }, 0, 1, TimeUnit.HOURS);
     }
