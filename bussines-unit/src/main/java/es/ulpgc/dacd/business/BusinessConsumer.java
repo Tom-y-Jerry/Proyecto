@@ -5,6 +5,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 import java.sql.*;
+import java.sql.Connection;
 
 public class BusinessConsumer {
     private final Connection sqlConnection;
