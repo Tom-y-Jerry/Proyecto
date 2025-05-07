@@ -5,6 +5,10 @@ import es.ulpgc.dacd.domain.Event;
 import es.ulpgc.dacd.infrastructure.TicketMasterApiClient;
 import es.ulpgc.dacd.infrastructure.ports.EventProvider;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +22,20 @@ public class TicketMasterEventProvider implements EventProvider {
 
     @Override
     public List<Event> provide() {
+        List<Event> allEvents = new ArrayList<>();
+
         try {
-            String json = client.fetchEventsJson();
-            return parseEvents(json);
+            List<String> jsonResponses = client.fetchEventsJson();
+            for (String json : jsonResponses) {
+                allEvents.addAll(parseEvents(json));
+            }
         } catch (Exception e) {
             System.err.println("Error al obtener eventos: " + e.getMessage());
-            return new ArrayList<>();
         }
+
+        return allEvents;
     }
+
 
     private List<Event> parseEvents(String jsonString) {
         List<Event> events = new ArrayList<>();
@@ -36,12 +46,19 @@ public class TicketMasterEventProvider implements EventProvider {
         for (JsonElement e : eventsArray) {
             JsonObject obj = e.getAsJsonObject();
 
+            Instant ts = Instant.now();
+            String ss = "feeder-ticketmaster";
+
             String id = obj.get("id").getAsString();
             String name = obj.get("name").getAsString();
 
-            String date = obj.getAsJsonObject("dates")
+            String dateStr = obj.getAsJsonObject("dates")
                     .getAsJsonObject("start")
                     .get("localDate").getAsString();
+
+            Instant date = LocalDate.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE)
+                    .atStartOfDay()
+                    .toInstant(ZoneOffset.UTC);
 
             String time = obj.getAsJsonObject("dates")
                     .getAsJsonObject("start")
@@ -55,12 +72,13 @@ public class TicketMasterEventProvider implements EventProvider {
                     .getAsJsonObject("city")
                     .get("name").getAsString();
 
-            events.add(new Event(id, name, date, time, city));
+            events.add(new Event(ts, ss, id, name, date, time, city));
         }
 
         return events;
     }
 }
+
 
 
 

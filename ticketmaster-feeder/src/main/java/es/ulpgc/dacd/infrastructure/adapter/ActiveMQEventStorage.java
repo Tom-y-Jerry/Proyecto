@@ -1,5 +1,9 @@
 package es.ulpgc.dacd.infrastructure.adapter;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
 import es.ulpgc.dacd.domain.Event;
 import es.ulpgc.dacd.infrastructure.ports.EventStorage;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -8,6 +12,10 @@ import javax.jms.*;
 import java.time.Instant;
 
 public class ActiveMQEventStorage implements EventStorage {
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, typeOfSrc, context) ->
+                    new JsonPrimitive(src.toString()))
+            .create();
 
     @Override
     public void save(Event event) {
@@ -21,24 +29,7 @@ public class ActiveMQEventStorage implements EventStorage {
             Destination topic = session.createTopic("prediction.Events");
             MessageProducer producer = session.createProducer(topic);
 
-            String json = String.format(
-                    "{" +
-                            "\"ts\":\"%s\"," +
-                            "\"ss\":\"ticketmaster\"," +
-                            "\"id\":\"%s\"," +
-                            "\"nombre\":\"%s\"," +
-                            "\"fecha\":\"%s\"," +
-                            "\"hora\":\"%s\"," +
-                            "\"ciudad\":\"%s\"," +
-                            "}",
-                    Instant.now(),
-                    event.getId(),
-                    event.getName(),
-                    event.getDate(),
-                    event.getTime(),
-                    event.getCity()
-            );
-
+            String json = gson.toJson(event);
             TextMessage message = session.createTextMessage(json);
             producer.send(message);
 
@@ -47,9 +38,10 @@ public class ActiveMQEventStorage implements EventStorage {
             connection.close();
 
         } catch (Exception e) {
-            System.err.println("❌ Error publicando evento: " + e.getMessage());
+            System.err.println("Error publicando evento: " + e.getMessage());
         }
     }
 }
+
 
 
