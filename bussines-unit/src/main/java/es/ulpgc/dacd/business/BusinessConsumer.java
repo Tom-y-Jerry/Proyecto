@@ -36,7 +36,7 @@ public class BusinessConsumer {
                         String json = textMsg.getText();
                         storeInSQLite(topic, json);
                     } catch (Exception e) {
-                        System.err.println("\u274c Error procesando mensaje: " + e.getMessage());
+                        System.err.println("Error procesando mensaje: " + e.getMessage());
                     }
                 }
             });
