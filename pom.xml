@@ -12,6 +12,7 @@
         <module>blablacar-feeder</module>
         <module>ticketmaster-feeder</module>
         <module>event-store-builder</module>
+        <module>bussines-unit</module>
     </modules>
 
     <properties>
