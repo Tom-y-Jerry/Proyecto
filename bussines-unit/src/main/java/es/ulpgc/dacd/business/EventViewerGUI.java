@@ -16,30 +16,62 @@ public class EventViewerGUI extends JFrame {
     private final JComboBox<String> originBox = new JComboBox<>();
     private String selectedOrigin = null;
 
-    public EventViewerGUI(String dbPath) throws SQLException {
+    public EventViewerGUI(String dbPath) throws SQLException, UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
         this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
-        setTitle("Viajes a eventos de Ticketmaster");
+        setTitle("Ticketmaster Travel Assistant");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 600);
+        setSize(1000, 600);
         setLayout(new BorderLayout());
 
+        // Top panel con selección de origen
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        topPanel.add(new JLabel("Selecciona tu ciudad de origen:"), BorderLayout.WEST);
+        topPanel.setBackground(new Color(125, 84, 163));
+
+        JLabel titleLabel = new JLabel("Select your origin city:");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        titleLabel.setForeground(new Color(40, 14, 44));
+        topPanel.add(titleLabel, BorderLayout.WEST);
+
+        originBox.setFont(new Font("SansSerif", Font.PLAIN, 14));
         topPanel.add(originBox, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
 
+        // Lista de eventos
         JList<Event> eventList = new JList<>(eventListModel);
+        eventList.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        eventList.setSelectionBackground(new Color(146, 107, 168));
+        eventList.setSelectionForeground(Color.BLACK);
         JScrollPane scrollEvents = new JScrollPane(eventList);
-        scrollEvents.setBorder(new EmptyBorder(10, 10, 10, 10));
-        scrollEvents.setPreferredSize(new Dimension(320, 0));
+        scrollEvents.setBorder(BorderFactory.createTitledBorder("Available Events"));
+        scrollEvents.setPreferredSize(new Dimension(500, 0));
         add(scrollEvents, BorderLayout.WEST);
 
+        // Área de viajes
         tripArea.setEditable(false);
-        tripArea.setFont(new Font("monospaced", Font.PLAIN, 14));
+        tripArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
+        tripArea.setBackground(new Color(124, 120, 151));
+        tripArea.setMargin(new Insets(10, 10, 10, 10));
         JScrollPane scrollTrips = new JScrollPane(tripArea);
-        scrollTrips.setBorder(new EmptyBorder(10, 10, 10, 10));
-        add(scrollTrips, BorderLayout.CENTER);
+        scrollTrips.setBorder(BorderFactory.createTitledBorder("Available Trips"));
+
+        // Crear panel derecho con trips + imagen
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        // Área de trips
+        scrollTrips.setPreferredSize(new Dimension(600, 100));
+        rightPanel.add(scrollTrips);
+        // Imagen
+        ImageIcon originalIcon = new ImageIcon("bussines-unit/src/main/resources/bus.png");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(scaledImage);
+        JLabel imageLabel = new JLabel(icon);
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        rightPanel.add(imageLabel);
+        // Añadir panel combinado al layout
+        add(rightPanel, BorderLayout.CENTER);
 
         originBox.addActionListener(e -> {
             selectedOrigin = (String) originBox.getSelectedItem();
@@ -64,13 +96,12 @@ public class EventViewerGUI extends JFrame {
                 originBox.addItem(rs.getString("origin"));
             }
         } catch (SQLException e) {
-            showError("Error cargando ciudades de origen: " + e.getMessage());
+            showError("Error loading origin cities: " + e.getMessage());
         }
     }
 
     private void loadEvents() {
         eventListModel.clear();
-
         if (selectedOrigin == null) return;
 
         try (PreparedStatement ps = conn.prepareStatement(
@@ -99,12 +130,12 @@ public class EventViewerGUI extends JFrame {
             }
 
         } catch (SQLException e) {
-            showError("Error cargando eventos filtrados: " + e.getMessage());
+            showError("Error loading events: " + e.getMessage());
         }
     }
 
     private void showTripsFor(Event event) {
-        tripArea.setText("\uD83D\uDD0E Buscando viajes desde " + selectedOrigin + " hacia: " + event.city() + "\n\n");
+        tripArea.setText("\uD83D\uDD0E Searching trips from " + selectedOrigin + " to: " + event.city() + "\n\n");
         try (PreparedStatement ps = conn.prepareStatement(
                 "SELECT * FROM trips WHERE origin = ? AND destination LIKE ?")) {
             ps.setString(1, selectedOrigin);
@@ -125,13 +156,13 @@ public class EventViewerGUI extends JFrame {
             }
 
             if (formatted.isEmpty()) {
-                tripArea.append("\u274C No se encontraron viajes desde " + selectedOrigin + " hacia " + event.city());
+                tripArea.append("\u274C No trips found from " + selectedOrigin + " to " + event.city());
             } else {
                 formatted.forEach(s -> tripArea.append(s + "\n"));
             }
 
         } catch (SQLException e) {
-            showError("Error buscando viajes: " + e.getMessage());
+            showError("Error loading trips: " + e.getMessage());
         }
     }
 
