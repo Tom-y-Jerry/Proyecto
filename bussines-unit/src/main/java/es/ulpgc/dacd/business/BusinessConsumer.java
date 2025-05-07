@@ -77,7 +77,7 @@ public class BusinessConsumer {
         JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
         String ss = obj.get("ss").getAsString();
 
-        if (ss.equals("ticketmaster")) {
+        if (ss.equals("feeder-ticketmaster")) {
             PreparedStatement ps = sqlConnection.prepareStatement("""
                 INSERT INTO events (id, name, date, time, city, ss, json)
                 VALUES (?, ?, ?, ?, ?, ?, ?)""");
