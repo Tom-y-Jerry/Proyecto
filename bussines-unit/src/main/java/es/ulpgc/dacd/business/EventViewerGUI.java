@@ -6,24 +6,33 @@ import java.awt.*;
 import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class EventViewerGUI extends JFrame {
     private final Connection conn;
     private final DefaultListModel<Event> eventListModel = new DefaultListModel<>();
     private final JTextArea tripArea = new JTextArea();
+    private final JComboBox<String> originBox = new JComboBox<>();
+    private String selectedOrigin = null;
 
     public EventViewerGUI(String dbPath) throws SQLException {
         this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
-        setTitle("Eventos Ticketmaster");
+        setTitle("Viajes a eventos de Ticketmaster");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(900, 600);
         setLayout(new BorderLayout());
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        topPanel.add(new JLabel("Selecciona tu ciudad de origen:"), BorderLayout.WEST);
+        topPanel.add(originBox, BorderLayout.CENTER);
+        add(topPanel, BorderLayout.NORTH);
 
         JList<Event> eventList = new JList<>(eventListModel);
         JScrollPane scrollEvents = new JScrollPane(eventList);
         scrollEvents.setBorder(new EmptyBorder(10, 10, 10, 10));
+        scrollEvents.setPreferredSize(new Dimension(320, 0));
         add(scrollEvents, BorderLayout.WEST);
 
         tripArea.setEditable(false);
@@ -32,15 +41,31 @@ public class EventViewerGUI extends JFrame {
         scrollTrips.setBorder(new EmptyBorder(10, 10, 10, 10));
         add(scrollTrips, BorderLayout.CENTER);
 
+        originBox.addActionListener(e -> {
+            selectedOrigin = (String) originBox.getSelectedItem();
+        });
+
         eventList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 Event selected = eventList.getSelectedValue();
-                if (selected != null) showTripsFor(selected);
+                if (selected != null && selectedOrigin != null) showTripsFor(selected);
             }
         });
 
+        loadOrigins();
         loadEvents();
         setVisible(true);
+    }
+
+    private void loadOrigins() {
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT DISTINCT origin FROM trips ORDER BY origin")) {
+            while (rs.next()) {
+                originBox.addItem(rs.getString("origin"));
+            }
+        } catch (SQLException e) {
+            showError("Error cargando ciudades de origen: " + e.getMessage());
+        }
     }
 
     private void loadEvents() {
@@ -61,10 +86,11 @@ public class EventViewerGUI extends JFrame {
     }
 
     private void showTripsFor(Event event) {
-        tripArea.setText("\uD83D\uDD0E Buscando viajes para: " + event.city() + "\n\n");
+        tripArea.setText("\uD83D\uDD0E Buscando viajes desde " + selectedOrigin + " hacia: " + event.city() + "\n\n");
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM trips WHERE destination LIKE ?")) {
-            ps.setString(1, "%" + event.city() + "%");
+                "SELECT * FROM trips WHERE origin = ? AND destination LIKE ?")) {
+            ps.setString(1, selectedOrigin);
+            ps.setString(2, "%" + event.city() + "%");
 
             ResultSet rs = ps.executeQuery();
             List<String> formatted = new ArrayList<>();
@@ -81,7 +107,7 @@ public class EventViewerGUI extends JFrame {
             }
 
             if (formatted.isEmpty()) {
-                tripArea.append("\u274C No se encontraron viajes hacia " + event.city());
+                tripArea.append("No se encontraron viajes desde " + selectedOrigin + " hacia " + event.city());
             } else {
                 formatted.forEach(s -> tripArea.append(s + "\n"));
             }
