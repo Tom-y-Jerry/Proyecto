@@ -36,7 +36,7 @@ public class BusinessConsumer {
                         String json = textMsg.getText();
                         storeInSQLite(topic, json);
                     } catch (Exception e) {
-                        System.err.println("Error procesando mensaje: " + e.getMessage());
+                        System.err.println("\u274C Error procesando mensaje: " + e.getMessage());
                     }
                 }
             });
@@ -56,7 +56,8 @@ public class BusinessConsumer {
                     time TEXT,
                     city TEXT,
                     ss TEXT,
-                    json TEXT
+                    json TEXT,
+                    UNIQUE(id, date, time)
                 )""");
 
             stmt.execute("""
@@ -68,7 +69,8 @@ public class BusinessConsumer {
                     price REAL,
                     currency TEXT,
                     ss TEXT,
-                    json TEXT
+                    json TEXT,
+                    UNIQUE(origin, destination, departure, arrival)
                 )""");
         }
     }
@@ -79,7 +81,7 @@ public class BusinessConsumer {
 
         if (ss.equals("feeder-ticketmaster")) {
             PreparedStatement ps = sqlConnection.prepareStatement("""
-                INSERT INTO events (id, name, date, time, city, ss, json)
+                INSERT OR IGNORE INTO events (id, name, date, time, city, ss, json)
                 VALUES (?, ?, ?, ?, ?, ?, ?)""");
 
             ps.setString(1, obj.get("id").getAsString());
@@ -93,7 +95,7 @@ public class BusinessConsumer {
 
         } else if (ss.equals("feeder-blablacar")) {
             PreparedStatement ps = sqlConnection.prepareStatement("""
-                INSERT INTO trips (origin, destination, departure, arrival, price, currency, ss, json)
+                INSERT OR IGNORE INTO trips (origin, destination, departure, arrival, price, currency, ss, json)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)""");
 
             ps.setString(1, obj.get("origin").getAsString());
