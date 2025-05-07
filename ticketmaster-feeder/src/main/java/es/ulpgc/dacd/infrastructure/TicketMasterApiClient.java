@@ -5,6 +5,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TicketMasterApiClient {
     private final OkHttpClient client = new OkHttpClient();
@@ -16,17 +18,27 @@ public class TicketMasterApiClient {
         this.apiKey = apiKey;
     }
 
-    public String fetchEventsJson() throws IOException {
-        Request request = new Request.Builder()
-                .url(eventsUrl + "?apikey=" + apiKey + "&countryCode=GB&size=200")
-                .build();
+    public List<String> fetchEventsJson() throws IOException {
+        String[] countryCodes = {"FR", "ES", "GB", "DE", "PT"};
+        List<String> jsonResponses = new ArrayList<>();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected response code: " + response.code());
+        for (String countryCode : countryCodes) {
+            String fullUrl = eventsUrl + "?apikey=" + apiKey + "&countryCode=" + countryCode + "&size=200";
+
+            Request request = new Request.Builder()
+                    .url(fullUrl)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    System.err.println("Error al obtener eventos de " + countryCode + ": " + response.code());
+                    continue;
+                }
+                jsonResponses.add(response.body().string());
             }
-            return response.body().string();
         }
+
+        return jsonResponses;
     }
 }
 
