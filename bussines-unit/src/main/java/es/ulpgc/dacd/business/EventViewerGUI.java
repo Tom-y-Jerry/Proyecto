@@ -43,6 +43,7 @@ public class EventViewerGUI extends JFrame {
 
         originBox.addActionListener(e -> {
             selectedOrigin = (String) originBox.getSelectedItem();
+            loadEvents();
         });
 
         eventList.addListSelectionListener(e -> {
@@ -53,7 +54,6 @@ public class EventViewerGUI extends JFrame {
         });
 
         loadOrigins();
-        loadEvents();
         setVisible(true);
     }
 
@@ -69,19 +69,37 @@ public class EventViewerGUI extends JFrame {
     }
 
     private void loadEvents() {
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT id, name, date, time, city FROM events ORDER BY date, time")) {
-            while (rs.next()) {
-                eventListModel.addElement(new Event(
-                        rs.getString("id"),
-                        rs.getString("name"),
-                        rs.getString("date"),
-                        rs.getString("time"),
-                        rs.getString("city")
-                ));
+        eventListModel.clear();
+
+        if (selectedOrigin == null) return;
+
+        try (PreparedStatement ps = conn.prepareStatement(
+                """
+                SELECT e.id, e.name, e.date, e.time, e.city
+                FROM events e
+                WHERE EXISTS (
+                    SELECT 1 FROM trips t
+                    WHERE t.origin = ? AND t.destination LIKE '%' || e.city || '%'
+                )
+                ORDER BY e.date, e.time
+                """)) {
+
+            ps.setString(1, selectedOrigin);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    eventListModel.addElement(new Event(
+                            rs.getString("id"),
+                            rs.getString("name"),
+                            rs.getString("date"),
+                            rs.getString("time"),
+                            rs.getString("city")
+                    ));
+                }
             }
+
         } catch (SQLException e) {
-            showError("Error cargando eventos: " + e.getMessage());
+            showError("Error cargando eventos filtrados: " + e.getMessage());
         }
     }
 
@@ -107,7 +125,7 @@ public class EventViewerGUI extends JFrame {
             }
 
             if (formatted.isEmpty()) {
-                tripArea.append("No se encontraron viajes desde " + selectedOrigin + " hacia " + event.city());
+                tripArea.append("\u274C No se encontraron viajes desde " + selectedOrigin + " hacia " + event.city());
             } else {
                 formatted.forEach(s -> tripArea.append(s + "\n"));
             }
@@ -141,7 +159,10 @@ public class EventViewerGUI extends JFrame {
     public record Event(String id, String name, String date, String time, String city) {
         @Override
         public String toString() {
-            return String.format("%s (%s %s) - %s", name, date, time, city);
+            String cleanDate = date.length() > 10 ? date.substring(0, 10) : date;
+            String cleanTime = time.replace("T", "").replace("Z", "").split("\\.")[0];
+            if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "--:--";
+            return String.format("%s - %s %s [%s]", name, cleanDate, cleanTime, city);
         }
     }
 
