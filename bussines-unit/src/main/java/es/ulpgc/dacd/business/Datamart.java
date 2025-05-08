@@ -1,5 +1,6 @@
 package es.ulpgc.dacd.business;
 
+import java.io.File;
 import java.sql.*;
 
 public class Datamart {
@@ -7,6 +8,11 @@ public class Datamart {
 
     public Datamart(String dbPath) {
         try {
+            File dbFile = new File(dbPath);
+            if (dbFile.exists()) {
+                dbFile.delete();
+            }
+
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             recreateTables();
         } catch (SQLException e) {
@@ -17,7 +23,6 @@ public class Datamart {
     private void recreateTables() throws SQLException {
         Statement stmt = connection.createStatement();
 
-        stmt.execute("DROP TABLE IF EXISTS events");
         stmt.execute("""
             CREATE TABLE events (
                 id TEXT, name TEXT, date TEXT, time TEXT, city TEXT,
@@ -25,7 +30,6 @@ public class Datamart {
             )
         """);
 
-        stmt.execute("DROP TABLE IF EXISTS trips");
         stmt.execute("""
             CREATE TABLE trips (
                 origin TEXT, destination TEXT, departure TEXT, arrival TEXT,
@@ -72,4 +76,5 @@ public class Datamart {
         return connection;
     }
 }
+
 
