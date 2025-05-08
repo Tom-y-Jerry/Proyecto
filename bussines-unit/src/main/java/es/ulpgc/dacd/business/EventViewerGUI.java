@@ -60,17 +60,14 @@ public class EventViewerGUI extends JFrame {
         // Crear panel derecho con trips + imagen
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        // Área de trips
         scrollTrips.setPreferredSize(new Dimension(600, 100));
         rightPanel.add(scrollTrips);
-        // Imagen
+
         ImageIcon originalIcon = new ImageIcon("bussines-unit/src/main/resources/bus.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
-        ImageIcon icon = new ImageIcon(scaledImage);
-        JLabel imageLabel = new JLabel(icon);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(imageLabel);
-        // Añadir panel combinado al layout
         add(rightPanel, BorderLayout.CENTER);
 
         originBox.addActionListener(e -> {
@@ -87,13 +84,37 @@ public class EventViewerGUI extends JFrame {
 
         loadOrigins();
         setVisible(true);
+
+        // 🕒 Recargar cada 5 segundos
+        new java.util.Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                SwingUtilities.invokeLater(() -> {
+                    String oldSelected = (String) originBox.getSelectedItem();
+                    loadOrigins();
+                    if (oldSelected != null) {
+                        originBox.setSelectedItem(oldSelected);
+                        selectedOrigin = oldSelected;
+                        loadEvents();
+                    }
+                });
+            }
+        }, 0, 5000);
     }
 
     private void loadOrigins() {
+        Set<String> currentItems = new HashSet<>();
+        for (int i = 0; i < originBox.getItemCount(); i++) {
+            currentItems.add(originBox.getItemAt(i));
+        }
+
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT DISTINCT origin FROM trips ORDER BY origin")) {
             while (rs.next()) {
-                originBox.addItem(rs.getString("origin"));
+                String origin = rs.getString("origin");
+                if (!currentItems.contains(origin)) {
+                    originBox.addItem(origin);
+                }
             }
         } catch (SQLException e) {
             showError("Error loading origin cities: " + e.getMessage());
