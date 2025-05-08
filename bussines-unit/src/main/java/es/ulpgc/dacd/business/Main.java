@@ -24,7 +24,7 @@ public class Main {
         try {
             new EventViewerGUI(databasePath).start();
         } catch (Exception e) {
-            System.err.println("Error lanzando GUI: " + e.getMessage());
+            System.err.println("Error with GUI: " + e.getMessage());
         }
     }
 }
