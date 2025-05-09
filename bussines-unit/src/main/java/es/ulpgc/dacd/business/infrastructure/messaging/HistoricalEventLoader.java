@@ -1,4 +1,6 @@
-package es.ulpgc.dacd.business;
+package es.ulpgc.dacd.business.infrastructure.messaging;
+
+import es.ulpgc.dacd.business.application.processor.EventProcessor;
 
 import java.io.BufferedReader;
 import java.io.File;
