@@ -3,6 +3,9 @@ package es.ulpgc.dacd.business;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.time.Duration;
+import java.time.Instant;
+
 public class BlaBlaCarEventProcessor implements EventProcessor {
     private final Datamart datamart;
 
@@ -23,7 +26,12 @@ public class BlaBlaCarEventProcessor implements EventProcessor {
             String currency = json.get("currency").getAsString();
             String ss = json.get("ss").getAsString();
 
-            datamart.insertBlaBlaCarEvent(origin, destination, departure, arrival, price, currency, ss, rawEvent);
+            Instant dep = Instant.parse(departure);
+            Instant arr = Instant.parse(arrival);
+            long durationMin = Duration.between(dep, arr).toMinutes();
+
+            datamart.insertBlaBlaCarEvent(origin, destination, departure, arrival, price, currency, durationMin, ss, rawEvent);
+
         } catch (Exception e) {
             throw new RuntimeException("Error procesando evento BlaBlaCar", e);
         }
