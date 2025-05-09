@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.business.application.processor;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import es.ulpgc.dacd.business.application.service.DatamartService;
