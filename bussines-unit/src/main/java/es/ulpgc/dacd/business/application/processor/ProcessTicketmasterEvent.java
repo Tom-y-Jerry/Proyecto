@@ -1,19 +1,19 @@
-package es.ulpgc.dacd.business;
+package es.ulpgc.dacd.business.application.processor;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import es.ulpgc.dacd.business.application.service.DatamartService;
 
-public class TicketmasterEventProcessor implements EventProcessor {
-    private final Datamart datamart;
+public class ProcessTicketmasterEvent implements EventProcessor {
+    private final DatamartService datamart;
 
-    public TicketmasterEventProcessor(Datamart datamart) {
+    public ProcessTicketmasterEvent(DatamartService datamart) {
         this.datamart = datamart;
     }
 
     @Override
     public void process(String rawEvent) {
         JsonObject json = JsonParser.parseString(rawEvent).getAsJsonObject();
-
         try {
             String id = json.get("id").getAsString();
             String name = json.get("name").getAsString();
@@ -22,11 +22,9 @@ public class TicketmasterEventProcessor implements EventProcessor {
             String city = json.get("city").getAsString();
             String ss = json.get("ss").getAsString();
 
-            datamart.insertTicketmasterEvent(id, name, date, time, city, ss, rawEvent);
-
+            datamart.insertEvent(id, name, date, time, city, ss, rawEvent);
         } catch (Exception e) {
-            throw new RuntimeException("Error procesando evento Ticketmaster", e);
+            throw new RuntimeException("Error processing Ticketmaster event", e);
         }
     }
 }
-

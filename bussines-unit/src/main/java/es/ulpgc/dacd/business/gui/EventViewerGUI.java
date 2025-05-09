@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.business;
+package es.ulpgc.dacd.business.gui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,16 +16,14 @@ public class EventViewerGUI extends JFrame {
     private final JComboBox<String> originBox = new JComboBox<>();
     private String selectedOrigin = null;
 
-    public EventViewerGUI(String dbPath) throws SQLException, UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public EventViewerGUI(String dbPath) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
         this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
         setTitle("Ticketmaster Travel Assistant");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000, 600);
         setLayout(new BorderLayout());
 
-        // Top panel con selección de origen
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         topPanel.setBackground(new Color(125, 84, 163));
@@ -39,7 +37,6 @@ public class EventViewerGUI extends JFrame {
         topPanel.add(originBox, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
 
-        // Lista de eventos
         JList<Event> eventList = new JList<>(eventListModel);
         eventList.setFont(new Font("SansSerif", Font.PLAIN, 13));
         eventList.setSelectionBackground(new Color(146, 107, 168));
@@ -49,7 +46,6 @@ public class EventViewerGUI extends JFrame {
         scrollEvents.setPreferredSize(new Dimension(500, 0));
         add(scrollEvents, BorderLayout.WEST);
 
-        // Área de viajes
         tripArea.setEditable(false);
         tripArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
         tripArea.setBackground(new Color(124, 120, 151));
@@ -57,15 +53,14 @@ public class EventViewerGUI extends JFrame {
         JScrollPane scrollTrips = new JScrollPane(tripArea);
         scrollTrips.setBorder(BorderFactory.createTitledBorder("Available Trips"));
 
-        // Crear panel derecho con trips + imagen
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         scrollTrips.setPreferredSize(new Dimension(600, 100));
         rightPanel.add(scrollTrips);
 
-        ImageIcon originalIcon = new ImageIcon("bussines-unit/src/main/resources/bus.png");
-        Image scaledImage = originalIcon.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
-        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+        ImageIcon icon = new ImageIcon("src/main/resources/bus.png");
+        Image scaled = icon.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaled));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(imageLabel);
         add(rightPanel, BorderLayout.CENTER);
@@ -85,16 +80,14 @@ public class EventViewerGUI extends JFrame {
         loadOrigins();
         setVisible(true);
 
-        // 🕒 Recargar cada 5 segundos
         new java.util.Timer().schedule(new TimerTask() {
-            @Override
             public void run() {
                 SwingUtilities.invokeLater(() -> {
-                    String oldSelected = (String) originBox.getSelectedItem();
+                    String old = (String) originBox.getSelectedItem();
                     loadOrigins();
-                    if (oldSelected != null) {
-                        originBox.setSelectedItem(oldSelected);
-                        selectedOrigin = oldSelected;
+                    if (old != null) {
+                        originBox.setSelectedItem(old);
+                        selectedOrigin = old;
                         loadEvents();
                     }
                 });
@@ -103,28 +96,26 @@ public class EventViewerGUI extends JFrame {
     }
 
     private void loadOrigins() {
-        Set<String> currentItems = new HashSet<>();
+        Set<String> current = new HashSet<>();
         for (int i = 0; i < originBox.getItemCount(); i++) {
-            currentItems.add(originBox.getItemAt(i));
+            current.add(originBox.getItemAt(i));
         }
-
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT DISTINCT origin FROM trips ORDER BY origin")) {
             while (rs.next()) {
                 String origin = rs.getString("origin");
-                if (!currentItems.contains(origin)) {
+                if (!current.contains(origin)) {
                     originBox.addItem(origin);
                 }
             }
         } catch (SQLException e) {
-            showError("Error loading origin cities: " + e.getMessage());
+            showError("Error loading origins: " + e.getMessage());
         }
     }
 
     private void loadEvents() {
         eventListModel.clear();
         if (selectedOrigin == null) return;
-
         try (PreparedStatement ps = conn.prepareStatement(
                 """
                 SELECT e.id, e.name, e.date, e.time, e.city
@@ -135,9 +126,7 @@ public class EventViewerGUI extends JFrame {
                 )
                 ORDER BY e.date, e.time
                 """)) {
-
             ps.setString(1, selectedOrigin);
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     eventListModel.addElement(new Event(
@@ -149,7 +138,6 @@ public class EventViewerGUI extends JFrame {
                     ));
                 }
             }
-
         } catch (SQLException e) {
             showError("Error loading events: " + e.getMessage());
         }
@@ -158,22 +146,22 @@ public class EventViewerGUI extends JFrame {
     private void showTripsFor(Event event) {
         tripArea.setText("\uD83D\uDD0E Searching trips from " + selectedOrigin + " to: " + event.city() + "\n\n");
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM trips WHERE origin = ? AND destination LIKE ?")) {
+                "SELECT origin, destination, departure, arrival, price, currency, duration_minutes FROM trips WHERE origin = ? AND destination LIKE ?")) {
             ps.setString(1, selectedOrigin);
             ps.setString(2, "%" + event.city() + "%");
 
             ResultSet rs = ps.executeQuery();
             List<String> formatted = new ArrayList<>();
             while (rs.next()) {
-                String out = formatTrip(
+                formatted.add(formatTrip(
                         rs.getString("origin"),
                         rs.getString("destination"),
                         rs.getString("departure"),
                         rs.getString("arrival"),
                         rs.getDouble("price"),
-                        rs.getString("currency")
-                );
-                formatted.add(out);
+                        rs.getString("currency"),
+                        rs.getInt("duration_minutes")
+                ));
             }
 
             if (formatted.isEmpty()) {
@@ -181,24 +169,18 @@ public class EventViewerGUI extends JFrame {
             } else {
                 formatted.forEach(s -> tripArea.append(s + "\n"));
             }
-
         } catch (SQLException e) {
             showError("Error loading trips: " + e.getMessage());
         }
     }
 
-    private String formatTrip(String origin, String destination, String depStr, String arrStr, double price, String currency) {
+    private String formatTrip(String origin, String destination, String depStr, String arrStr, double price, String currency, int durationMin) {
         Instant departure = Instant.parse(depStr);
         Instant arrival = Instant.parse(arrStr);
 
-        String dep = departure.atZone(ZoneId.systemDefault())
-                .toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-        String arr = arrival.atZone(ZoneId.systemDefault())
-                .toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-
-        Duration duration = Duration.between(departure, arrival);
-        long h = duration.toHours();
-        long m = duration.toMinutes() % 60;
+        String dep = departure.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        String arr = arrival.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        long h = durationMin / 60, m = durationMin % 60;
 
         return String.format("\uD83D\uDE8C %s → %s | %s - %s | %dh %02dmin | %.2f %s",
                 origin, destination, dep, arr, h, m, price, currency);

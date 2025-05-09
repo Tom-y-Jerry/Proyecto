@@ -1,15 +1,16 @@
-package es.ulpgc.dacd.business;
+package es.ulpgc.dacd.business.infrastructure.messaging;
 
+import es.ulpgc.dacd.business.application.processor.EventProcessor;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-public class BusinessConsumer {
+public class ActiveMQConsumer {
     private final String topic;
     private final String brokerUrl;
     private final EventProcessor processor;
 
-    public BusinessConsumer(String topic, String brokerUrl, EventProcessor processor) {
+    public ActiveMQConsumer(String topic, String brokerUrl, EventProcessor processor) {
         this.topic = topic;
         this.brokerUrl = brokerUrl;
         this.processor = processor;
@@ -33,17 +34,14 @@ public class BusinessConsumer {
                         processor.process(raw);
                     }
                 } catch (Exception e) {
-                    System.err.println("Error procesando mensaje: " + e.getMessage());
+                    System.err.println("Error processing message: " + e.getMessage());
                 }
             });
 
-            System.out.println("Suscrito al topic: " + topic);
+            System.out.println("Subscribed to topic: " + topic);
 
         } catch (Exception e) {
-            throw new RuntimeException("Error conectando o suscribiéndose al broker", e);
+            throw new RuntimeException("Error connecting or subscribing to broker", e);
         }
     }
 }
-
-
-
