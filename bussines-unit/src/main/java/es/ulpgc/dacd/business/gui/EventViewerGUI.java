@@ -19,11 +19,22 @@ public class EventViewerGUI extends JFrame {
     public EventViewerGUI(String dbPath) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        setupWindow();
+        setupTopPanel();
+        setupSplitPanel();
+        setupEventListeners();
+        loadOrigins();
+        startAutoRefresh();
+    }
+
+    private void setupWindow() {
         setTitle("Ticketmaster Travel Assistant");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 700);
         setLayout(new BorderLayout());
+    }
 
+    private void setupTopPanel() {
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         topPanel.setBackground(new Color(0, 100, 182));
@@ -36,26 +47,26 @@ public class EventViewerGUI extends JFrame {
         originBox.setFont(new Font("Verdana", Font.PLAIN, 14));
         originBox.setBackground(Color.WHITE);
         originBox.setForeground(new Color(33, 33, 33));
+        originBox.setRenderer(customOriginRenderer());
 
-        originBox.setRenderer(new DefaultListCellRenderer() {
+        topPanel.add(originBox, BorderLayout.CENTER);
+        add(topPanel, BorderLayout.NORTH);
+    }
+
+    private DefaultListCellRenderer customOriginRenderer() {
+        return new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 label.setFont(new Font("Verdana", Font.PLAIN, 14));
-                if (isSelected) {
-                    label.setBackground(new Color(27, 137, 177));
-                    label.setForeground(Color.WHITE);
-                } else {
-                    label.setBackground(Color.WHITE);
-                    label.setForeground(new Color(33, 33, 33));
-                }
+                label.setBackground(isSelected ? new Color(27, 137, 177) : Color.WHITE);
+                label.setForeground(isSelected ? Color.WHITE : new Color(33, 33, 33));
                 return label;
             }
-        });
+        };
+    }
 
-        topPanel.add(originBox, BorderLayout.CENTER);
-        add(topPanel, BorderLayout.NORTH);
-
+    private void setupSplitPanel() {
         JList<Event> eventList = new JList<>(eventListModel);
         eventList.setFont(new Font("Verdana", Font.PLAIN, 13));
         eventList.setBackground(Color.WHITE);
@@ -74,28 +85,21 @@ public class EventViewerGUI extends JFrame {
 
         JScrollPane scrollTrips = new JScrollPane(tripArea);
         scrollTrips.setBorder(BorderFactory.createTitledBorder("Viajes disponibles"));
+        scrollTrips.setPreferredSize(new Dimension(600, 100));
 
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        scrollTrips.setPreferredSize(new Dimension(600, 100));
         rightPanel.add(scrollTrips);
 
-        ImageIcon icon = new ImageIcon("bussines-unit/src/main/resources/bus.png");
-        Image scaled = icon.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
-        JLabel imageLabel = new JLabel(new ImageIcon(scaled));
+        JLabel imageLabel = new JLabel(new ImageIcon(new ImageIcon("bussines-unit/src/main/resources/bus.png")
+                .getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH)));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(imageLabel);
 
-        // Implementación de JSplitPane
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollEvents, rightPanel);
-        splitPane.setDividerLocation(700); // Tamaño inicial del panel de eventos
-        splitPane.setResizeWeight(0.8); // 80% de espacio inicial
+        splitPane.setDividerLocation(700);
+        splitPane.setResizeWeight(0.8);
         add(splitPane, BorderLayout.CENTER);
-
-        originBox.addActionListener(e -> {
-            selectedOrigin = (String) originBox.getSelectedItem();
-            loadEvents();
-        });
 
         eventList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -103,11 +107,17 @@ public class EventViewerGUI extends JFrame {
                 if (selected != null && selectedOrigin != null) showTripsFor(selected);
             }
         });
+    }
 
-        loadOrigins();
-        setVisible(true);
+    private void setupEventListeners() {
+        originBox.addActionListener(e -> {
+            selectedOrigin = (String) originBox.getSelectedItem();
+            loadEvents();
+        });
+    }
 
-        new java.util.Timer().schedule(new TimerTask() {
+    private void startAutoRefresh() {
+        new java.util.Timer().schedule(new java.util.TimerTask() {
             public void run() {
                 SwingUtilities.invokeLater(() -> {
                     String old = (String) originBox.getSelectedItem();
@@ -214,13 +224,12 @@ public class EventViewerGUI extends JFrame {
 
         long h = durationMin / 60, m = durationMin % 60;
 
-        return String.format("🚌 %s → %s | %s %s - %s %s | %dh %02dmin | %.2f %s",
+        return String.format("\uD83D\uDE8C %s → %s | %s %s | %s %s | %dh %02dmin | %.2f %s",
                 origin, destination,
                 depDate, depTime,
                 arrDate, arrTime,
                 h, m, price, currency);
     }
-
 
     private void showError(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
