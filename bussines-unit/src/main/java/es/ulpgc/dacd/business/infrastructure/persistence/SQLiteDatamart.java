@@ -9,30 +9,40 @@ public class SQLiteDatamart implements DatamartService {
     private final Connection connection;
 
     public SQLiteDatamart(String dbPath) {
-        try {
-            File dbFile = new File(dbPath);
-            if (dbFile.exists()) {
-                dbFile.delete();
-            }
+        this.connection = initializeDatabase(dbPath);
+        recreateTables();
+    }
 
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
-            recreateTables();
+    private Connection initializeDatabase(String path) {
+        try {
+            File dbFile = new File(path);
+            if (dbFile.exists()) dbFile.delete();
+            return DriverManager.getConnection("jdbc:sqlite:" + path);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to initialize database", e);
         }
     }
 
-    private void recreateTables() throws SQLException {
-        Statement stmt = connection.createStatement();
+    private void recreateTables() {
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(createEventsTable());
+            stmt.execute(createTripsTable());
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to create tables", e);
+        }
+    }
 
-        stmt.execute("""
+    private String createEventsTable() {
+        return """
             CREATE TABLE events (
                 id TEXT, name TEXT, date TEXT, time TEXT, city TEXT,
                 ss TEXT, json TEXT, UNIQUE(id, date, time)
             )
-        """);
+        """;
+    }
 
-        stmt.execute("""
+    private String createTripsTable() {
+        return """
             CREATE TABLE trips (
                 origin TEXT, destination TEXT,
                 departure TEXT, arrival TEXT,
@@ -41,15 +51,13 @@ public class SQLiteDatamart implements DatamartService {
                 ss TEXT, json TEXT,
                 UNIQUE(origin, destination, departure, arrival)
             )
-        """);
+        """;
     }
 
     @Override
     public void insertEvent(String id, String name, String date, String time, String city, String ss, String json) {
-        try (PreparedStatement stmt = connection.prepareStatement("""
-            INSERT OR IGNORE INTO events (id, name, date, time, city, ss, json)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """)) {
+        String sql = "INSERT OR IGNORE INTO events (id, name, date, time, city, ss, json) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, id);
             stmt.setString(2, name);
             stmt.setString(3, date);
@@ -59,16 +67,14 @@ public class SQLiteDatamart implements DatamartService {
             stmt.setString(7, json);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to insert event", e);
         }
     }
 
     @Override
     public void insertTrip(String origin, String destination, String departure, String arrival, double price, String currency, long durationMinutes, String ss, String json) {
-        try (PreparedStatement stmt = connection.prepareStatement("""
-            INSERT OR IGNORE INTO trips (origin, destination, departure, arrival, price, currency, duration_minutes, ss, json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """)) {
+        String sql = "INSERT OR IGNORE INTO trips (origin, destination, departure, arrival, price, currency, duration_minutes, ss, json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, origin);
             stmt.setString(2, destination);
             stmt.setString(3, departure);
@@ -80,7 +86,7 @@ public class SQLiteDatamart implements DatamartService {
             stmt.setString(9, json);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to insert trip", e);
         }
     }
 
