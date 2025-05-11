@@ -1,4 +1,5 @@
 package es.ulpgc.dacd.business.application.processor;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import es.ulpgc.dacd.business.application.service.DatamartService;
@@ -15,20 +16,27 @@ public class ProcessBlaBlaCarTrip implements EventProcessor {
 
     @Override
     public void process(String rawEvent) {
-        JsonObject json = JsonParser.parseString(rawEvent).getAsJsonObject();
         try {
-            String origin = json.get("origin").getAsString();
-            String destination = json.get("destination").getAsString();
-            String departure = json.get("departure").getAsString();
-            String arrival = json.get("arrival").getAsString();
-            double price = json.get("price").getAsDouble();
-            String currency = json.get("currency").getAsString();
-            long duration = Duration.between(Instant.parse(departure), Instant.parse(arrival)).toMinutes();
-            String ss = json.get("ss").getAsString();
+            JsonObject json = JsonParser.parseString(rawEvent).getAsJsonObject();
+            long duration = Duration.between(
+                    Instant.parse(json.get("departure").getAsString()),
+                    Instant.parse(json.get("arrival").getAsString())
+            ).toMinutes();
 
-            datamart.insertTrip(origin, destination, departure, arrival, price, currency, duration, ss, rawEvent);
+            datamart.insertTrip(
+                    json.get("origin").getAsString(),
+                    json.get("destination").getAsString(),
+                    json.get("departure").getAsString(),
+                    json.get("arrival").getAsString(),
+                    json.get("price").getAsDouble(),
+                    json.get("currency").getAsString(),
+                    duration,
+                    json.get("ss").getAsString(),
+                    rawEvent
+            );
         } catch (Exception e) {
             throw new RuntimeException("Error processing BlaBlaCar trip", e);
         }
     }
 }
+
