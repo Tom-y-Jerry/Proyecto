@@ -21,49 +21,76 @@ public class EventViewerGUI extends JFrame {
         this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
         setTitle("Ticketmaster Travel Assistant");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1000, 600);
+        setSize(1200, 700);
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        topPanel.setBackground(new Color(125, 84, 163));
+        topPanel.setBackground(new Color(0, 100, 182));
 
-        JLabel titleLabel = new JLabel("Select your origin city:");
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
-        titleLabel.setForeground(new Color(40, 14, 44));
+        JLabel titleLabel = new JLabel("Selecciona el origen:  ");
+        titleLabel.setFont(new Font("Verdana", Font.BOLD, 14));
+        titleLabel.setForeground(Color.WHITE);
         topPanel.add(titleLabel, BorderLayout.WEST);
 
-        originBox.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        originBox.setFont(new Font("Verdana", Font.PLAIN, 14));
+        originBox.setBackground(Color.WHITE);
+        originBox.setForeground(new Color(33, 33, 33));
+
+        originBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setFont(new Font("Verdana", Font.PLAIN, 14));
+                if (isSelected) {
+                    label.setBackground(new Color(27, 137, 177));
+                    label.setForeground(Color.WHITE);
+                } else {
+                    label.setBackground(Color.WHITE);
+                    label.setForeground(new Color(33, 33, 33));
+                }
+                return label;
+            }
+        });
+
         topPanel.add(originBox, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
 
         JList<Event> eventList = new JList<>(eventListModel);
-        eventList.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        eventList.setSelectionBackground(new Color(146, 107, 168));
-        eventList.setSelectionForeground(Color.BLACK);
+        eventList.setFont(new Font("Verdana", Font.PLAIN, 13));
+        eventList.setBackground(Color.WHITE);
+        eventList.setSelectionBackground(new Color(27, 137, 177));
+        eventList.setSelectionForeground(Color.WHITE);
+
         JScrollPane scrollEvents = new JScrollPane(eventList);
-        scrollEvents.setBorder(BorderFactory.createTitledBorder("Available Events"));
+        scrollEvents.setBorder(BorderFactory.createTitledBorder("Eventos disponibles"));
         scrollEvents.setPreferredSize(new Dimension(500, 0));
-        add(scrollEvents, BorderLayout.WEST);
 
         tripArea.setEditable(false);
-        tripArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
-        tripArea.setBackground(new Color(124, 120, 151));
+        tripArea.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        tripArea.setBackground(Color.WHITE);
+        tripArea.setForeground(new Color(33, 33, 33));
         tripArea.setMargin(new Insets(10, 10, 10, 10));
+
         JScrollPane scrollTrips = new JScrollPane(tripArea);
-        scrollTrips.setBorder(BorderFactory.createTitledBorder("Available Trips"));
+        scrollTrips.setBorder(BorderFactory.createTitledBorder("Viajes disponibles"));
 
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         scrollTrips.setPreferredSize(new Dimension(600, 100));
         rightPanel.add(scrollTrips);
 
-        ImageIcon icon = new ImageIcon("src/main/resources/bus.png");
+        ImageIcon icon = new ImageIcon("bussines-unit/src/main/resources/bus.png");
         Image scaled = icon.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
         JLabel imageLabel = new JLabel(new ImageIcon(scaled));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(imageLabel);
-        add(rightPanel, BorderLayout.CENTER);
+
+        // Implementación de JSplitPane
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollEvents, rightPanel);
+        splitPane.setDividerLocation(700); // Tamaño inicial del panel de eventos
+        splitPane.setResizeWeight(0.8); // 80% de espacio inicial
+        add(splitPane, BorderLayout.CENTER);
 
         originBox.addActionListener(e -> {
             selectedOrigin = (String) originBox.getSelectedItem();
@@ -116,8 +143,7 @@ public class EventViewerGUI extends JFrame {
     private void loadEvents() {
         eventListModel.clear();
         if (selectedOrigin == null) return;
-        try (PreparedStatement ps = conn.prepareStatement(
-                """
+        try (PreparedStatement ps = conn.prepareStatement("""
                 SELECT e.id, e.name, e.date, e.time, e.city
                 FROM events e
                 WHERE EXISTS (
@@ -144,9 +170,11 @@ public class EventViewerGUI extends JFrame {
     }
 
     private void showTripsFor(Event event) {
-        tripArea.setText("\uD83D\uDD0E Searching trips from " + selectedOrigin + " to: " + event.city() + "\n\n");
-        try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT origin, destination, departure, arrival, price, currency, duration_minutes FROM trips WHERE origin = ? AND destination LIKE ?")) {
+        tripArea.setText("🔎 Resultados de viajes desde: " + selectedOrigin + " para: " + event.city() + "\n\n");
+        try (PreparedStatement ps = conn.prepareStatement("""
+                SELECT origin, destination, departure, arrival, price, currency, duration_minutes 
+                FROM trips 
+                WHERE origin = ? AND destination LIKE ?""")) {
             ps.setString(1, selectedOrigin);
             ps.setString(2, "%" + event.city() + "%");
 
@@ -165,7 +193,7 @@ public class EventViewerGUI extends JFrame {
             }
 
             if (formatted.isEmpty()) {
-                tripArea.append("\u274C No trips found from " + selectedOrigin + " to " + event.city());
+                tripArea.append("No trips found from " + selectedOrigin + " to " + event.city());
             } else {
                 formatted.forEach(s -> tripArea.append(s + "\n"));
             }
@@ -178,13 +206,21 @@ public class EventViewerGUI extends JFrame {
         Instant departure = Instant.parse(depStr);
         Instant arrival = Instant.parse(arrStr);
 
-        String dep = departure.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-        String arr = arrival.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        LocalDate depDate = departure.atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate arrDate = arrival.atZone(ZoneId.systemDefault()).toLocalDate();
+
+        String depTime = departure.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        String arrTime = arrival.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+
         long h = durationMin / 60, m = durationMin % 60;
 
-        return String.format("\uD83D\uDE8C %s → %s | %s - %s | %dh %02dmin | %.2f %s",
-                origin, destination, dep, arr, h, m, price, currency);
+        return String.format("🚌 %s → %s | %s %s - %s %s | %dh %02dmin | %.2f %s",
+                origin, destination,
+                depDate, depTime,
+                arrDate, arrTime,
+                h, m, price, currency);
     }
+
 
     private void showError(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
