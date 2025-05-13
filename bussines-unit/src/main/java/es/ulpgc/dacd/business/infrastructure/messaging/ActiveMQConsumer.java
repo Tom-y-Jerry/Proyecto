@@ -5,15 +5,17 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-public class ActiveMQConsumer {
+public class ActiveMQConsumer<T> {
     private final String topic;
     private final String brokerUrl;
-    private final EventProcessor processor;
+    private final EventProcessor<T> processor;
+    private final Class<T> type; // Para saber si es Trip o Event
 
-    public ActiveMQConsumer(String topic, String brokerUrl, EventProcessor processor) {
+    public ActiveMQConsumer(String topic, String brokerUrl, EventProcessor<T> processor, Class<T> type) {
         this.topic = topic;
         this.brokerUrl = brokerUrl;
         this.processor = processor;
+        this.type = type;
     }
 
     public void start() {
@@ -48,7 +50,9 @@ public class ActiveMQConsumer {
     private void handleMessage(Message message) {
         try {
             if (message instanceof TextMessage textMessage) {
-                processor.process(textMessage.getText());
+                String json = textMessage.getText();
+                T item = new com.google.gson.Gson().fromJson(json, type);
+                processor.process(item);
             }
         } catch (Exception e) {
             System.err.println("Error processing message: " + e.getMessage());

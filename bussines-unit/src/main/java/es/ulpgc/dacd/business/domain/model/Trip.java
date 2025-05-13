@@ -1,30 +1,50 @@
 package es.ulpgc.dacd.business.domain.model;
 
-public class Trip {
+import java.time.Instant;
+
+public final class Trip {
+    private final Instant ts;
+    private final String ss;
     private final String origin;
     private final String destination;
-    private final String departure;
-    private final String arrival;
+    private final Instant departure;
+    private final Instant arrival;
     private final double price;
     private final String currency;
-    private final long durationMinutes;
 
-    public Trip(String origin, String destination, String departure, String arrival,
-                double price, String currency, long durationMinutes) {
+    public Trip(String ss, String origin, String destination, Instant departure, Instant arrival, double price, String currency) {
+        this.ts = Instant.now();
+        this.ss = ss;
         this.origin = origin;
         this.destination = destination;
         this.departure = departure;
         this.arrival = arrival;
         this.price = price;
         this.currency = currency;
-        this.durationMinutes = durationMinutes;
     }
 
-    public String getOrigin() { return origin; }
-    public String getDestination() { return destination; }
-    public String getDeparture() { return departure; }
-    public String getArrival() { return arrival; }
-    public double getPrice() { return price; }
-    public String getCurrency() { return currency; }
-    public long getDurationMinutes() { return durationMinutes; }
+    public Instant getTs() {
+        return ts;
+    }
+    public String getSs() {
+        return ss;
+    }
+    public String getOrigin() {
+        return origin;
+    }
+    public String getDestination() {
+        return destination;
+    }
+    public Instant getDeparture() {
+        return departure;
+    }
+    public Instant getArrival() {
+        return arrival;
+    }
+    public double getPrice() {
+        return price;
+    }
+    public String getCurrency() {
+        return currency;
+    }
 }

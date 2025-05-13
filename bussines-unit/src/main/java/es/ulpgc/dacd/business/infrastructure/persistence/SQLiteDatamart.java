@@ -2,56 +2,22 @@ package es.ulpgc.dacd.business.infrastructure.persistence;
 
 import es.ulpgc.dacd.business.application.service.DatamartService;
 
-import java.io.File;
 import java.sql.*;
 
 public class SQLiteDatamart implements DatamartService {
     private final Connection connection;
 
     public SQLiteDatamart(String dbPath) {
-        this.connection = initializeDatabase(dbPath);
-        recreateTables();
+        this.connection = initializeConnection(dbPath);
+        new SQLiteInitializer(connection).initialize(); // Delegamos la creación de tablas
     }
 
-    private Connection initializeDatabase(String path) {
+    private Connection initializeConnection(String path) {
         try {
-            File dbFile = new File(path);
-            if (dbFile.exists()) dbFile.delete();
             return DriverManager.getConnection("jdbc:sqlite:" + path);
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to initialize database", e);
+            throw new RuntimeException("Failed to connect to database", e);
         }
-    }
-
-    private void recreateTables() {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(createEventsTable());
-            stmt.execute(createTripsTable());
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to create tables", e);
-        }
-    }
-
-    private String createEventsTable() {
-        return """
-            CREATE TABLE events (
-                id TEXT, name TEXT, date TEXT, time TEXT, city TEXT,
-                ss TEXT, json TEXT, UNIQUE(id, date, time)
-            )
-        """;
-    }
-
-    private String createTripsTable() {
-        return """
-            CREATE TABLE trips (
-                origin TEXT, destination TEXT,
-                departure TEXT, arrival TEXT,
-                price REAL, currency TEXT,
-                duration_minutes INTEGER,
-                ss TEXT, json TEXT,
-                UNIQUE(origin, destination, departure, arrival)
-            )
-        """;
     }
 
     @Override
@@ -94,3 +60,4 @@ public class SQLiteDatamart implements DatamartService {
         return connection;
     }
 }
+
