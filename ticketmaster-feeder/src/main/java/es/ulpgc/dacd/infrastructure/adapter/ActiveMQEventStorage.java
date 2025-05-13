@@ -26,7 +26,7 @@ public class ActiveMQEventStorage implements EventStorage {
             connection.start();
 
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Destination topic = session.createTopic("prediction.Events");
+            Destination topic = session.createTopic("Events");
             MessageProducer producer = session.createProducer(topic);
 
             String json = gson.toJson(event);
