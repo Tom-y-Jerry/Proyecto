@@ -1,13 +1,17 @@
 package es.ulpgc.dacd.business.application.processor;
 
+import com.google.gson.*;
 import es.ulpgc.dacd.business.application.service.DatamartService;
 import es.ulpgc.dacd.business.domain.model.Trip;
-import es.ulpgc.dacd.business.application.processor.EventProcessor;
 
 import java.time.Duration;
+import java.time.Instant;
 
 public class ProcessBlaBlaCarTrip implements EventProcessor<Trip> {
     private final DatamartService datamart;
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, type, context) -> new JsonPrimitive(src.toString()))
+            .create();
 
     public ProcessBlaBlaCarTrip(DatamartService datamart) {
         this.datamart = datamart;
@@ -27,7 +31,7 @@ public class ProcessBlaBlaCarTrip implements EventProcessor<Trip> {
                     trip.getCurrency(),
                     duration,
                     trip.getSs(),
-                    trip.toString()
+                    gson.toJson(trip)
             );
         } catch (Exception e) {
             throw new RuntimeException("Error processing BlaBlaCar trip", e);
