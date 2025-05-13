@@ -3,8 +3,6 @@ package es.ulpgc.dacd.infrastructure.adapters;
 import es.ulpgc.dacd.domain.Trip;
 import es.ulpgc.dacd.infrastructure.BlablacarApiClient;
 import es.ulpgc.dacd.infrastructure.ports.TripProvider;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.time.Instant;
@@ -12,24 +10,20 @@ import java.util.*;
 
 public class BlablacarTripProvider implements TripProvider {
     private final BlablacarApiClient apiClient;
-    private final int originId;
 
-    public BlablacarTripProvider(String stopsUrl, String faresUrl, String apiKey, int originId) {
+    public BlablacarTripProvider(String stopsUrl, String faresUrl, String apiKey) {
         this.apiClient = new BlablacarApiClient(stopsUrl, faresUrl, apiKey);
-        this.originId = originId;
     }
 
     @Override
     public List<Trip> provide() {
         List<Trip> trips = new ArrayList<>();
         try {
-            Map<Integer, String> names = new HashMap<>();
-            List<Destination> destinations = extractDestinations(names);
+            Map<Integer, String> names = extractStopNames();
+            List<JsonObject> fares = apiClient.fetchFare();
 
-            for (Destination dest : destinations) {
-                apiClient.fetchFare(originId, dest.id()).ifPresent(fare -> {
-                    trips.add(mapToTrip(fare, names.get(originId), dest.name()));
-                });
+            for (JsonObject fare : fares) {
+                trips.add(mapToTrip(fare, names));
             }
         } catch (Exception e) {
             System.err.println("Error en provider: " + e.getMessage());
@@ -37,25 +31,13 @@ public class BlablacarTripProvider implements TripProvider {
         return trips;
     }
 
-    private List<Destination> extractDestinations(Map<Integer, String> names) throws Exception {
-        List<Destination> result = new ArrayList<>();
-        JsonArray stops = apiClient.fetchStops();
-
-        for (JsonElement el : stops) {
+    private Map<Integer, String> extractStopNames() throws Exception {
+        Map<Integer, String> names = new HashMap<>();
+        var stops = apiClient.fetchStops();
+        for (var el : stops) {
             collectStopNames(el.getAsJsonObject(), names);
         }
-
-        for (JsonElement el : stops) {
-            JsonObject stop = el.getAsJsonObject();
-            if (stop.has("id") && stop.get("id").getAsInt() == originId && stop.has("destinations_ids")) {
-                for (JsonElement d : stop.getAsJsonArray("destinations_ids")) {
-                    int destId = d.getAsInt();
-                    result.add(new Destination(destId, names.getOrDefault(destId, "ID_" + destId)));
-                }
-            }
-        }
-
-        return result;
+        return names;
     }
 
     private void collectStopNames(JsonObject stop, Map<Integer, String> names) {
@@ -63,14 +45,20 @@ public class BlablacarTripProvider implements TripProvider {
             names.put(stop.get("id").getAsInt(), stop.get("short_name").getAsString());
         }
         if (stop.has("stops")) {
-            for (JsonElement child : stop.getAsJsonArray("stops")) {
+            for (var child : stop.getAsJsonArray("stops")) {
                 collectStopNames(child.getAsJsonObject(), names);
             }
         }
     }
 
-    private Trip mapToTrip(JsonObject f, String originName, String destName) {
+    private Trip mapToTrip(JsonObject f, Map<Integer, String> names) {
+        int originId = f.get("origin_id").getAsInt();
+        int destinationId = f.get("destination_id").getAsInt();
+
+        String originName = names.getOrDefault(originId, "ID_" + originId);
+        String destName = names.getOrDefault(destinationId, "ID_" + destinationId);
         double price = f.get("price_cents").getAsInt() / 100.0;
+
         return new Trip(
                 "feeder-blablacar",
                 originName,
@@ -81,7 +69,4 @@ public class BlablacarTripProvider implements TripProvider {
                 f.get("price_currency").getAsString()
         );
     }
-
-
-    public record Destination(int id, String name) {}
 }
