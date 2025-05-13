@@ -1,13 +1,12 @@
 package es.ulpgc.dacd.business.application.processor;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import es.ulpgc.dacd.business.application.service.DatamartService;
+import es.ulpgc.dacd.business.domain.model.Trip;
+import es.ulpgc.dacd.business.application.processor.EventProcessor;
 
 import java.time.Duration;
-import java.time.Instant;
 
-public class ProcessBlaBlaCarTrip implements EventProcessor {
+public class ProcessBlaBlaCarTrip implements EventProcessor<Trip> {
     private final DatamartService datamart;
 
     public ProcessBlaBlaCarTrip(DatamartService datamart) {
@@ -15,28 +14,23 @@ public class ProcessBlaBlaCarTrip implements EventProcessor {
     }
 
     @Override
-    public void process(String rawEvent) {
+    public void process(Trip trip) {
         try {
-            JsonObject json = JsonParser.parseString(rawEvent).getAsJsonObject();
-            long duration = Duration.between(
-                    Instant.parse(json.get("departure").getAsString()),
-                    Instant.parse(json.get("arrival").getAsString())
-            ).toMinutes();
+            long duration = Duration.between(trip.getDeparture(), trip.getArrival()).toMinutes();
 
             datamart.insertTrip(
-                    json.get("origin").getAsString(),
-                    json.get("destination").getAsString(),
-                    json.get("departure").getAsString(),
-                    json.get("arrival").getAsString(),
-                    json.get("price").getAsDouble(),
-                    json.get("currency").getAsString(),
+                    trip.getOrigin(),
+                    trip.getDestination(),
+                    trip.getDeparture().toString(),
+                    trip.getArrival().toString(),
+                    trip.getPrice(),
+                    trip.getCurrency(),
                     duration,
-                    json.get("ss").getAsString(),
-                    rawEvent
+                    trip.getSs(),
+                    trip.toString()
             );
         } catch (Exception e) {
             throw new RuntimeException("Error processing BlaBlaCar trip", e);
         }
     }
 }
-
