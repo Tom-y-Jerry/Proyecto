@@ -1,10 +1,10 @@
 package es.ulpgc.dacd.business.application.processor;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import es.ulpgc.dacd.business.application.service.DatamartService;
+import es.ulpgc.dacd.business.domain.model.Event;
+import es.ulpgc.dacd.business.application.processor.EventProcessor;
 
-public class ProcessTicketmasterEvent implements EventProcessor {
+public class ProcessTicketmasterEvent implements EventProcessor<Event> {
     private final DatamartService datamart;
 
     public ProcessTicketmasterEvent(DatamartService datamart) {
@@ -12,17 +12,16 @@ public class ProcessTicketmasterEvent implements EventProcessor {
     }
 
     @Override
-    public void process(String rawEvent) {
+    public void process(Event event) {
         try {
-            JsonObject json = JsonParser.parseString(rawEvent).getAsJsonObject();
             datamart.insertEvent(
-                    json.get("id").getAsString(),
-                    json.get("name").getAsString(),
-                    json.get("date").getAsString(),
-                    json.get("time").getAsString(),
-                    json.get("city").getAsString(),
-                    json.get("ss").getAsString(),
-                    rawEvent
+                    event.getId(),
+                    event.getName(),
+                    event.getDate().toString(),
+                    event.getTime(),
+                    event.getCity(),
+                    event.getSs(),
+                    event.toString()
             );
         } catch (Exception e) {
             throw new RuntimeException("Error processing Ticketmaster event", e);
