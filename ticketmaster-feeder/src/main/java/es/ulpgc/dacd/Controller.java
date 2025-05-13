@@ -1,5 +1,4 @@
 package es.ulpgc.dacd;
-
 import es.ulpgc.dacd.domain.Event;
 import es.ulpgc.dacd.infrastructure.ports.EventProvider;
 import es.ulpgc.dacd.infrastructure.ports.EventStorage;
