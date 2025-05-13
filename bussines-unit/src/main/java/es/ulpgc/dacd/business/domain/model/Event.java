@@ -3,11 +3,11 @@ package es.ulpgc.dacd.business.domain.model;
 public class Event {
     private final String id;
     private final String name;
-    private final String date;
+    private final Instant date;
     private final String time;
     private final String city;
 
-    public Event(String id, String name, String date, String time, String city) {
+    public Event(String id, String name, Instant date, String time, String city) {
         this.id = id;
         this.name = name;
         this.date = date;
