@@ -1,21 +1,28 @@
 package es.ulpgc.dacd.business.infrastructure.messaging;
 
+import com.google.gson.*;
 import es.ulpgc.dacd.business.application.processor.EventProcessor;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
+import java.lang.reflect.Type;
+import java.time.Instant;
 
 public class ActiveMQConsumer<T> {
     private final String topic;
     private final String brokerUrl;
     private final EventProcessor<T> processor;
-    private final Class<T> type; // Para saber si es Trip o Event
+    private final Class<T> type;
+    private final Gson gson;
 
     public ActiveMQConsumer(String topic, String brokerUrl, EventProcessor<T> processor, Class<T> type) {
         this.topic = topic;
         this.brokerUrl = brokerUrl;
         this.processor = processor;
         this.type = type;
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Instant.class, new InstantDeserializer())
+                .create();
     }
 
     public void start() {
@@ -51,11 +58,19 @@ public class ActiveMQConsumer<T> {
         try {
             if (message instanceof TextMessage textMessage) {
                 String json = textMessage.getText();
-                T item = new com.google.gson.Gson().fromJson(json, type);
+                T item = gson.fromJson(json, type);
                 processor.process(item);
             }
         } catch (Exception e) {
             System.err.println("Error processing message: " + e.getMessage());
+        }
+    }
+
+    private static class InstantDeserializer implements JsonDeserializer<Instant> {
+        @Override
+        public Instant deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            return Instant.parse(json.getAsString());
         }
     }
 }
