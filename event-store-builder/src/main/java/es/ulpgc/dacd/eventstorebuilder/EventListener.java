@@ -14,16 +14,15 @@ public class EventListener {
     public void subscribe(String topicName) {
         try {
             Topic topic = session.createTopic(topicName);
-            // 🔁 Cambiado: suscripción NO durable
             MessageConsumer consumer = session.createConsumer(topic);
 
             consumer.setMessageListener(message -> {
                 if (message instanceof TextMessage textMsg) {
                     try {
-                        System.out.println("📥 Mensaje recibido desde " + topicName + ": " + textMsg.getText());
+                        System.out.println("Mensaje recibido desde " + topicName + ": " + textMsg.getText());
                         handler.handle(topicName, textMsg.getText());
                     } catch (Exception e) {
-                        System.err.println("❌ Error handling event: " + e.getMessage());
+                        System.err.println("Error handling event: " + e.getMessage());
                     }
                 }
             });
