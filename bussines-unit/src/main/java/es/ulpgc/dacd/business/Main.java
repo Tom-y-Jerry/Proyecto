@@ -26,16 +26,17 @@ public class Main {
     }
 
     private static DatamartService setupDatamart(String dbPath) {
+        System.out.println("Using database: " + dbPath);
         return new SQLiteDatamart(dbPath);
     }
 
     private static void loadHistoricalEvents(DatamartService datamart) {
-        processHistorical("eventstore/Events/feeder-ticketmaster", new ProcessTicketmasterEvent(datamart));
-        processHistorical("eventstore/Trips/feeder-blablacar", new ProcessBlaBlaCarTrip(datamart));
+        processHistorical("eventstore/Events/feeder-ticketmaster", new ProcessTicketmasterEvent(datamart), Event.class);
+        processHistorical("eventstore/Trips/feeder-blablacar", new ProcessBlaBlaCarTrip(datamart), Trip.class);
     }
 
-    private static void processHistorical(String path, EventProcessor<?> processor) {
-        new HistoricalEventLoader(processor).loadFromDirectory(path);
+    private static <T> void processHistorical(String path, EventProcessor<T> processor, Class<T> type) {
+        new HistoricalEventLoader<>(processor, type).loadFromDirectory(path);
     }
 
     private static void subscribeToTopics(DatamartService datamart, String brokerUrl) {
@@ -43,11 +44,9 @@ public class Main {
         subscribe("Trips", new ProcessBlaBlaCarTrip(datamart), brokerUrl, Trip.class);
     }
 
-
     private static <T> void subscribe(String topic, EventProcessor<T> processor, String brokerUrl, Class<T> type) {
         new ActiveMQConsumer<>(topic, brokerUrl, processor, type).start();
     }
-
 
     private static void launchUserInterface(String dbPath) {
         try {
