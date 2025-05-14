@@ -7,7 +7,7 @@ import javax.jms.*;
 import java.time.Instant;
 
 public class ActiveMqTripStorage implements TripStorage {
-    private final String brokerUrl = "tcp://localhost:61616";
+    private String brokerurl = "tcp://localhost:61616";
 
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, typeOfSrc, context) ->
@@ -20,7 +20,7 @@ public class ActiveMqTripStorage implements TripStorage {
     @Override
     public void save(Trip trip) {
         try {
-            ConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
+            ConnectionFactory factory = new ActiveMQConnectionFactory(brokerurl);
             Connection connection = factory.createConnection();
             connection.start();
 
