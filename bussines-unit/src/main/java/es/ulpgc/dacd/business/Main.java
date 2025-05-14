@@ -6,7 +6,7 @@ import es.ulpgc.dacd.business.persistence.SQLiteDatamart;
 import javax.swing.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
         if (args.length < 2) {
             System.err.println("You need to pass: <brokerUrl> <dbPath>");
             System.exit(1);

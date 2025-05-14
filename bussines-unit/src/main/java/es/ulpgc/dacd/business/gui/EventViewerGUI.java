@@ -155,10 +155,6 @@ public class EventViewerGUI extends JFrame {
         }
     }
 
-    private void showError(String msg) {
-        JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
     public record Event(String id, String name, String date, String time, String city) {
         @Override
         public String toString() {
@@ -167,9 +163,5 @@ public class EventViewerGUI extends JFrame {
             if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "--:--";
             return String.format("%s - %s %s [%s]", name, cleanDate, cleanTime, city);
         }
-    }
-
-    public void start() {
-        SwingUtilities.invokeLater(() -> setVisible(true));
     }
 }

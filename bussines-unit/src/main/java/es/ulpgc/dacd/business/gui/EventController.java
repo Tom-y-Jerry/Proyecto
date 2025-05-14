@@ -60,8 +60,8 @@ public class EventController {
     public List<String> loadTrips(String origin, String destinationCity) {
         List<String> trips = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("""
-                SELECT origin, destination, departure, arrival, price, currency, duration_minutes 
-                FROM trips 
+                SELECT origin, destination, departure, arrival, price, currency, duration_minutes
+                FROM trips
                 WHERE origin = ? AND destination LIKE ?""")) {
             ps.setString(1, origin);
             ps.setString(2, "%" + destinationCity + "%");
@@ -102,12 +102,6 @@ public class EventController {
                 depDate, depTime,
                 arrDate, arrTime,
                 h, m, price, currency);
-    }
-
-    public void close() {
-        try {
-            conn.close();
-        } catch (SQLException ignored) {}
     }
 }
 

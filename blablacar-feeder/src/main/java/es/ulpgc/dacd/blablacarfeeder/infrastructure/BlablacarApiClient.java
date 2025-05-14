@@ -33,7 +33,7 @@ public class BlablacarApiClient {
         }
     }
 
-    public List<JsonObject> fetchFare() throws IOException {
+    public List<JsonObject> fetchFare(){
         String date = LocalDate.now().toString();
         List<JsonObject> results = new ArrayList<>();
 
