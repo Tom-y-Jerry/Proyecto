@@ -12,16 +12,20 @@ import javax.jms.*;
 import java.time.Instant;
 
 public class ActiveMQEventStorage implements EventStorage {
-    Gson gson = new GsonBuilder()
+    private final String brokerurl;
+    private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, typeOfSrc, context) ->
                     new JsonPrimitive(src.toString()))
             .create();
 
+    public ActiveMQEventStorage(String brokerurl) {
+        this.brokerurl = brokerurl;
+    }
+
     @Override
     public void save(Event event) {
         try {
-            String brokerUrl = "tcp://localhost:61616";
-            ConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
+            ConnectionFactory factory = new ActiveMQConnectionFactory(brokerurl);
             Connection connection = factory.createConnection();
             connection.start();
 
@@ -36,12 +40,8 @@ public class ActiveMQEventStorage implements EventStorage {
             producer.close();
             session.close();
             connection.close();
-
         } catch (Exception e) {
             System.err.println("Error publicando evento: " + e.getMessage());
         }
     }
 }
-
-
-
