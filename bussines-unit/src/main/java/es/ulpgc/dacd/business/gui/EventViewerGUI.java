@@ -3,14 +3,11 @@ package es.ulpgc.dacd.business.gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.sql.*;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
 public class EventViewerGUI extends JFrame {
-    private final Connection conn;
+    private final EventController controller;
     private final DefaultListModel<Event> eventListModel = new DefaultListModel<>();
     private final JTextArea tripArea = new JTextArea();
     private final JComboBox<String> originBox = new JComboBox<>();
@@ -18,7 +15,7 @@ public class EventViewerGUI extends JFrame {
 
     public EventViewerGUI(String dbPath) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        this.controller = new EventController(dbPath);
         setupWindow();
         setupTopPanel();
         setupSplitPanel();
@@ -137,98 +134,25 @@ public class EventViewerGUI extends JFrame {
         for (int i = 0; i < originBox.getItemCount(); i++) {
             current.add(originBox.getItemAt(i));
         }
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT DISTINCT origin FROM trips ORDER BY origin")) {
-            while (rs.next()) {
-                String origin = rs.getString("origin");
-                if (!current.contains(origin)) {
-                    originBox.addItem(origin);
-                }
-            }
-        } catch (SQLException e) {
-            showError("Error loading origins: " + e.getMessage());
-        }
+        Set<String> newOrigins = controller.loadOrigins(current);
+        for (String o : newOrigins) originBox.addItem(o);
     }
 
     private void loadEvents() {
         eventListModel.clear();
         if (selectedOrigin == null) return;
-        try (PreparedStatement ps = conn.prepareStatement("""
-                SELECT e.id, e.name, e.date, e.time, e.city
-                FROM events e
-                WHERE EXISTS (
-                    SELECT 1 FROM trips t
-                    WHERE t.origin = ? AND t.destination LIKE '%' || e.city || '%'
-                )
-                ORDER BY e.date, e.time
-                """)) {
-            ps.setString(1, selectedOrigin);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    eventListModel.addElement(new Event(
-                            rs.getString("id"),
-                            rs.getString("name"),
-                            rs.getString("date"),
-                            rs.getString("time"),
-                            rs.getString("city")
-                    ));
-                }
-            }
-        } catch (SQLException e) {
-            showError("Error loading events: " + e.getMessage());
-        }
+        List<Event> events = controller.loadEvents(selectedOrigin);
+        eventListModel.addAll(events);
     }
 
     private void showTripsFor(Event event) {
         tripArea.setText("🔎 Resultados de viajes desde: " + selectedOrigin + " para: " + event.city() + "\n\n");
-        try (PreparedStatement ps = conn.prepareStatement("""
-                SELECT origin, destination, departure, arrival, price, currency, duration_minutes 
-                FROM trips 
-                WHERE origin = ? AND destination LIKE ?""")) {
-            ps.setString(1, selectedOrigin);
-            ps.setString(2, "%" + event.city() + "%");
-
-            ResultSet rs = ps.executeQuery();
-            List<String> formatted = new ArrayList<>();
-            while (rs.next()) {
-                formatted.add(formatTrip(
-                        rs.getString("origin"),
-                        rs.getString("destination"),
-                        rs.getString("departure"),
-                        rs.getString("arrival"),
-                        rs.getDouble("price"),
-                        rs.getString("currency"),
-                        rs.getInt("duration_minutes")
-                ));
-            }
-
-            if (formatted.isEmpty()) {
-                tripArea.append("No trips found from " + selectedOrigin + " to " + event.city());
-            } else {
-                formatted.forEach(s -> tripArea.append(s + "\n"));
-            }
-        } catch (SQLException e) {
-            showError("Error loading trips: " + e.getMessage());
+        List<String> trips = controller.loadTrips(selectedOrigin, event.city());
+        if (trips.isEmpty()) {
+            tripArea.append("No trips found from " + selectedOrigin + " to " + event.city());
+        } else {
+            trips.forEach(s -> tripArea.append(s + "\n"));
         }
-    }
-
-    private String formatTrip(String origin, String destination, String depStr, String arrStr, double price, String currency, int durationMin) {
-        Instant departure = Instant.parse(depStr);
-        Instant arrival = Instant.parse(arrStr);
-
-        LocalDate depDate = departure.atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate arrDate = arrival.atZone(ZoneId.systemDefault()).toLocalDate();
-
-        String depTime = departure.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-        String arrTime = arrival.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-
-        long h = durationMin / 60, m = durationMin % 60;
-
-        return String.format("\uD83D\uDE8C %s → %s | %s %s | %s %s | %dh %02dmin | %.2f %s",
-                origin, destination,
-                depDate, depTime,
-                arrDate, arrTime,
-                h, m, price, currency);
     }
 
     private void showError(String msg) {
