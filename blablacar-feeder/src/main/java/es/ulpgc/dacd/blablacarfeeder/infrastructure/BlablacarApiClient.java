@@ -1,8 +1,6 @@
-package es.ulpgc.dacd.infrastructure;
-
+package es.ulpgc.dacd.blablacarfeeder.infrastructure;
 import com.google.gson.*;
 import okhttp3.*;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;

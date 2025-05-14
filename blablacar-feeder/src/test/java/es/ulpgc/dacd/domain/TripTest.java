@@ -1,5 +1,6 @@
 package es.ulpgc.dacd.domain;
 
+import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

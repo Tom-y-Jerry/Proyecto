@@ -3,6 +3,7 @@ package es.ulpgc.dacd.infrastructure;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import es.ulpgc.dacd.blablacarfeeder.infrastructure.BlablacarApiClient;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

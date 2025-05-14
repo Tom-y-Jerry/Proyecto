@@ -1,8 +1,8 @@
-package es.ulpgc.dacd.infrastructure.adapters;
+package es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters;
 
-import es.ulpgc.dacd.domain.Trip;
-import es.ulpgc.dacd.infrastructure.BlablacarApiClient;
-import es.ulpgc.dacd.infrastructure.ports.TripProvider;
+import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+import es.ulpgc.dacd.blablacarfeeder.infrastructure.BlablacarApiClient;
+import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripProvider;
 import com.google.gson.JsonObject;
 
 import java.time.Instant;

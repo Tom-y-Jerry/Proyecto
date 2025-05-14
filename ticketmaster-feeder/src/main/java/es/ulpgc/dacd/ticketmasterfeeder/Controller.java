@@ -1,7 +1,7 @@
-package es.ulpgc.dacd;
-import es.ulpgc.dacd.domain.Event;
-import es.ulpgc.dacd.infrastructure.ports.EventProvider;
-import es.ulpgc.dacd.infrastructure.ports.EventStorage;
+package es.ulpgc.dacd.ticketmasterfeeder;
+import es.ulpgc.dacd.ticketmasterfeeder.domain.Event;
+import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventProvider;
+import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventStorage;
 
 import java.util.List;
 import java.util.concurrent.Executors;

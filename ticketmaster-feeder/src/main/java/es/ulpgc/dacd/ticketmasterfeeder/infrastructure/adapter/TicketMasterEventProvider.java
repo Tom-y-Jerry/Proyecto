@@ -1,9 +1,9 @@
-package es.ulpgc.dacd.infrastructure.adapter;
+package es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter;
 
 import com.google.gson.*;
-import es.ulpgc.dacd.domain.Event;
-import es.ulpgc.dacd.infrastructure.TicketMasterApiClient;
-import es.ulpgc.dacd.infrastructure.ports.EventProvider;
+import es.ulpgc.dacd.ticketmasterfeeder.domain.Event;
+import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.TicketMasterApiClient;
+import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventProvider;
 
 import java.time.Instant;
 import java.time.LocalDate;

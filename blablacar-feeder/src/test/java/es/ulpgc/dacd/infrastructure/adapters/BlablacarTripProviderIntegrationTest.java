@@ -1,7 +1,8 @@
 package es.ulpgc.dacd.infrastructure.adapters;
 
 import com.google.gson.JsonObject;
-import es.ulpgc.dacd.domain.Trip;
+import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+import es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters.BlablacarTripProvider;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

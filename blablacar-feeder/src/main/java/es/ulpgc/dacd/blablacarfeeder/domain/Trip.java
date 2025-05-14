@@ -1,5 +1,4 @@
-package es.ulpgc.dacd.domain;
-
+package es.ulpgc.dacd.blablacarfeeder.domain;
 import java.time.Instant;
 
 public final class Trip {

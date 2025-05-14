@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.domain;
+package es.ulpgc.dacd.ticketmasterfeeder.domain;
 
 import java.time.Instant;
 

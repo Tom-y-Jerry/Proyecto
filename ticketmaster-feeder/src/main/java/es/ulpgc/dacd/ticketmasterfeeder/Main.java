@@ -1,7 +1,7 @@
-package es.ulpgc.dacd;
+package es.ulpgc.dacd.ticketmasterfeeder;
 
-import es.ulpgc.dacd.infrastructure.adapter.TicketMasterEventProvider;
-import es.ulpgc.dacd.infrastructure.adapter.ActiveMQEventStorage;
+import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.TicketMasterEventProvider;
+import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.ActiveMQEventStorage;
 
 public class Main {
     public static void main(String[] args) {

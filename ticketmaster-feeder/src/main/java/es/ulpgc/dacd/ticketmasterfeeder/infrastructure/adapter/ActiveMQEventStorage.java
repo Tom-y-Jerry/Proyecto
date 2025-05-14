@@ -1,45 +1,47 @@
-package es.ulpgc.dacd.infrastructure.adapters;
+package es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter;
 
-import com.google.gson.*;
-import es.ulpgc.dacd.domain.Trip;
-import es.ulpgc.dacd.infrastructure.ports.TripStorage;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
+import es.ulpgc.dacd.ticketmasterfeeder.domain.Event;
+import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventStorage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 import java.time.Instant;
 
-public class ActiveMqTripStorage implements TripStorage {
-    private final String brokerUrl = "tcp://localhost:61616";
-
-    private final Gson gson = new GsonBuilder()
+public class ActiveMQEventStorage implements EventStorage {
+    Gson gson = new GsonBuilder()
             .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, typeOfSrc, context) ->
                     new JsonPrimitive(src.toString()))
             .create();
 
     @Override
-    public void save(Trip trip) {
+    public void save(Event event) {
         try {
+            String brokerUrl = "tcp://localhost:61616";
             ConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
             Connection connection = factory.createConnection();
             connection.start();
 
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Destination topic = session.createTopic("Trips");
+            Destination topic = session.createTopic("Events");
             MessageProducer producer = session.createProducer(topic);
 
-
-            String json = gson.toJson(trip);
+            String json = gson.toJson(event);
             TextMessage message = session.createTextMessage(json);
             producer.send(message);
-            System.out.println("📤 Evento enviado: " + json);
 
             producer.close();
             session.close();
             connection.close();
 
-
         } catch (Exception e) {
-            System.err.println("Error publicando trip: " + e.getMessage());
+            System.err.println("Error publicando evento: " + e.getMessage());
         }
     }
 }
+
+
+

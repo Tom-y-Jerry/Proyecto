@@ -1,9 +1,7 @@
-package es.ulpgc.dacd;
-
-import es.ulpgc.dacd.domain.Trip;
-import es.ulpgc.dacd.infrastructure.ports.TripProvider;
-import es.ulpgc.dacd.infrastructure.ports.TripStorage;
-
+package es.ulpgc.dacd.blablacarfeeder;
+import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripProvider;
+import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripStorage;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

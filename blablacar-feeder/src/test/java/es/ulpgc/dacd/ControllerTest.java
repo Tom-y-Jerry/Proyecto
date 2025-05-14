@@ -1,8 +1,9 @@
 package es.ulpgc.dacd;
 
-import es.ulpgc.dacd.domain.Trip;
-import es.ulpgc.dacd.infrastructure.ports.TripProvider;
-import es.ulpgc.dacd.infrastructure.ports.TripStorage;
+import es.ulpgc.dacd.blablacarfeeder.Controller;
+import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripProvider;
+import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripStorage;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

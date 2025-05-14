@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.infrastructure;
+package es.ulpgc.dacd.ticketmasterfeeder.infrastructure;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
