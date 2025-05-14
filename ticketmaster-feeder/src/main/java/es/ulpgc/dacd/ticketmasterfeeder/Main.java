@@ -6,7 +6,7 @@ import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.ActiveMQEventStor
 public class Main {
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Argumentos requeridos: <eventsUrl> <apiKey>");
+            System.out.println("Argumentos requeridos: <eventsUrl> <apiKey> <brokerUrl>");
             return;
         }
 

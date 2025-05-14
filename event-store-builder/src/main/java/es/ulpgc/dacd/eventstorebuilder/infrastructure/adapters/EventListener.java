@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.eventstorebuilder;
+package es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters;
 
 import javax.jms.*;
 
@@ -15,18 +15,15 @@ public class EventListener {
         try {
             Topic topic = session.createTopic(topicName);
             MessageConsumer consumer = session.createConsumer(topic);
-
             consumer.setMessageListener(message -> {
                 if (message instanceof TextMessage textMsg) {
                     try {
-                        System.out.println("Mensaje recibido desde " + topicName + ": " + textMsg.getText());
                         handler.handle(topicName, textMsg.getText());
                     } catch (Exception e) {
                         System.err.println("Error handling event: " + e.getMessage());
                     }
                 }
             });
-
         } catch (Exception e) {
             throw new RuntimeException("Failed to subscribe to topic " + topicName, e);
         }

@@ -5,7 +5,7 @@ import es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters.BlablacarTripProvid
 public class Main {
     public static void main(String[] args) {
         if (args.length < 3) {
-            System.out.println("You need to pass: <stopsUrl> <faresUrl> <apiKey>");
+            System.out.println("You need to pass: <stopsUrl> <faresUrl> <apiKey> <brokerUrl>");
             return;
         }
 

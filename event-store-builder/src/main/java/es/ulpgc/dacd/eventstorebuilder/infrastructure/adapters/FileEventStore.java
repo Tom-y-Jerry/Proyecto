@@ -1,6 +1,7 @@
-package es.ulpgc.dacd.eventstorebuilder;
+package es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters;
 
 import com.google.gson.*;
+
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.*;

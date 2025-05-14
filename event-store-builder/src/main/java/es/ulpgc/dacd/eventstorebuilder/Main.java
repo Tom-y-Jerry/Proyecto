@@ -1,30 +1,26 @@
 package es.ulpgc.dacd.eventstorebuilder;
 
+import es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters.EventListener;
+import es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters.FileEventStore;
+import es.ulpgc.dacd.eventstorebuilder.infrastructure.ports.EventBrokerConnection;
+
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("You need to pass: <brokerUrl> <clientId> [<topic1> <topic2>]");
+            System.err.println("Usage: <brokerUrl> <clientId> [<topic1> <topic2> ...]");
             return;
         }
 
         String brokerUrl = args[0];
         String clientId = args[1];
-
-        String[] topics = (args.length > 2)
-                ? extractTopics(args)
-                : new String[] { "Trips", "Events" };
+        String[] topics = (args.length > 2) ? Arrays.copyOfRange(args, 2, args.length) : new String[]{"Trips", "Events"};
 
         EventBrokerConnection broker = new EventBrokerConnection(brokerUrl, clientId);
         EventListener listener = new EventListener(broker.getSession(), new FileEventStore());
 
-        for (String topic : topics) {
-            listener.subscribe(topic);
-        }
-    }
-
-    private static String[] extractTopics(String[] args) {
-        String[] topics = new String[args.length - 2];
-        System.arraycopy(args, 2, topics, 0, topics.length);
-        return topics;
+        Controller controller = new Controller(listener);
+        controller.subscribeToTopics(topics);
     }
 }
