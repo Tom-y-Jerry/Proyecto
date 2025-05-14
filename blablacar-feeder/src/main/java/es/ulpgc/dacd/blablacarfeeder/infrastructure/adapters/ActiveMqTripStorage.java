@@ -14,6 +14,9 @@ public class ActiveMqTripStorage implements TripStorage {
                     new JsonPrimitive(src.toString()))
             .create();
 
+    public ActiveMqTripStorage(String brokerurl) {
+        this.brokerurl = brokerurl;
+    }
     @Override
     public void save(Trip trip) {
         try {

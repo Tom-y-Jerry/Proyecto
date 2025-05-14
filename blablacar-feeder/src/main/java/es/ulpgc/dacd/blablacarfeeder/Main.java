@@ -12,9 +12,10 @@ public class Main {
         String stopsUrl = args[0];
         String faresUrl = args[1];
         String apiKey = args[2];
+        String brokerurl = args[3];
 
         var provider = new BlablacarTripProvider(stopsUrl, faresUrl, apiKey);
-        var storage = new ActiveMqTripStorage();
+        var storage = new ActiveMqTripStorage(brokerurl);
         new Controller(provider, storage).execute();
 
     }
