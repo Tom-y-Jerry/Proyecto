@@ -1,9 +1,12 @@
 package es.ulpgc.dacd.business;
+
 import es.ulpgc.dacd.business.gui.EventViewerGUI;
 import es.ulpgc.dacd.business.persistence.SQLiteDatamart;
 
+import javax.swing.*;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         if (args.length < 2) {
             System.err.println("You need to pass: <brokerUrl> <dbPath>");
             System.exit(1);
@@ -17,14 +20,13 @@ public class Main {
 
         controller.loadHistoricalEvents();
         controller.subscribeToTopics();
-        launchUserInterface(dbPath);
-    }
 
-    private static void launchUserInterface(String dbPath) {
-        try {
-            new EventViewerGUI(dbPath).start();
-        } catch (Exception e) {
-            System.err.println("Error starting GUI: " + e.getMessage());
-        }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new EventViewerGUI(dbPath).setVisible(true);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
