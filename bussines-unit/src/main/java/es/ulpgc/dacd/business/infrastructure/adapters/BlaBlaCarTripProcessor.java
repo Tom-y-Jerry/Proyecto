@@ -1,19 +1,19 @@
-package es.ulpgc.dacd.business.application.processor;
+package es.ulpgc.dacd.business.infrastructure.adapters;
 
 import com.google.gson.*;
-import es.ulpgc.dacd.business.application.service.DatamartService;
-import es.ulpgc.dacd.business.domain.model.Trip;
+import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
+import es.ulpgc.dacd.business.domain.Trip;
 
 import java.time.Duration;
 import java.time.Instant;
 
-public class ProcessBlaBlaCarTrip implements EventProcessor<Trip> {
+public class BlaBlaCarTripProcessor implements EventProcessor<Trip> {
     private final DatamartService datamart;
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, type, context) -> new JsonPrimitive(src.toString()))
             .create();
 
-    public ProcessBlaBlaCarTrip(DatamartService datamart) {
+    public BlaBlaCarTripProcessor(DatamartService datamart) {
         this.datamart = datamart;
     }
 

@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.business.infrastructure.persistence;
+package es.ulpgc.dacd.business.persistence;
 
 import java.io.File;
 import java.sql.Connection;

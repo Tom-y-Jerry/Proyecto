@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.business.application.service;
+package es.ulpgc.dacd.business.infrastructure.ports;
 
 public interface DatamartService {
     void insertEvent(String id, String name, String date, String time, String city, String ss, String json);

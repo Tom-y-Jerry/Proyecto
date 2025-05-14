@@ -1,7 +1,6 @@
-package es.ulpgc.dacd.business.infrastructure.messaging;
+package es.ulpgc.dacd.business.infrastructure.adapters;
 
 import com.google.gson.*;
-import es.ulpgc.dacd.business.application.processor.EventProcessor;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;

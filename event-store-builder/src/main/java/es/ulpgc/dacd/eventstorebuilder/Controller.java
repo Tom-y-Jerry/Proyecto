@@ -11,7 +11,7 @@ public class Controller {
 
     public void subscribeToTopics(String... topics) {
         for (String topic : topics) {
-            System.out.println("📡 Subscribing to topic: " + topic);
+            System.out.println("Subscribing to topic: " + topic);
             listener.subscribe(topic);
         }
     }

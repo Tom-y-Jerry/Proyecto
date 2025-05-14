@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.business.domain.model;
+package es.ulpgc.dacd.business.domain;
 
 import java.time.Instant;
 

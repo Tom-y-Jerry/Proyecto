@@ -1,6 +1,6 @@
-package es.ulpgc.dacd.business.infrastructure.persistence;
+package es.ulpgc.dacd.business.persistence;
 
-import es.ulpgc.dacd.business.application.service.DatamartService;
+import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
 
 import java.sql.*;
 
