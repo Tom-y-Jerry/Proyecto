@@ -19,7 +19,7 @@ public class TicketMasterApiClient {
     }
 
     public List<String> fetchEventsJson() throws IOException {
-        String[] countryCodes = {"FR", "ES", "GB", "DE", "PT"};
+        String[] countryCodes = {"FR", "ES", "DE", "PT", "CH", "BE", "PL", "AT"};
         List<String> jsonResponses = new ArrayList<>();
 
         for (String countryCode : countryCodes) {
