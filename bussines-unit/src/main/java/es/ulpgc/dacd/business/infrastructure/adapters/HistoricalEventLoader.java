@@ -2,12 +2,16 @@ package es.ulpgc.dacd.business.infrastructure.adapters;
 
 import com.google.gson.*;
 import es.ulpgc.dacd.business.infrastructure.ports.EventProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.time.Instant;
 
 public class HistoricalEventLoader<T> {
+    private static final Logger log = LoggerFactory.getLogger(HistoricalEventLoader.class);
+
     private final EventProcessor<T> processor;
     private final Class<T> type;
     private final Gson gson;
@@ -43,9 +47,9 @@ public class HistoricalEventLoader<T> {
                 T item = gson.fromJson(line, type);
                 processor.process(item);
             }
-            System.out.println("Cargado archivo histórico: " + file.getName());
+            log.info("Cargado archivo histórico: {}", file.getName());
         } catch (Exception e) {
-            System.err.println("Error leyendo archivo: " + file.getAbsolutePath());
+            log.error("Error leyendo archivo: {}", file.getAbsolutePath(), e);
         }
     }
 

@@ -2,13 +2,17 @@ package es.ulpgc.dacd.business;
 
 import es.ulpgc.dacd.business.gui.EventViewerGUI;
 import es.ulpgc.dacd.business.datamart.SQLiteDatamart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 
 public class Main {
+    private static final Logger log = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args){
         if (args.length < 2) {
-            System.err.println("You need to pass: <brokerUrl> <dbPath>");
+            log.warn("You need to pass: <brokerUrl> <dbPath>");
             System.exit(1);
         }
 

@@ -1,0 +1,22 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Tu paquete -->
+    <logger name="es.ulpgc.dacd" level="INFO" />
+
+    <!-- Silenciar todo el ruido de ActiveMQ -->
+    <logger name="org.apache.activemq" level="WARN" />
+    <logger name="org.apache.activemq.transport" level="WARN" />
+    <logger name="org.apache.activemq.util" level="WARN" />
+
+    <!-- Nivel raíz por defecto -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
