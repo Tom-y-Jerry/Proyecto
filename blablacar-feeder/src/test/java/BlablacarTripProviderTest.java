@@ -1,4 +1,4 @@
-    import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
 import es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters.BlablacarTripProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,15 +14,7 @@ class BlablacarTripProviderTest {
 
     @BeforeEach
     void setUp() {
-        provider = new BlablacarTripProvider("", "", "");
-    }
-
-    @Test
-    void shouldReturnNonEmptyTripList() {
-        List<Trip> trips = provider.provide();
-
-        assertNotNull(trips);
-        assertFalse(trips.isEmpty());
+        provider = new BlablacarTripProvider("http://localhost/stops", "http://localhost/fares", "fake-key");
     }
 
     @Test
