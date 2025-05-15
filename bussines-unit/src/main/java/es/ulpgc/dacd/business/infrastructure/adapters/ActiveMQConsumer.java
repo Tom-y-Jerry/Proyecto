@@ -1,10 +1,7 @@
 package es.ulpgc.dacd.business.infrastructure.adapters;
 
 import com.google.gson.*;
-import es.ulpgc.dacd.business.Main;
 import es.ulpgc.dacd.business.infrastructure.ports.EventProcessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
 import java.lang.reflect.Type;
@@ -16,7 +13,6 @@ public class ActiveMQConsumer<T> {
     private final Class<T> type;
     private final Gson gson;
     private final ActiveMQConnectionManager connectionManager;
-    private static final Logger log = LoggerFactory.getLogger(ActiveMQConsumer.class);
 
     public ActiveMQConsumer(String topic, String brokerUrl, EventProcessor<T> processor, Class<T> type) {
         this.topic = topic;
@@ -32,9 +28,9 @@ public class ActiveMQConsumer<T> {
         try {
             Session session = connectionManager.createSession();
             connectionManager.createConsumer(session, this::handleMessage);
-            log.info("Subscribed to topic: {}", topic);
+            System.out.println("Subscribed to topic: " + topic);
         } catch (Exception e) {
-            log.error("Error connecting or subscribing to broker: {}", e.getMessage(), e);
+            throw new RuntimeException("Error connecting or subscribing to broker", e);
         }
     }
 
@@ -46,7 +42,7 @@ public class ActiveMQConsumer<T> {
                 processor.process(item);
             }
         } catch (Exception e) {
-            log.error("Error processing message: {}", e.getMessage(), e);
+            System.err.println("Error processing message: " + e.getMessage());
         }
     }
 
