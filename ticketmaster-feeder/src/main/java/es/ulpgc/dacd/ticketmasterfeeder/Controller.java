@@ -1,4 +1,5 @@
 package es.ulpgc.dacd.ticketmasterfeeder;
+
 import es.ulpgc.dacd.ticketmasterfeeder.domain.Event;
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventProvider;
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventStorage;
@@ -9,6 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Controller {
+
     private final EventProvider eventProvider;
     private final EventStorage storage;
 
@@ -21,7 +23,6 @@ public class Controller {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
         scheduler.scheduleAtFixedRate(() -> {
-            System.out.println("Executing events...");
             List<Event> events = eventProvider.provide();
             for (Event event : events) {
                 storage.save(event);

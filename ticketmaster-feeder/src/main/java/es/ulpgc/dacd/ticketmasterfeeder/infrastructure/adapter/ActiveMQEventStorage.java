@@ -7,11 +7,15 @@ import com.google.gson.JsonSerializer;
 import es.ulpgc.dacd.ticketmasterfeeder.domain.Event;
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventStorage;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
 import java.time.Instant;
 
 public class ActiveMQEventStorage implements EventStorage {
+    private static final Logger log = LoggerFactory.getLogger(ActiveMQEventStorage.class);
+
     private final String brokerurl;
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, typeOfSrc, context) ->
@@ -41,7 +45,7 @@ public class ActiveMQEventStorage implements EventStorage {
             session.close();
             connection.close();
         } catch (Exception e) {
-            System.err.println("Error publicando evento: " + e.getMessage());
+            log.error("Error publicando evento: {}", e.getMessage(), e);
         }
     }
 }

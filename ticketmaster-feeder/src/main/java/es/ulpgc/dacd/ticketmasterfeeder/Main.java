@@ -2,11 +2,15 @@ package es.ulpgc.dacd.ticketmasterfeeder;
 
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.TicketMasterEventProvider;
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.ActiveMQEventStorage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
+    private static final Logger log = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Argumentos requeridos: <eventsUrl> <apiKey> <brokerUrl>");
+        if (args.length < 3) {
+            log.warn("Arguments requiered: <eventsUrl> <apiKey> <brokerUrl>");
             return;
         }
 
