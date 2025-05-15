@@ -1,8 +1,11 @@
 package es.ulpgc.dacd.eventstorebuilder.adapters;
-
 import javax.jms.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EventListener {
+    private static final Logger log = LoggerFactory.getLogger(EventListener.class);
+
     private final Session session;
     private final EventHandler handler;
 
@@ -20,7 +23,7 @@ public class EventListener {
                     try {
                         handler.handle(topicName, textMsg.getText());
                     } catch (Exception e) {
-                        System.err.println("Error handling event: " + e.getMessage());
+                        log.error("Error handling event from topic {}: {}", topicName, e.getMessage());
                     }
                 }
             });
@@ -33,3 +36,4 @@ public class EventListener {
         void handle(String topic, String rawJson) throws Exception;
     }
 }
+

@@ -1,10 +1,10 @@
 package es.ulpgc.dacd.eventstorebuilder.adapters;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.*;
 
 public class EventBrokerConnection {
+
     private final Connection connection;
     private final Session session;
 
@@ -22,14 +22,5 @@ public class EventBrokerConnection {
 
     public Session getSession() {
         return session;
-    }
-
-    public void close() {
-        try {
-            session.close();
-            connection.close();
-        } catch (Exception e) {
-            System.err.println("Error closing broker connection: " + e.getMessage());
-        }
     }
 }
