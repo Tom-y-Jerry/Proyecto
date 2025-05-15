@@ -51,4 +51,3 @@ public class TicketMasterEventParser {
         return new Event(ts, ss, id, name, date, time, city);
     }
 }
-
