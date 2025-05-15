@@ -1,7 +1,7 @@
 package es.ulpgc.dacd.business;
 
 import es.ulpgc.dacd.business.gui.EventViewerGUI;
-import es.ulpgc.dacd.business.datamart.SQLiteDatamart;
+import es.ulpgc.dacd.business.datamart.SQLiteSaver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ public class Main {
         String brokerUrl = args[0];
         String dbPath = args[1];
 
-        var datamart = new SQLiteDatamart(dbPath);
+        var datamart = new SQLiteSaver(dbPath);
         var controller = new Controller(datamart, brokerUrl);
 
         controller.loadHistoricalEvents();

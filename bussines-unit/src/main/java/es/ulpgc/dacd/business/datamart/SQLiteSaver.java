@@ -4,10 +4,10 @@ import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
 
 import java.sql.*;
 
-public class SQLiteDatamart implements DatamartService {
+public class SQLiteSaver implements DatamartService {
     private final Connection connection;
 
-    public SQLiteDatamart(String dbPath) {
+    public SQLiteSaver(String dbPath) {
         this.connection = new SQLiteInitializer().initialize(dbPath);
     }
 
