@@ -8,16 +8,7 @@ public class SQLiteDatamart implements DatamartService {
     private final Connection connection;
 
     public SQLiteDatamart(String dbPath) {
-        this.connection = initializeConnection(dbPath);
-        new SQLiteInitializer(connection).initialize(); // Delegamos la creación de tablas
-    }
-
-    private Connection initializeConnection(String path) {
-        try {
-            return DriverManager.getConnection("jdbc:sqlite:" + path);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to connect to database", e);
-        }
+        this.connection = new SQLiteInitializer().initialize(dbPath);
     }
 
     @Override
@@ -56,4 +47,5 @@ public class SQLiteDatamart implements DatamartService {
         }
     }
 }
+
 
