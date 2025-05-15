@@ -6,6 +6,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import static javax.swing.UIManager.*;
+
 public class EventViewerGUI extends JFrame {
     private final EventLoader controller;
     private final DefaultListModel<Event> eventListModel = new DefaultListModel<>();
@@ -14,7 +16,7 @@ public class EventViewerGUI extends JFrame {
     private String selectedOrigin = null;
 
     public EventViewerGUI(String dbPath) throws Exception {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        setLookAndFeel(getSystemLookAndFeelClassName());
         this.controller = new EventLoader(dbPath);
         setupWindow();
         setupTopPanel();
@@ -32,23 +34,38 @@ public class EventViewerGUI extends JFrame {
     }
 
     private void setupTopPanel() {
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        topPanel.setBackground(new Color(0, 100, 182));
+        JPanel topPanel = createTopPanel();
+        add(topPanel, BorderLayout.NORTH);
+    }
 
-        JLabel titleLabel = new JLabel("Selecciona el origen:  ");
-        titleLabel.setFont(new Font("Verdana", Font.BOLD, 14));
-        titleLabel.setForeground(Color.WHITE);
-        topPanel.add(titleLabel, BorderLayout.WEST);
+    private JPanel createTopPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.setBackground(new Color(0, 100, 182));
 
+        JLabel titleLabel = createTitleLabel();
+        setupOriginBox();
+
+        panel.add(titleLabel, BorderLayout.WEST);
+        panel.add(originBox, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private JLabel createTitleLabel() {
+        JLabel label = new JLabel("Selecciona el origen:  ");
+        label.setFont(new Font("Verdana", Font.BOLD, 14));
+        label.setForeground(Color.WHITE);
+        return label;
+    }
+
+    private void setupOriginBox() {
         originBox.setFont(new Font("Verdana", Font.PLAIN, 14));
         originBox.setBackground(Color.WHITE);
         originBox.setForeground(new Color(33, 33, 33));
         originBox.setRenderer(customOriginRenderer());
-
-        topPanel.add(originBox, BorderLayout.CENTER);
-        add(topPanel, BorderLayout.NORTH);
     }
+
 
     private DefaultListCellRenderer customOriginRenderer() {
         return new DefaultListCellRenderer() {
@@ -64,40 +81,71 @@ public class EventViewerGUI extends JFrame {
     }
 
     private void setupSplitPanel() {
-        JList<Event> eventList = new JList<>(eventListModel);
-        eventList.setFont(new Font("Verdana", Font.PLAIN, 13));
-        eventList.setBackground(Color.WHITE);
-        eventList.setSelectionBackground(new Color(27, 137, 177));
-        eventList.setSelectionForeground(Color.WHITE);
+        JScrollPane scrollEvents = createEventScroll();
+        JPanel rightPanel = createRightPanel();
+        JSplitPane splitPane = createSplitPane(scrollEvents, rightPanel);
 
-        JScrollPane scrollEvents = new JScrollPane(eventList);
-        scrollEvents.setBorder(BorderFactory.createTitledBorder("Eventos disponibles"));
-        scrollEvents.setPreferredSize(new Dimension(500, 0));
+        add(splitPane, BorderLayout.CENTER);
+    }
 
+    private JScrollPane createEventScroll() {
+        JList<Event> eventList = createEventList();
+        JScrollPane scroll = new JScrollPane(eventList);
+        scroll.setBorder(BorderFactory.createTitledBorder("Eventos disponibles"));
+        scroll.setPreferredSize(new Dimension(500, 0));
+        addEventSelectionListener(eventList);
+        return scroll;
+    }
+
+    private JPanel createRightPanel() {
+        JScrollPane scrollTrips = createTripPanel();
+        JLabel imageLabel = createImageLabel();
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.add(scrollTrips);
+        rightPanel.add(imageLabel);
+        return rightPanel;
+    }
+
+    private JSplitPane createSplitPane(JScrollPane left, JPanel right) {
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
+        splitPane.setDividerLocation(700);
+        splitPane.setResizeWeight(0.8);
+        return splitPane;
+    }
+
+
+    private JList<Event> createEventList() {
+        JList<Event> list = new JList<>(eventListModel);
+        list.setFont(new Font("Verdana", Font.PLAIN, 13));
+        list.setBackground(Color.WHITE);
+        list.setSelectionBackground(new Color(27, 137, 177));
+        list.setSelectionForeground(Color.WHITE);
+        return list;
+    }
+
+    private JScrollPane createTripPanel() {
         tripArea.setEditable(false);
         tripArea.setFont(new Font("SansSerif", Font.PLAIN, 13));
         tripArea.setBackground(Color.WHITE);
         tripArea.setForeground(new Color(33, 33, 33));
         tripArea.setMargin(new Insets(10, 10, 10, 10));
-
         JScrollPane scrollTrips = new JScrollPane(tripArea);
         scrollTrips.setBorder(BorderFactory.createTitledBorder("Viajes disponibles"));
         scrollTrips.setPreferredSize(new Dimension(600, 100));
+        return scrollTrips;
+    }
 
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        rightPanel.add(scrollTrips);
+    private JLabel createImageLabel() {
+        ImageIcon icon = new ImageIcon("bussines-unit/src/main/resources/bus.png");
+        Image scaled = icon.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
+        JLabel label = new JLabel(new ImageIcon(scaled));
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return label;
+    }
 
-        JLabel imageLabel = new JLabel(new ImageIcon(new ImageIcon("bussines-unit/src/main/resources/bus.png")
-                .getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH)));
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        rightPanel.add(imageLabel);
-
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollEvents, rightPanel);
-        splitPane.setDividerLocation(700);
-        splitPane.setResizeWeight(0.8);
-        add(splitPane, BorderLayout.CENTER);
-
+    private void addEventSelectionListener(JList<Event> eventList) {
         eventList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 Event selected = eventList.getSelectedValue();
@@ -105,6 +153,7 @@ public class EventViewerGUI extends JFrame {
             }
         });
     }
+
 
     private void setupEventListeners() {
         originBox.addActionListener(e -> {
@@ -160,8 +209,8 @@ public class EventViewerGUI extends JFrame {
         public String toString() {
             String cleanDate = date.length() > 10 ? date.substring(0, 10) : date;
             String cleanTime = time.replace("T", "").replace("Z", "").split("\\.")[0];
-            if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "No disponible";
-            return String.format("%s - %s %s [%s]", name, cleanDate, cleanTime, city);
+            if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "| No disponible";
+            return String.format("%s | %s %s [%s]", name, cleanDate, cleanTime, city);
         }
     }
 }
