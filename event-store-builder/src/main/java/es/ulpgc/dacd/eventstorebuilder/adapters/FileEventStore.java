@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters;
+package es.ulpgc.dacd.eventstorebuilder.adapters;
 
 import com.google.gson.*;
 

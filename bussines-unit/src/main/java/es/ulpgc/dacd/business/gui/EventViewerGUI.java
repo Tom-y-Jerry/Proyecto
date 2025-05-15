@@ -146,7 +146,7 @@ public class EventViewerGUI extends JFrame {
     }
 
     private void showTripsFor(Event event) {
-        tripArea.setText("🔎 Resultados de viajes desde: " + selectedOrigin + " para: " + event.city() + "\n\n");
+        tripArea.setText("Resultados de viajes desde: " + selectedOrigin + " para: " + event.city() + "\n\n");
         List<String> trips = controller.loadTrips(selectedOrigin, event.city());
         if (trips.isEmpty()) {
             tripArea.append("No se encontraron viajes desde: " + selectedOrigin + " para: " + event.city());

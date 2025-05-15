@@ -20,7 +20,7 @@ public class Controller {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
         scheduler.scheduleAtFixedRate(() -> {
-            System.out.println("Ejecutando consulta de viajes...");
+            System.out.println("Executing Trips...");
             List<Trip> trips = tripProvider.provide();
             for (Trip trip : trips) {
                 store.save(trip);

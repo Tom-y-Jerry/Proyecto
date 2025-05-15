@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.ticketmasterfeeder;
-
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.TicketMasterEventProvider;
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.ActiveMQEventStorage;
 import org.slf4j.Logger;
