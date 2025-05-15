@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.eventstorebuilder.infrastructure.ports;
+package es.ulpgc.dacd.eventstorebuilder.adapters;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 

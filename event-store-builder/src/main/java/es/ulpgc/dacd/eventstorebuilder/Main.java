@@ -1,8 +1,8 @@
 package es.ulpgc.dacd.eventstorebuilder;
 
-import es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters.EventListener;
-import es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters.FileEventStore;
-import es.ulpgc.dacd.eventstorebuilder.infrastructure.ports.EventBrokerConnection;
+import es.ulpgc.dacd.eventstorebuilder.adapters.EventListener;
+import es.ulpgc.dacd.eventstorebuilder.adapters.FileEventStore;
+import es.ulpgc.dacd.eventstorebuilder.adapters.EventBrokerConnection;
 
 import java.util.Arrays;
 

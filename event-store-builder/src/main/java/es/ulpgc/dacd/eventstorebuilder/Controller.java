@@ -1,6 +1,6 @@
 package es.ulpgc.dacd.eventstorebuilder;
 
-import es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters.EventListener;
+import es.ulpgc.dacd.eventstorebuilder.adapters.EventListener;
 
 public class Controller {
     private final EventListener listener;
