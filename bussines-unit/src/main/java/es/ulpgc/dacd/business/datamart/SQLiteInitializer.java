@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.business.persistence;
+package es.ulpgc.dacd.business.datamart;
 
 import java.io.File;
 import java.sql.Connection;

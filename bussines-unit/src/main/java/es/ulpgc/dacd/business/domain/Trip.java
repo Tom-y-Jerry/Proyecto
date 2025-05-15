@@ -3,7 +3,6 @@ package es.ulpgc.dacd.business.domain;
 import java.time.Instant;
 
 public final class Trip {
-    private final Instant ts;
     private final String ss;
     private final String origin;
     private final String destination;
@@ -13,7 +12,6 @@ public final class Trip {
     private final String currency;
 
     public Trip(String ss, String origin, String destination, Instant departure, Instant arrival, double price, String currency) {
-        this.ts = Instant.now();
         this.ss = ss;
         this.origin = origin;
         this.destination = destination;
@@ -23,9 +21,6 @@ public final class Trip {
         this.currency = currency;
     }
 
-    public Instant getTs() {
-        return ts;
-    }
     public String getSs() {
         return ss;
     }

@@ -5,6 +5,7 @@ import es.ulpgc.dacd.business.domain.Event;
 import es.ulpgc.dacd.business.domain.Trip;
 import es.ulpgc.dacd.business.infrastructure.adapters.*;
 import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
+import es.ulpgc.dacd.business.infrastructure.ports.EventProcessor;
 
 public class Controller {
     private final DatamartService datamart;

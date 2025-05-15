@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.List;
 
 public class EventViewerGUI extends JFrame {
-    private final EventController controller;
+    private final EventLoader loader;
     private final DefaultListModel<Event> eventListModel = new DefaultListModel<>();
     private final JTextArea tripArea = new JTextArea();
     private final JComboBox<String> originBox = new JComboBox<>();
@@ -15,7 +15,7 @@ public class EventViewerGUI extends JFrame {
 
     public EventViewerGUI(String dbPath) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        this.controller = new EventController(dbPath);
+        this.loader = new EventLoader(dbPath);
         setupWindow();
         setupTopPanel();
         setupSplitPanel();
@@ -25,7 +25,7 @@ public class EventViewerGUI extends JFrame {
     }
 
     private void setupWindow() {
-        setTitle("Ticketmaster Travel Assistant");
+        setTitle("De Ruta al Concierto");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 700);
         setLayout(new BorderLayout());
@@ -126,7 +126,7 @@ public class EventViewerGUI extends JFrame {
                     }
                 });
             }
-        }, 0, 5000);
+        }, 0, 2000);
     }
 
     private void loadOrigins() {
@@ -134,22 +134,22 @@ public class EventViewerGUI extends JFrame {
         for (int i = 0; i < originBox.getItemCount(); i++) {
             current.add(originBox.getItemAt(i));
         }
-        Set<String> newOrigins = controller.loadOrigins(current);
+        Set<String> newOrigins = loader.loadOrigins(current);
         for (String o : newOrigins) originBox.addItem(o);
     }
 
     private void loadEvents() {
         eventListModel.clear();
         if (selectedOrigin == null) return;
-        List<Event> events = controller.loadEvents(selectedOrigin);
+        List<Event> events = loader.loadEvents(selectedOrigin);
         eventListModel.addAll(events);
     }
 
     private void showTripsFor(Event event) {
         tripArea.setText("🔎 Resultados de viajes desde: " + selectedOrigin + " para: " + event.city() + "\n\n");
-        List<String> trips = controller.loadTrips(selectedOrigin, event.city());
+        List<String> trips = loader.loadTrips(selectedOrigin, event.city());
         if (trips.isEmpty()) {
-            tripArea.append("No trips found from " + selectedOrigin + " to " + event.city());
+            tripArea.append("No se encontraron viajes desde: " + selectedOrigin + " para: " + event.city());
         } else {
             trips.forEach(s -> tripArea.append(s + "\n"));
         }
@@ -160,7 +160,7 @@ public class EventViewerGUI extends JFrame {
         public String toString() {
             String cleanDate = date.length() > 10 ? date.substring(0, 10) : date;
             String cleanTime = time.replace("T", "").replace("Z", "").split("\\.")[0];
-            if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "--:--";
+            if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "No disponible";
             return String.format("%s - %s %s [%s]", name, cleanDate, cleanTime, city);
         }
     }

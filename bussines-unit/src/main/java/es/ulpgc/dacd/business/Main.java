@@ -1,7 +1,7 @@
 package es.ulpgc.dacd.business;
 
 import es.ulpgc.dacd.business.gui.EventViewerGUI;
-import es.ulpgc.dacd.business.persistence.SQLiteDatamart;
+import es.ulpgc.dacd.business.datamart.SQLiteDatamart;
 
 import javax.swing.*;
 

@@ -3,6 +3,7 @@ package es.ulpgc.dacd.business.infrastructure.adapters;
 import com.google.gson.*;
 import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
 import es.ulpgc.dacd.business.domain.Trip;
+import es.ulpgc.dacd.business.infrastructure.ports.EventProcessor;
 
 import java.time.Duration;
 import java.time.Instant;

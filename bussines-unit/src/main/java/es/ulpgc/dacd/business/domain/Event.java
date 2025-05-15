@@ -2,7 +2,6 @@ package es.ulpgc.dacd.business.domain;
 import java.time.Instant;
 
 public final class Event {
-    private final Instant ts;
     private final String ss;
     private final String id;
     private final String name;
@@ -10,8 +9,7 @@ public final class Event {
     private final String time;
     private final String city;
 
-    public Event(Instant ts, String ss, String id, String name, Instant date, String time, String city) {
-        this.ts = ts;
+    public Event(String ss, String id, String name, Instant date, String time, String city) {
         this.ss = ss;
         this.id = id;
         this.name = name;
@@ -20,7 +18,6 @@ public final class Event {
         this.city = city;
     }
 
-    public Instant getTs() { return ts; }
     public String getSs() { return ss; }
     public String getId() { return id; }
     public String getName() { return name; }

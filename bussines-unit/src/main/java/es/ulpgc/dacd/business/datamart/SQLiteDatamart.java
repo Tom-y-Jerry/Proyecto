@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.business.persistence;
+package es.ulpgc.dacd.business.datamart;
 
 import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
 
@@ -54,10 +54,6 @@ public class SQLiteDatamart implements DatamartService {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to insert trip", e);
         }
-    }
-
-    public Connection getConnection() {
-        return connection;
     }
 }
 

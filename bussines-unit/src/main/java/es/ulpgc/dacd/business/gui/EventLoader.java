@@ -5,10 +5,10 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class EventController {
+public class EventLoader {
     private final Connection conn;
 
-    public EventController(String dbPath) throws SQLException {
+    public EventLoader(String dbPath) throws SQLException {
         this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
     }
 
