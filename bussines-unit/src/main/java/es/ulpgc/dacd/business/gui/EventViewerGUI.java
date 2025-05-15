@@ -209,8 +209,8 @@ public class EventViewerGUI extends JFrame {
         public String toString() {
             String cleanDate = date.length() > 10 ? date.substring(0, 10) : date;
             String cleanTime = time.replace("T", "").replace("Z", "").split("\\.")[0];
-            if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "| No disponible";
-            return String.format("%s | %s |%s [%s]", name, cleanDate, cleanTime, city);
+            if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "--:--";
+            return String.format("%s - %s  %s - [%s]", name, cleanDate, cleanTime, city);
         }
     }
 }
