@@ -24,5 +24,4 @@ public final class Event {
     public Instant getDate() { return date; }
     public String getTime() { return time; }
     public String getCity() { return city; }
-
 }
