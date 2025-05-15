@@ -1,9 +1,9 @@
 package es.ulpgc.dacd.business;
-
-
 import es.ulpgc.dacd.business.domain.Event;
 import es.ulpgc.dacd.business.domain.Trip;
 import es.ulpgc.dacd.business.infrastructure.adapters.*;
+import es.ulpgc.dacd.business.infrastructure.adapters.Processor.BlaBlaCarTripProcessor;
+import es.ulpgc.dacd.business.infrastructure.adapters.Processor.TicketmasterEventProcessor;
 import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
 import es.ulpgc.dacd.business.infrastructure.ports.EventProcessor;
 

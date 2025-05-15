@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.business.infrastructure.adapters;
+package es.ulpgc.dacd.business.infrastructure.adapters.Processor;
 
 import com.google.gson.*;
 import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
