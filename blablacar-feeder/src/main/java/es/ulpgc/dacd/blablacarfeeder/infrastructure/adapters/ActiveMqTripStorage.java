@@ -32,7 +32,7 @@ public class ActiveMqTripStorage implements TripStorage {
             String json = gson.toJson(trip);
             TextMessage message = session.createTextMessage(json);
             producer.send(message);
-            System.out.println("Evento enviado: " + json);
+
 
             producer.close();
             session.close();

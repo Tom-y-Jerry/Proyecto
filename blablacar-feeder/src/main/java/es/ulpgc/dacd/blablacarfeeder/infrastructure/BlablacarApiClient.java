@@ -2,11 +2,16 @@ package es.ulpgc.dacd.blablacarfeeder.infrastructure;
 
 import com.google.gson.*;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
 public class BlablacarApiClient {
+    private static final Logger log = LoggerFactory.getLogger(BlablacarApiClient.class);
+
     private final OkHttpClient client = new OkHttpClient();
     private final Gson gson = new Gson();
 
@@ -26,14 +31,13 @@ public class BlablacarApiClient {
     public JsonArray fetchStops() throws IOException {
         Request request = new Request.Builder()
                 .url(stopsUrl)
-                .addHeader("Authorization", "Token " + apiKey)
-                .build();
+                .addHeader("Authorization", "Token " + apiKey).build();
         try (Response response = client.newCall(request).execute()) {
             return gson.fromJson(response.body().string(), JsonObject.class).getAsJsonArray("stops");
         }
     }
 
-    public List<JsonObject> fetchFare(){
+    public List<JsonObject> fetchFare() {
         String date = LocalDate.now().toString();
         List<JsonObject> results = new ArrayList<>();
 
@@ -42,27 +46,21 @@ public class BlablacarApiClient {
 
             Request request = new Request.Builder()
                     .url(url)
-                    .addHeader("Authorization", "Token " + apiKey)
-                    .build();
-
+                    .addHeader("Authorization", "Token " + apiKey).build();
             try (Response response = client.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
-                    System.err.printf("Error con origen %d: %d%n", originId, response.code());
+                    log.warn("Error con origen {}: código {}", originId, response.code());
                     continue;
                 }
-
                 JsonArray fares = gson.fromJson(response.body().string(), JsonObject.class)
                         .getAsJsonArray("fares");
-
-                for (JsonElement el : fares) {
-                    results.add(el.getAsJsonObject());
+                for (JsonElement ele : fares) {
+                    results.add(ele.getAsJsonObject());
                 }
-
             } catch (IOException e) {
-                System.err.printf("Excepción con origen %d: %s%n", originId, e.getMessage());
+                log.error("Excepción con origen {}: {}", originId, e.getMessage());
             }
         }
-
         return results;
     }
 }
