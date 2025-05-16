@@ -118,7 +118,7 @@ public class EventViewerGUI extends JFrame {
 
     private JList<Event> createEventList() {
         JList<Event> list = new JList<>(eventListModel);
-        list.setFont(new Font("Verdana", Font.PLAIN, 13));
+        list.setFont(new Font("SansSerif", Font.PLAIN, 13));
         list.setBackground(Color.WHITE);
         list.setSelectionBackground(new Color(27, 137, 177));
         list.setSelectionForeground(Color.WHITE);
@@ -210,7 +210,13 @@ public class EventViewerGUI extends JFrame {
             String cleanDate = date.length() > 10 ? date.substring(0, 10) : date;
             String cleanTime = time.replace("T", "").replace("Z", "").split("\\.")[0];
             if (cleanTime.equalsIgnoreCase("Not specified")) cleanTime = "--:--";
-            return String.format("%s - %s  %s - [%s]", name, cleanDate, cleanTime, city);
+            return String.format(
+                    "\uD83C\uDFAB Evento: %s" + "\n" +
+                            "\uD83D\uDCC5 Fecha: %s" + "\n" +
+                            "\uD83D\uDD50 Hora: %s" + "\n" +
+                            "\uD83D\uDCCD Ciudad: %s" + "\n",
+                    name, cleanDate, cleanTime, city
+            );
         }
     }
 }
