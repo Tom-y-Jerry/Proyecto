@@ -122,8 +122,26 @@ public class EventViewerGUI extends JFrame {
         list.setBackground(Color.WHITE);
         list.setSelectionBackground(new Color(27, 137, 177));
         list.setSelectionForeground(Color.WHITE);
+
+        list.setCellRenderer((lst, value, index, isSelected, cellHasFocus) -> {
+            JTextArea area = new JTextArea(value.toString());
+            area.setWrapStyleWord(true);
+            area.setLineWrap(true);
+            area.setOpaque(true);
+            area.setFont(list.getFont());
+            area.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            if (isSelected) {
+                area.setBackground(list.getSelectionBackground());
+                area.setForeground(list.getSelectionForeground());
+            } else {
+                area.setBackground(list.getBackground());
+                area.setForeground(list.getForeground());
+            }
+            return area;
+        });
         return list;
     }
+
 
     private JScrollPane createTripPanel() {
         tripArea.setEditable(false);
