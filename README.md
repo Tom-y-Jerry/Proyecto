@@ -18,21 +18,28 @@
 ---
 
 ## 📑 Índice
-1. [Funcionalidades](#-funcionalidades)  
-2. [Arquitectura](#-arquitectura)  
-3. [Módulos](#-módulos-del-proyecto)  
-4. [Requisitos](#-requisitos-previos)  
-5. [Instalación](#-instalación-y-compilación)  
-6. [Variables de entorno](#-variables-de-entorno)  
-7. [Ejecución](#-cómo-ejecutar)  
-8. [Estructura de archivos](#-estructura-de-archivos-generados)  
-9. [Tecnologías](#-tecnologías)  
-10. [Pruebas](#-tests)  
-11. [Contribuir](#-contribuir)  
-12. [Licencia](#-licencia)
+1. [Propuesta de valor](#-propuesta-de-valor)  
+2. [Funcionalidades](#-funcionalidades)  
+3. [Módulos del proyecto](#-módulos-del-proyecto)  
+4. [Justificación de las APIs y del datamart](#-justificación-de-las-apis-y-del-datamart)  
+5. [Requisitos previos](#-requisitos-previos)  
+6. [Instalación y compilación](#-instalación-y-compilación)  
+7. [Variables de entorno](#-variables-de-entorno)  
+8. [Cómo ejecutar](#-cómo-ejecutar)  
+9. [Flujo de la GUI paso a paso](#-flujo-de-la-gui-paso-a-paso)  
+10. [Estructura de archivos generados](#-estructura-de-archivos-generados)  
+11. [Tecnologías](#-tecnologías)  
+12. [Tests](#-tests)  
 
 ---
 
+## 💡 Propuesta de valor
+- **Planificación integral** → une eventos y transporte en una sola interfaz.  
+- **Datos en vivo** → feeders consultan las APIs cada X minutos; el usuario ve disponibilidad real.  
+- **Extensible** → para añadir otra fuente basta un nuevo adapter y topic.  
+- **Demostrativo** → muestra patrones y buenas prácticas en Java 21.
+
+---
 ## 🧠 Funcionalidades
 - 🔎 **Obtención de eventos** culturales mediante la API de Ticketmaster.  
 - 🚌 **Obtención de trayectos** y tarifas mediante la API de BlaBlaCar.  
@@ -42,32 +49,27 @@
 
 ---
 
-## 🧱 Arquitectura
-
-- **Arquitectura Hexagonal (Ports & Adapters)**.  
-- **Clean Code / LAMDA**: métodos ≤ 10 líneas y clases con responsabilidad única.  
-- Separación total entre dominio e infraestructura.
-
----
-
-## 📦 Módulos del Proyecto
-
-| Módulo                | Descripción (responsabilidad única)                   |
-|-----------------------|-------------------------------------------------------|
-| **blablacar-feeder**  | Lee viajes de BlaBlaCar → publica en topic **Trips**  |
-| **ticketmaster-feeder**| Lee eventos de Ticketmaster → publica en topic **Events** |
-| **event-store-builder**| Suscriptor duradero de `Trips` y `Events` → guarda en archivos |
-| **business-unit**     | Consume mensajes, persiste en SQLite y lanza la GUI   |
+## 📦 Módulos del proyecto
+| Módulo | Patrón | Responsabilidad |
+|--------|--------|-----------------|
+| `blablacar-feeder` | Adapter + Publisher | Publica viajes en topic **Trips** |
+| `ticketmaster-feeder` | Adapter + Publisher | Publica eventos en topic **Events** |
+| `event-store-builder` | Consumer | Registra mensajes en `event-store/*.events` |
+| `business-unit` | Consumer + GUI | Persiste en SQLite y muestra interfaz Swing |
 
 ---
 
-## ⚙️ Requisitos Previos
+## 🔎 Justificación de las APIs y del datamart
+- **BlaBlaCar** → rutas económicas, populares entre estudiantes.  
+- **Ticketmaster** → gran catálogo cultural, API bien documentada.  
 
-- **Java 21**  
-- **Apache Maven 3.6+**  
-- **ActiveMQ** corriendo en `tcp://localhost:61616`  
-- Conexión a Internet (para las APIs)  
-- **SQLite** embebido (no requiere instalación)
+---
+
+## ⚙️ Requisitos previos
+- Java 21  
+- Apache Maven 3.6+  
+- ActiveMQ 5.17+ (`tcp://localhost:61616`)  
+- Conexión a Internet
 
 ---
 
@@ -82,17 +84,11 @@ mvn clean install
 ---
 
 ## 🌍 Variables de entorno
-
 | Variable | Descripción | Ejemplo |
 |----------|-------------|---------|
-| `BLABLACAR_API_KEY` | Token de la API de BlaBlaCar | `abc123` |
-| `BLABLACAR_API_URL` | Endpoint de paradas | `https://bus-api.blablacar.com/v3/stops` |
-| `BLABLACAR_API_FARES` | Endpoint de tarifas | `https://bus-api.blablacar.com/v3/fares` |
-| `TICKETMASTER_API_KEY` | Token de Ticketmaster | `xyz789` |
-| `TICKETMASTER_API_URL` | Endpoint de eventos | `https://app.ticketmaster.com/discovery/v2/events.json` |
-| `ACTIVEMQ_URL` | URL del broker ActiveMQ | `tcp://localhost:61616` |
-
-Se pueden suministrar vía `application.properties`, `.env` o como argumentos de línea.
+| `BLABLACAR_API_KEY` | Token BlaBlaCar | `abc123` |
+| `TICKETMASTER_API_KEY` | Token Ticketmaster | `xyz789` |
+| `ACTIVEMQ_URL` | URL broker | `tcp://localhost:61616` |
 
 ---
 
@@ -148,61 +144,60 @@ Abrir un navegador y entrar en: <http://localhost:8161/>
 >(Si es la primera vez, usuario admin / contraseña admin).
 ---
 
-### 2. Arrancar **event-store-builder**
-
-```
+### 2. Event Store
+```bash
 cd event-store-builder
-mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.eventstorebuilder.Main \
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.eventstorebuilder.Main ^
  -Dexec.args="tcp://localhost:61616 event-store-builder/Trips event-store-builder/Events"
 ```
 
----
-
-### 3. Arrancar los feeders
-
-#### BlaBlaCar Feeder
-```
+### 3. Feeders
+```bash
+# BlaBlaCar
 cd blablacar-feeder
-mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.blablacarfeeder.Main \
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.blablacarfeeder.Main ^
  -Dexec.args="https://bus-api.blablacar.com/v3/stops https://bus-api.blablacar.com/v3/fares $BLABLACAR_API_KEY tcp://localhost:61616"
-```
 
-#### Ticketmaster Feeder
-```
+# Ticketmaster
 cd ticketmaster-feeder
-mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.ticketmasterfeeder.Main \
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.ticketmasterfeeder.Main ^
  -Dexec.args="https://app.ticketmaster.com/discovery/v2/events.json $TICKETMASTER_API_KEY tcp://localhost:61616"
 ```
 
----
-
-### 4. Arrancar **business-unit**
-
-Procesador SQLite:
-```
+### 4. Business Unit (processor + GUI)
+```bash
 cd business-unit
-mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.Controller \
+# Persistencia en SQLite
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.Controller ^
  -Dexec.args="tcp://localhost:61616 datamart.db"
-```
 
-GUI:
-```
-mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.EventViewerGUI \
+# GUI
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.EventViewerGUI ^
  -Dexec.args="datamart.db"
 ```
 
 ---
 
-## 🗃 Estructura de archivos generados
+## 🖥️ Flujo de la GUI paso a paso
 
+1. **Seleccionar origen**  
+   - Desplegable con todas las ciudades de salida disponibles.  
+2. **Explorar eventos**  
+   - Se listan todos los eventos obtenidos vía Ticketmaster.  
+3. **Elegir evento**  
+   - Al hacer clic en un evento se activan las rutas asociadas.  
+4. **Ver trayectos recomendados**  
+   - Tabla con precio, hora de salida y plazas libres para llegar al evento.  
+
+Con tres clics el usuario descubre un evento y elige la opción de viaje más económica.
+
+---
+
+## 🗃 Estructura de archivos generados
 ```
 event-store-builder/
-├── Trips/
-│   └── feeder-blablacar/
-│       └── YYYYMMDD.events
-└── Events/
-    └── feeder-ticketmaster/
-        └── YYYYMMDD.events
+└── Trips/ | Events/
+    └── feeder-*/YYYYMMDD.events
 
 business-unit/
 └── datamart.db
@@ -211,13 +206,17 @@ business-unit/
 
 ---
 
-## 🛠️ Tecnologías
+## 🧩 Principios y patrones por módulo
+| Módulo | Patrones | Principios |
+|--------|----------|-----------|
+| Feeders | Adapter + Publisher | SRP, inmutabilidad |
+| Event Store | Consumer + Event Sourcing | Open/Closed |
+| Business Unit | Facade + MVC | DAO, DRY |
 
-- Java 21 · Maven  
-- ActiveMQ  
-- SQLite (embebido)  
-- Java Swing  
-- GSON  
+---
+
+## 🛠️ Tecnologías
+Java 21 · Maven · ActiveMQ · SQLite · Swing · Gson
 
 ---
 
