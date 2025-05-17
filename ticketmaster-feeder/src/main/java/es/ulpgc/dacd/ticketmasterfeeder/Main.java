@@ -16,10 +16,8 @@ public class Main {
         String eventsUrl = args[0];
         String apiKey = args[1];
         String brokerurl = args[2];
-
         var provider = new TicketMasterEventProvider(eventsUrl, apiKey);
         var storage = new ActiveMQEventStorage(brokerurl);
-
         new Controller(provider, storage).execute();
     }
 }

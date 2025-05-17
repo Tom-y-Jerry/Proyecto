@@ -1,7 +1,5 @@
 package es.ulpgc.dacd.business.datamart;
-
 import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
-
 import java.sql.*;
 
 public class SQLiteSaver implements DatamartService {

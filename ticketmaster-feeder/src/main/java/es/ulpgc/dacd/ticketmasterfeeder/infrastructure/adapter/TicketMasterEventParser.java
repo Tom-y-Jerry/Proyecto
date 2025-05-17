@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -36,18 +35,14 @@ public class TicketMasterEventParser {
         String ss = "feeder-ticketmaster";
         String id = obj.get("id").getAsString();
         String name = obj.get("name").getAsString();
-
         String dateStr = obj.getAsJsonObject("dates").getAsJsonObject("start").get("localDate").getAsString();
         Instant date = LocalDate.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE)
                 .atStartOfDay().toInstant(ZoneOffset.UTC);
-
         String time = obj.getAsJsonObject("dates").getAsJsonObject("start").has("localTime")
                 ? obj.getAsJsonObject("dates").getAsJsonObject("start").get("localTime").getAsString()
                 : "Not specified";
-
         String city = obj.getAsJsonObject("_embedded").getAsJsonArray("venues")
                 .get(0).getAsJsonObject().getAsJsonObject("city").get("name").getAsString();
-
         return new Event(ts, ss, id, name, date, time, city);
     }
 }

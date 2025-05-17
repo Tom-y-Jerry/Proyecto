@@ -1,12 +1,10 @@
 package es.ulpgc.dacd.business.infrastructure.adapters.Processor;
-
 import com.google.gson.*;
 import es.ulpgc.dacd.business.infrastructure.ports.DatamartService;
 import es.ulpgc.dacd.business.domain.Trip;
 import es.ulpgc.dacd.business.infrastructure.ports.EventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.time.Duration;
 import java.time.Instant;
 

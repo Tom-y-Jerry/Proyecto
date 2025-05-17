@@ -1,10 +1,8 @@
 package es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters;
-
 import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
 import es.ulpgc.dacd.blablacarfeeder.infrastructure.BlablacarApiClient;
 import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripProvider;
 import com.google.gson.JsonObject;
-
 import java.time.Instant;
 import java.util.*;
 
@@ -54,11 +52,9 @@ public class BlablacarTripProvider implements TripProvider {
     private Trip mapToTrip(JsonObject f, Map<Integer, String> names) {
         int originId = f.get("origin_id").getAsInt();
         int destinationId = f.get("destination_id").getAsInt();
-
         String originName = names.getOrDefault(originId, "ID_" + originId);
         String destName = names.getOrDefault(destinationId, "ID_" + destinationId);
         double price = f.get("price_cents").getAsInt() / 100.0;
-
         return new Trip(
                 "feeder-blablacar",
                 originName,

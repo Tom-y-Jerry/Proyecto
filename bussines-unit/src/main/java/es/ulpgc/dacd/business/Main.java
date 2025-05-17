@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.business;
-
 import es.ulpgc.dacd.business.gui.EventViewerGUI;
 import es.ulpgc.dacd.business.datamart.SQLiteSaver;
 import org.slf4j.Logger;

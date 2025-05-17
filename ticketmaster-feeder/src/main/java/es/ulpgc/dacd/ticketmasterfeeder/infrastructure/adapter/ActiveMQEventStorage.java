@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter;
-
 import com.google.gson.*;
 import es.ulpgc.dacd.ticketmasterfeeder.domain.Event;
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventStorage;
@@ -28,7 +27,6 @@ public class ActiveMQEventStorage implements EventStorage {
         Connection connection = null;
         Session session = null;
         MessageProducer producer = null;
-
         try {
             connection = manager.createConnection();
             session = manager.createSession(connection);

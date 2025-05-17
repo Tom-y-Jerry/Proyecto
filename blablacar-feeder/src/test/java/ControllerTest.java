@@ -3,7 +3,6 @@ import es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters.ActiveMqTripStorage
 import es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters.BlablacarTripProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.Instant;
 import java.util.List;
 

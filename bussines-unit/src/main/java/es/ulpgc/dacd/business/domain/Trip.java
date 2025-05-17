@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.business.domain;
-
 import java.time.Instant;
 
 public final class Trip {

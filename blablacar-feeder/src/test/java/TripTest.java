@@ -1,7 +1,6 @@
 import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
 import org.junit.jupiter.api.Test;
 import java.time.Instant;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TripTest {

@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.business.infrastructure.adapters;
-
 import com.google.gson.*;
 import es.ulpgc.dacd.business.infrastructure.ports.EventProcessor;
 import org.slf4j.Logger;

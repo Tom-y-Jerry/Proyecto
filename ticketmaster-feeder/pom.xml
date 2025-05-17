@@ -29,8 +29,6 @@
             <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- ActiveMQ broker en memoria para tests -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-broker</artifactId>
@@ -42,13 +40,11 @@
             <artifactId>okhttp</artifactId>
             <version>4.9.3</version>
         </dependency>
-
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.43.2.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

@@ -18,22 +18,17 @@
             <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- ActiveMQ client only -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-client</artifactId>
             <version>5.17.1</version>
         </dependency>
-
-        <!-- GSON for JSON parsing -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

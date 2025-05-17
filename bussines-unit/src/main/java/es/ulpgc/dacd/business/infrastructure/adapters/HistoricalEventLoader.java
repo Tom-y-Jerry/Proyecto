@@ -1,10 +1,8 @@
 package es.ulpgc.dacd.business.infrastructure.adapters;
-
 import com.google.gson.*;
 import es.ulpgc.dacd.business.infrastructure.ports.EventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.lang.reflect.Type;
 import java.time.Instant;

@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.ticketmasterfeeder.infrastructure;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -11,7 +10,6 @@ import java.util.List;
 
 public class TicketMasterApiClient {
     private static final Logger log = LoggerFactory.getLogger(TicketMasterApiClient.class);
-
     private final OkHttpClient client = new OkHttpClient();
     private final String eventsUrl;
     private final String apiKey;

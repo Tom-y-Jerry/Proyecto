@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter;
-
 import es.ulpgc.dacd.ticketmasterfeeder.domain.Event;
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.TicketMasterApiClient;
 import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.ports.EventProvider;
@@ -10,7 +9,6 @@ import java.util.List;
 
 public class TicketMasterEventProvider implements EventProvider {
     private static final Logger log = LoggerFactory.getLogger(TicketMasterEventProvider.class);
-
     private final TicketMasterApiClient client;
     private final TicketMasterEventParser parser;
 

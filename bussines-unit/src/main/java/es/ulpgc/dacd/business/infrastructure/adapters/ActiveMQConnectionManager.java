@@ -1,7 +1,5 @@
 package es.ulpgc.dacd.business.infrastructure.adapters;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.*;
 
 public class ActiveMQConnectionManager {

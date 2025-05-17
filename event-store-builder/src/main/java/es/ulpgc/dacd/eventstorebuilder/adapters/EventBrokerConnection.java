@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.eventstorebuilder.adapters;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.*;
 

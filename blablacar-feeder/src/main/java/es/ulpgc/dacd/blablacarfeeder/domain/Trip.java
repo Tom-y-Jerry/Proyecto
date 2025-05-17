@@ -12,8 +12,8 @@ public final class Trip {
     private final String currency;
 
     public Trip(String ss, String origin, String destination, Instant departure, Instant arrival, double price, String currency) {
-        this.ts = Instant.now(); // timestamp de creación del evento
-        this.ss = ss;            // quién genera el evento
+        this.ts = Instant.now();
+        this.ss = ss;
         this.origin = origin;
         this.destination = destination;
         this.departure = departure;

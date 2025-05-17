@@ -1,11 +1,9 @@
 package es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters;
-
 import com.google.gson.*;
 import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
 import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.jms.*;
 import java.time.Instant;
 

@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.business.gui;
-
 import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -65,7 +64,6 @@ public class EventLoader {
                 WHERE origin = ? AND destination LIKE ?""")) {
             ps.setString(1, origin);
             ps.setString(2, "%" + destinationCity + "%");
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     trips.add(formatTrip(
@@ -88,15 +86,11 @@ public class EventLoader {
     private String formatTrip(String origin, String destination, String depStr, String arrStr, double price, String currency, int durationMin) {
         Instant departure = Instant.parse(depStr);
         Instant arrival = Instant.parse(arrStr);
-
         LocalDate depDate = departure.atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate arrDate = arrival.atZone(ZoneId.systemDefault()).toLocalDate();
-
         String depTime = departure.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         String arrTime = arrival.atZone(ZoneId.systemDefault()).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-
         long h = durationMin / 60, m = durationMin % 60;
-
         return String.format("\uD83D\uDE8C %s → %s | %s %s | %s %s | %dh %02dmin | %.2f %s",
                 origin, destination,
                 depDate, depTime,

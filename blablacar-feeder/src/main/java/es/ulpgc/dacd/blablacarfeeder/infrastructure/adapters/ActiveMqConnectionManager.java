@@ -4,6 +4,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.*;
 
 public class ActiveMqConnectionManager {
+
     private final String brokerUrl;
 
     public ActiveMqConnectionManager(String brokerUrl) {

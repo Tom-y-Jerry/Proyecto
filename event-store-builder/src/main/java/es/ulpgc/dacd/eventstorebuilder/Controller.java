@@ -1,5 +1,4 @@
 package es.ulpgc.dacd.eventstorebuilder;
-
 import es.ulpgc.dacd.eventstorebuilder.adapters.EventListener;
 import es.ulpgc.dacd.eventstorebuilder.adapters.FileEventStore;
 import es.ulpgc.dacd.eventstorebuilder.adapters.EventBrokerConnection;
@@ -12,7 +11,6 @@ public class Controller {
     public void start(String brokerUrl, String clientId, String... topics) {
         EventBrokerConnection broker = new EventBrokerConnection(brokerUrl, clientId);
         EventListener listener = new EventListener(broker.getSession(), new FileEventStore());
-
         for (String topic : topics) {
             log.info("Subscribing to topic: {}", topic);
             listener.subscribe(topic);

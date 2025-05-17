@@ -21,7 +21,6 @@ public class Controller {
 
     public void execute() {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
         scheduler.scheduleAtFixedRate(() -> {
             List<Event> events = eventProvider.provide();
             for (Event event : events) {

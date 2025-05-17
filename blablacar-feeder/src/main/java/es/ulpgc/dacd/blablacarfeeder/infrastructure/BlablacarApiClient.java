@@ -1,10 +1,8 @@
 package es.ulpgc.dacd.blablacarfeeder.infrastructure;
-
 import com.google.gson.*;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
