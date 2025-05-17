@@ -1,4 +1,4 @@
-# 🎟️ Event&Go
+# Event&Go
 
 > **Event&Go** es una plataforma modular que **consume datos en tiempo real** desde las APIs públicas de  
 > **BlaBlaCar** (trayectos) y **Ticketmaster** (eventos culturales).  
@@ -8,7 +8,7 @@
 
 ---
 
-## 👥 Autoras
+## Autoras
 
 | Nombre | GitHub |
 |--------|--------|
@@ -17,39 +17,54 @@
 
 ---
 
-## 📑 Índice
-1. [Propuesta de valor](#-propuesta-de-valor)  
-2. [Funcionalidades](#-funcionalidades)  
-3. [Módulos del proyecto](#-módulos-del-proyecto)  
-4. [Justificación de las APIs y del datamart](#-justificación-de-las-apis-y-del-datamart)  
-5. [Requisitos previos](#-requisitos-previos)  
-6. [Instalación y compilación](#-instalación-y-compilación)  
-7. [Variables de entorno](#-variables-de-entorno)  
-8. [Cómo ejecutar](#-cómo-ejecutar)  
-9. [Flujo de la GUI paso a paso](#-flujo-de-la-gui-paso-a-paso)  
-10. [Estructura de archivos generados](#-estructura-de-archivos-generados)  
-11. [Tecnologías](#-tecnologías)  
-12. [Tests](#-tests)  
+## Índice
+1. [Propuesta de valor](#propuesta-de-valor)
+2. [Funcionalidades](#funcionalidades)
+3. [Arquitectura del sistema y de la aplicación](#arquitectura-del-sistema-y-de-la-aplicación)
+4. [Módulos del proyecto](#módulos-del-proyecto)
+5. [Justificación de las APIs y del datamart](#justificación-de-las-apis-y-del-datamart)
+6. [Requisitos previos](#requisitos-previos)
+7. [Instalación y compilación](#instalación-y-compilación)
+8. [Variables de entorno](#variables-de-entorno)
+9. [Cómo ejecutar](#cómo-ejecutar)
+10. [Flujo de la GUI paso a paso](#flujo-de-la-gui-paso-a-paso)
+11. [Estructura de archivos generados](#estructura-de-archivos-generados)
+12. [Tecnologías](#tecnologías)
+13. [Tests](#tests)
+
 
 ---
 
-## 💡 Propuesta de valor
-- **Planificación integral** → une eventos y transporte en una sola interfaz.  
-- **Datos en vivo** → feeders consultan las APIs cada X minutos; el usuario ve disponibilidad real.  
-- **Extensible** → para añadir otra fuente basta un nuevo adapter y topic.  
+## Propuesta de valor
+- **Planificación integral** → une los eventos y el transporte en una sola interfaz.  
+- **Datos en vivo** → los feeders consultan las APIs cada X tiempo; el usuario ve disponibilidad en tiempo real.  
+- **Extensible** → para añadir otra fuente de información es suficiente con un nuevo adapter y topic.  
 - **Demostrativo** → muestra patrones y buenas prácticas en Java 21.
 
 ---
-## 🧠 Funcionalidades
-- 🔎 **Obtención de eventos** culturales mediante la API de Ticketmaster.  
-- 🚌 **Obtención de trayectos** y tarifas mediante la API de BlaBlaCar.  
-- 📨 **Publicación** de ambos flujos como mensajes JSON en ActiveMQ (topics `Events` y `Trips`).  
-- 💾 **Persistencia** de todos los mensajes en archivos `.events` y en una base de datos SQLite integrada.  
-- 🖥️ **Visualización** de datos históricos gracias a una GUI Java Swing.
+## Funcionalidades
+- **Obtención de eventos** culturales y de ocio a través la API de Ticketmaster.  
+- **Obtención de trayectos** y tarifas asequibles a través la API de BlaBlaCar.  
+- **Publicación** de ambos flujos como mensajes JSON en ActiveMQ (topics `Events` y `Trips`).  
+- **Persistencia** de todos los mensajes en archivos `.events` y en una base de datos SQLite integrada.  
+- **Visualización** de datos históricos gracias a una GUI Java Swing.
 
 ---
 
-## 📦 Módulos del proyecto
+## Arquitectura del sistema y de la aplicación
+
+El sistema sigue una arquitectura modular basada en principios de Clean Code y Arquitectura Hexagonal:
+
+- **Feeders**: consumen las APIs externas (BlaBlaCar y Ticketmaster), procesan los datos y los publican como mensajes JSON en ActiveMQ.
+- **Event Store**: escucha los mensajes y los almacena en ficheros `.events`.
+- **Business Unit**: esta unidad tiene una lógica inspirada en la **arquitectura lambda**, combinando flujos en tiempo real (mensajes de ActiveMQ) con datos históricos (archivos `.events` y registros SQLite), proporcionando una vista completa e integrada para el usuario mediante la interfaz.
+
+Cada módulo es independiente, se comunican a través del broker de mensajes, y pueden evolucionar o escalar sin afectar a los demás.
+
+
+---
+
+## Módulos del proyecto
 | Módulo | Patrón | Responsabilidad |
 |--------|--------|-----------------|
 | `blablacar-feeder` | Adapter + Publisher | Publica viajes en topic **Trips** |
@@ -59,21 +74,21 @@
 
 ---
 
-## 🔎 Justificación de las APIs y del datamart
+## Justificación de las APIs y del datamart
 - **BlaBlaCar** → rutas económicas, populares entre estudiantes.  
 - **Ticketmaster** → gran catálogo cultural, API bien documentada.  
 
 ---
 
-## ⚙️ Requisitos previos
+## Requisitos previos
 - Java 21  
 - Apache Maven 3.6+  
-- ActiveMQ 5.17+ (`tcp://localhost:61616`)  
+- ActiveMQ 5.17.1 (`tcp://localhost:61616`)  
 - Conexión a Internet
 
 ---
 
-## 🛠 Instalación y Compilación
+## Instalación y Compilación
 
 ```bash
 git clone https://github.com/tu-usuario/event-and-go.git
@@ -83,7 +98,7 @@ mvn clean install
 
 ---
 
-## 🌍 Variables de entorno
+## Variables de entorno
 | Variable | Descripción | Ejemplo |
 |----------|-------------|---------|
 | `BLABLACAR_API_KEY` | Token BlaBlaCar | `abc123` |
@@ -92,7 +107,7 @@ mvn clean install
 
 ---
 
-## 📦 Formatos de mensajes publicados
+## Formatos de mensajes publicados
 
 ### Evento BlaBlaCar (`Trips`)
 
@@ -103,8 +118,9 @@ mvn clean install
   "departure_place": "Madrid",
   "arrival_place": "Barcelona",
   "departure_time": "2025-05-21T15:30:00Z",
+  "arrival_time": "2025-05-22T15:30:00Z",
   "price": 22.5,
-  "seats": 2
+  "currency": "EUR"
 }
 ```
 
@@ -124,24 +140,26 @@ mvn clean install
 
 ---
 
-## 🚀 Cómo ejecutar
+## Cómo ejecutar el proyecto
 
 ### 1. Iniciar ActiveMQ
 
-Descarga en <https://activemq.apache.org/components/classic/download/>
+Descarga el .zip en <https://activemq.apache.org/components/classic/download/classic-05-17-01> y para ejecutarlo dependiendo tu sistema se ejecuta con una instrucción diferente.
+
+Antes de ejecutar esta instrucción desde la consola tienes que estar dentro de la carpeta.
 
 Windows:
 ```
-./bin/win64/activemq.bat start
+bin\activemq start
 ```
 Linux / macOS:
 ```
-./bin/activemq start
+./activemq start
 ```
 ### Verificar que está activo
 
 Abrir un navegador y entrar en: <http://localhost:8161/>
->(Si es la primera vez, usuario admin / contraseña admin).
+>(Para inciar sesión: usuario admin / contraseña admin).
 ---
 
 ### 2. Event Store
@@ -153,12 +171,10 @@ mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.eventstorebuilder.Main ^
 
 ### 3. Feeders
 ```bash
-# BlaBlaCar
 cd blablacar-feeder
 mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.blablacarfeeder.Main ^
  -Dexec.args="https://bus-api.blablacar.com/v3/stops https://bus-api.blablacar.com/v3/fares $BLABLACAR_API_KEY tcp://localhost:61616"
-
-# Ticketmaster
+ 
 cd ticketmaster-feeder
 mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.ticketmasterfeeder.Main ^
  -Dexec.args="https://app.ticketmaster.com/discovery/v2/events.json $TICKETMASTER_API_KEY tcp://localhost:61616"
@@ -167,18 +183,16 @@ mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.ticketmasterfeeder.Main ^
 ### 4. Business Unit (processor + GUI)
 ```bash
 cd business-unit
-# Persistencia en SQLite
 mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.Controller ^
  -Dexec.args="tcp://localhost:61616 datamart.db"
 
-# GUI
 mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.EventViewerGUI ^
  -Dexec.args="datamart.db"
 ```
 
 ---
 
-## 🖥️ Flujo de la GUI paso a paso
+## Flujo de la GUI paso a paso
 
 1. **Seleccionar origen**  
    - Desplegable con todas las ciudades de salida disponibles.  
@@ -187,13 +201,13 @@ mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.EventViewerGUI ^
 3. **Elegir evento**  
    - Al hacer clic en un evento se activan las rutas asociadas.  
 4. **Ver trayectos recomendados**  
-   - Tabla con precio, hora de salida y plazas libres para llegar al evento.  
+   - Tabla con precio, hora de salida, de llegada y totales para llegar al evento.  
 
 Con tres clics el usuario descubre un evento y elige la opción de viaje más económica.
 
 ---
 
-## 🗃 Estructura de archivos generados
+## Estructura de archivos generados
 ```
 event-store-builder/
 └── Trips/ | Events/
@@ -206,21 +220,21 @@ business-unit/
 
 ---
 
-## 🧩 Principios y patrones por módulo
-| Módulo | Patrones | Principios |
-|--------|----------|-----------|
-| Feeders | Adapter + Publisher | SRP, inmutabilidad |
-| Event Store | Consumer + Event Sourcing | Open/Closed |
-| Business Unit | Facade + MVC | DAO, DRY |
+## Principios y patrones por módulo
+| Módulo | Patrones | Principios                      |
+|--------|----------|---------------------------------|
+| Feeders | Adapter, Publisher (eventos con ActiveMQ) | SRP, inmutabilidad, Open/Closed |
+| Event Store | Consumer, Event Sourcing (almacenamiento en fichero) | Open/Closed, SRP                |
+| Business Unit | Facade (controladores), MVC (GUI) | DAO, DRY, SRP                   |
 
 ---
 
-## 🛠️ Tecnologías
-Java 21 · Maven · ActiveMQ · SQLite · Swing · Gson
+## Tecnologías
+Java 21 · Maven · ActiveMQ · SQLite · Swing · Gson · Git
 
 ---
 
-## 🧪 Tests
+## Tests
 
 ```bash
 mvn test
