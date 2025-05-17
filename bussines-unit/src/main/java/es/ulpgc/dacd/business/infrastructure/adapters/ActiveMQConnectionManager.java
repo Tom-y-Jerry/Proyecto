@@ -30,13 +30,4 @@ public class ActiveMQConnectionManager {
         consumer.setMessageListener(listener);
         return consumer;
     }
-
-    public void close() {
-        try {
-            if (session != null) session.close();
-            if (connection != null) connection.close();
-        } catch (JMSException e) {
-            System.err.println("Error closing connection: " + e.getMessage());
-        }
-    }
 }
