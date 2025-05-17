@@ -1,157 +1,231 @@
-# Proyecto: Integración de APIs con Arquitectura Publisher/Subscriber
+# 🎟️ Event&Go
 
-Este proyecto corresponde al Sprint 2 de la asignatura **Desarrollo de Aplicaciones para Ciencia de Datos**, en el que se amplía el sistema del Sprint 1 para incorporar un **sistema distribuido** basado en **ActiveMQ** y el patrón **Publisher/Subscriber**.
+> **Event&Go** es una plataforma modular que **consume datos en tiempo real** desde las APIs públicas de  
+> **BlaBlaCar** (trayectos) y **Ticketmaster** (eventos culturales).  
+> El proyecto muestra **cómo diseñar, desarrollar y orquestar código Java 21** siguiendo principios  
+> de Clean Code y Arquitectura Hexagonal, publicando la información en ActiveMQ,  
+> almacenándola en ficheros y en SQLite, y presentándola a través de una GUI Java Swing.
+
+---
 
 ## 👥 Autoras
 
-- Carlota Ayala
-- Lucía Cruz
+| Nombre | GitHub |
+|--------|--------|
+| Carlota Ayala | [@carlotaayala](https://github.com/carlotaayala) |
+| Lucía Cruz    | [@luciacruz](https://github.com/luciacruz) |
+
+---
+
+## 📑 Índice
+1. [Funcionalidades](#-funcionalidades)  
+2. [Arquitectura](#-arquitectura)  
+3. [Módulos](#-módulos-del-proyecto)  
+4. [Requisitos](#-requisitos-previos)  
+5. [Instalación](#-instalación-y-compilación)  
+6. [Variables de entorno](#-variables-de-entorno)  
+7. [Ejecución](#-cómo-ejecutar)  
+8. [Estructura de archivos](#-estructura-de-archivos-generados)  
+9. [Tecnologías](#-tecnologías)  
+10. [Pruebas](#-tests)  
+11. [Contribuir](#-contribuir)  
+12. [Licencia](#-licencia)
+
+---
+
+## 🧠 Funcionalidades
+- 🔎 **Obtención de eventos** culturales mediante la API de Ticketmaster.  
+- 🚌 **Obtención de trayectos** y tarifas mediante la API de BlaBlaCar.  
+- 📨 **Publicación** de ambos flujos como mensajes JSON en ActiveMQ (topics `Events` y `Trips`).  
+- 💾 **Persistencia** de todos los mensajes en archivos `.events` y en una base de datos SQLite integrada.  
+- 🖥️ **Visualización** de datos históricos gracias a una GUI Java Swing.
+
+---
+
+## 🧱 Arquitectura
+
+- **Arquitectura Hexagonal (Ports & Adapters)**.  
+- **Clean Code / LAMDA**: métodos ≤ 10 líneas y clases con responsabilidad única.  
+- Separación total entre dominio e infraestructura.
 
 ---
 
 ## 📦 Módulos del Proyecto
 
+| Módulo                | Descripción (responsabilidad única)                   |
+|-----------------------|-------------------------------------------------------|
+| **blablacar-feeder**  | Lee viajes de BlaBlaCar → publica en topic **Trips**  |
+| **ticketmaster-feeder**| Lee eventos de Ticketmaster → publica en topic **Events** |
+| **event-store-builder**| Suscriptor duradero de `Trips` y `Events` → guarda en archivos |
+| **business-unit**     | Consume mensajes, persiste en SQLite y lanza la GUI   |
+
+---
+
+## ⚙️ Requisitos Previos
+
+- **Java 21**  
+- **Apache Maven 3.6+**  
+- **ActiveMQ** corriendo en `tcp://localhost:61616`  
+- Conexión a Internet (para las APIs)  
+- **SQLite** embebido (no requiere instalación)
+
+---
+
+## 🛠 Instalación y Compilación
+
+```bash
+git clone https://github.com/tu-usuario/event-and-go.git
+cd event-and-go
+mvn clean install
 ```
-Proyecto/
-├── blablacar-feeder/
-├── ticketmaster-feeder/
-├── event-store-builder/
-└── eventstore/  ← generado automáticamente por el suscriptor
-```
 
 ---
 
-## 🔗 Tecnologías usadas
+## 🌍 Variables de entorno
 
-- Java 21
-- ActiveMQ 5.15.12
-- Gson 2.10
-- SQLite JDBC
-- IntelliJ IDEA
+| Variable | Descripción | Ejemplo |
+|----------|-------------|---------|
+| `BLABLACAR_API_KEY` | Token de la API de BlaBlaCar | `abc123` |
+| `BLABLACAR_API_URL` | Endpoint de paradas | `https://bus-api.blablacar.com/v3/stops` |
+| `BLABLACAR_API_FARES` | Endpoint de tarifas | `https://bus-api.blablacar.com/v3/fares` |
+| `TICKETMASTER_API_KEY` | Token de Ticketmaster | `xyz789` |
+| `TICKETMASTER_API_URL` | Endpoint de eventos | `https://app.ticketmaster.com/discovery/v2/events.json` |
+| `ACTIVEMQ_URL` | URL del broker ActiveMQ | `tcp://localhost:61616` |
 
----
-
-## ⚙️ Estructura General
-
-| Módulo               | Rol                                                                                                                                 |
-|----------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| `blablacar-feeder`   | Conecta a la API de BlaBlaCar, filtra las paradas populares, y publica eventos JSON al topic `prediction.Stations`.                |
-| `ticketmaster-feeder`| Conecta a la API de Ticketmaster, filtra los eventos relevantes, y publica eventos JSON al topic `prediction.Events`.              |
-| `event-store-builder`| Se suscribe de forma duradera a los topics y guarda los eventos en archivos `.events`, organizados por fecha, fuente y tipo.       |
+Se pueden suministrar vía `application.properties`, `.env` o como argumentos de línea.
 
 ---
 
-## 📤 Formato del Evento Publicado
+## 📦 Formatos de mensajes publicados
+
+### Evento BlaBlaCar (`Trips`)
 
 ```json
 {
-  "ts": "2025-04-11T12:00:00Z",
+  "ts": "2025-05-17T10:00:00Z",
   "ss": "feeder-blablacar",
-  "id": "ESMAD",
-  "name": "Madrid",
-  "latitude": 40.4168,
-  "longitude": -3.7038
+  "departure_place": "Madrid",
+  "arrival_place": "Barcelona",
+  "departure_time": "2025-05-21T15:30:00Z",
+  "price": 22.5,
+  "seats": 2
+}
+```
+
+### Evento Ticketmaster (`Events`)
+
+```json
+{
+  "ts": "2025-05-17T10:15:00Z",
+  "ss": "feeder-ticketmaster",
+  "id": "XKCD1234",
+  "name": "Concierto Coldplay",
+  "date": "2025-05-25",
+  "time": "20:00",
+  "city": "Valencia"
 }
 ```
 
 ---
 
-## 🚀 ¿Cómo ejecutar?
+## 🚀 Cómo ejecutar
 
-### 1. Lanzar ActiveMQ
+### 1. Iniciar ActiveMQ
 
-Instalar desde [activemq.apache.org](https://activemq.apache.org/components/classic/download/)  
-Y ejecutar:
+Descarga en <https://activemq.apache.org/components/classic/download/>
 
-```bash
-# Windows
+Windows:
+```
 ./bin/win64/activemq.bat start
-
-# Linux/Mac
+```
+Linux / macOS:
+```
 ./bin/activemq start
 ```
+### Verificar que está activo
 
+Abrir un navegador y entrar en: <http://localhost:8161/>
+>(Si es la primera vez, usuario admin / contraseña admin).
 ---
 
-### 2. Ejecutar el suscriptor (event-store-builder)
+### 2. Arrancar **event-store-builder**
 
-```bash
+```
 cd event-store-builder
-# Ejecutar EventStoreBuilder.java
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.eventstorebuilder.Main \
+ -Dexec.args="tcp://localhost:61616 event-store-builder/Trips event-store-builder/Events"
 ```
-
-Esto dejará escuchando los eventos entrantes.
 
 ---
 
-### 3. Ejecutar un feeder
+### 3. Arrancar los feeders
 
-- Para BlaBlaCar:
-
-```bash
+#### BlaBlaCar Feeder
+```
 cd blablacar-feeder
-# Ejecutar MainPublisher.java
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.blablacarfeeder.Main \
+ -Dexec.args="https://bus-api.blablacar.com/v3/stops https://bus-api.blablacar.com/v3/fares $BLABLACAR_API_KEY tcp://localhost:61616"
 ```
 
-- Para Ticketmaster:
-
-```bash
+#### Ticketmaster Feeder
+```
 cd ticketmaster-feeder
-# Ejecutar MainPublisher.java
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.ticketmasterfeeder.Main \
+ -Dexec.args="https://app.ticketmaster.com/discovery/v2/events.json $TICKETMASTER_API_KEY tcp://localhost:61616"
 ```
-
-Cada uno publicará eventos filtrados al broker.
 
 ---
 
-### 4. Ver los archivos generados
+### 4. Arrancar **business-unit**
+
+Procesador SQLite:
+```
+cd business-unit
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.Controller \
+ -Dexec.args="tcp://localhost:61616 datamart.db"
+```
+
+GUI:
+```
+mvn exec:java -Dexec.mainClass=es.ulpgc.dacd.business.EventViewerGUI \
+ -Dexec.args="datamart.db"
+```
+
+---
+
+## 🗃 Estructura de archivos generados
+
+```
+event-store-builder/
+├── Trips/
+│   └── feeder-blablacar/
+│       └── YYYYMMDD.events
+└── Events/
+    └── feeder-ticketmaster/
+        └── YYYYMMDD.events
+
+business-unit/
+└── datamart.db
+```
+> Cada línea de un `.events` es un objeto JSON serializado.
+
+---
+
+## 🛠️ Tecnologías
+
+- Java 21 · Maven  
+- ActiveMQ  
+- SQLite (embebido)  
+- Java Swing  
+- GSON  
+
+---
+
+## 🧪 Tests
 
 ```bash
-eventstore/
-├── prediction.Stations/
-│   └── feeder-blablacar/
-│       └── 20250411.events
-└── prediction.Events/
-    └── feeder-ticketmaster/
-        └── 20250411.events
+mvn test
 ```
+Se ejecutan tests unitarios (JUnit) en cada módulo.
 
----
 
-## 📂 .env esperado por cada feeder
-
-### BlaBlaCar:
-
-```
-BLABLACAR_API_KEY=tu_clave_aqui
-BLABLACAR_API_URL=https://bus-api.blablacar.com/v3/stops
-```
-
-### Ticketmaster:
-
-```
-TICKETMASTER_API_KEY=tu_clave_aqui
-TICKETMASTER_API_URL=https://app.ticketmaster.com/discovery/v2/events.json
-```
-
----
-
-## 🧪 Pruebas realizadas
-
-- Se verificó que ambos feeders publican eventos filtrados al broker correctamente.
-- El `event-store-builder` los guarda de forma organizada.
-- Se han probado errores de red y conexión al broker con manejo adecuado de excepciones.
-
----
-
-## ✅ Estado actual
-
-- [x] Feeders funcionando
-- [x] Eventos publicados a ActiveMQ
-- [x] Suscripción duradera funcionando
-- [x] Archivos `.events` organizados correctamente
-- [x] Consola muestra eventos recibidos
-
----
-
----
