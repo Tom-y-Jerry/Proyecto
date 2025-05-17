@@ -26,7 +26,7 @@
 6. [Requisitos previos](#requisitos-previos)
 7. [Instalación y compilación](#instalación-y-compilación)
 8. [Variables de entorno](#variables-de-entorno)
-9. [Cómo ejecutar](#cómo-ejecutar)
+9. [Cómo ejecutar](#cómo-ejecutar-el-proyecto)
 10. [Flujo de la GUI paso a paso](#flujo-de-la-gui-paso-a-paso)
 11. [Estructura de archivos generados](#estructura-de-archivos-generados)
 12. [Tecnologías](#tecnologías)
