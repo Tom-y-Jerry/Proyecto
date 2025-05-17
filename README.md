@@ -12,8 +12,8 @@
 
 | Nombre | GitHub |
 |--------|--------|
-| Carlota Ayala | [@carlotaayala](https://github.com/carlotaayala) |
-| Lucía Cruz    | [@luciacruz](https://github.com/luciacruz) |
+| Carlota Ayala Pérez | [@carlotaayala](https://github.com/carlotaayala) |
+| Lucía Cruz Toste  | [@luciacruz](https://github.com/luciacruz) |
 
 ---
 
