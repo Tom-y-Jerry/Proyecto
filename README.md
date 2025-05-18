@@ -144,7 +144,7 @@ mvn clean install
 
 ### 1. Iniciar ActiveMQ
 
-Descarga el .zip en <https://activemq.apache.org/components/classic/download/classic-05-17-01> y para ejecutarlo dependiendo tu sistema se ejecuta con una instrucción diferente.
+Descarga el .zip en <https://activemq.apache.org/components/classic/download/classic-05-17-06> y para ejecutarlo dependiendo tu sistema se ejecuta con una instrucción diferente.
 
 Antes de ejecutar esta instrucción desde la consola tienes que estar dentro de la carpeta.
 

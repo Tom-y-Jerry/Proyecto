@@ -4,30 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c93e152-fc4e-4db5-a0c4-ee84e2a54999" name="Changes" comment="Change the origins id from blablacar">
-      <change beforePath="$PROJECT_DIR$/bussines-unit/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/datamart/SQLiteInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/datamart/SQLiteInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/datamart/SQLiteSaver.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/datamart/SQLiteSaver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/domain/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/domain/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/domain/Trip.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/domain/Trip.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/gui/EventLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/ActiveMQConnectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/ActiveMQConnectionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/ActiveMQConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/ActiveMQConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/HistoricalEventLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/HistoricalEventLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/Processor/BlaBlaCarTripProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/Processor/BlaBlaCarTripProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/Processor/TicketmasterEventProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/Processor/TicketmasterEventProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/ports/DatamartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/ports/DatamartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/ports/EventProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/ports/EventProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/resources/bus.png" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/resources/bus.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/resources/logback.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/test/java/es/ulpgc/dacd/ActiveMQConsumerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/test/java/es/ulpgc/dacd/ActiveMQConsumerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/test/java/es/ulpgc/dacd/BlaBlaCarTripProcessorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/test/java/es/ulpgc/dacd/BlaBlaCarTripProcessorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/test/java/es/ulpgc/dacd/SQLiteSaverTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/test/java/es/ulpgc/dacd/SQLiteSaverTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bussines-unit/src/test/java/es/ulpgc/dacd/TicketMasterEventProcessorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/test/java/es/ulpgc/dacd/TicketMasterEventProcessorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="5c93e152-fc4e-4db5-a0c4-ee84e2a54999" name="Changes" comment="Merge final version of develop into master">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -328,23 +306,7 @@
       <workItem from="1747497712451" duration="2205000" />
       <workItem from="1747571804642" duration="118000" />
       <workItem from="1747583523817" duration="2834000" />
-      <workItem from="1747587552554" duration="557000" />
-    </task>
-    <task id="LOCAL-00043" summary="add main to repository">
-      <option name="closed" value="true" />
-      <created>1746628946584</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1746628946584</updated>
-    </task>
-    <task id="LOCAL-00044" summary="add duration_minutes column to trips table and update insert method in Datamart">
-      <option name="closed" value="true" />
-      <created>1746786682448</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1746786682448</updated>
+      <workItem from="1747587552554" duration="915000" />
     </task>
     <task id="LOCAL-00045" summary="compute trip duration in minutes and store it in Datamart">
       <option name="closed" value="true" />
@@ -722,7 +684,23 @@
       <option name="project" value="LOCAL" />
       <updated>1747586995233</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="Merge final version of develop into master">
+      <option name="closed" value="true" />
+      <created>1747588248467</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1747588248469</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Merge final version of develop into master">
+      <option name="closed" value="true" />
+      <created>1747588321420</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1747588321420</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -772,7 +750,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="extract broker connection logic into reusable EventBrokerConnection class" />
     <MESSAGE value="extract EventListener with non-durable subscriber for simplified testing" />
     <MESSAGE value="implement FileEventStore to persist events by topic and source" />
     <MESSAGE value="add main class with dynamic topic subscription via command-line args" />
@@ -797,6 +774,7 @@
     <MESSAGE value="tests created" />
     <MESSAGE value="refactorized" />
     <MESSAGE value="Change the origins id from blablacar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change the origins id from blablacar" />
+    <MESSAGE value="Merge final version of develop into master" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge final version of develop into master" />
   </component>
 </project>
