@@ -155,7 +155,7 @@ public class EventViewerGUI extends JFrame {
     }
 
     private JLabel createImageLabel() {
-        ImageIcon icon = new ImageIcon("bussines-unit/src/main/resources/bus.png");
+        ImageIcon icon = new ImageIcon("business-unit/src/main/resources/bus.png");
         Image scaled = icon.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
         JLabel label = new JLabel(new ImageIcon(scaled));
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
