@@ -63,6 +63,21 @@ Cada módulo es independiente, se comunican a través del broker de mensajes, y 
 
 
 ---
+## Diagrama de cajas 
+![Diagrama de cajas](https://github.com/Tom-y-Jerry/Proyecto/blob/master/Diagrama%20de%20cajas.svg)
+---
+## Diagrama feederss
+![Diagrama BlaBLacar](https://github.com/Tom-y-Jerry/Proyecto/blob/master/blablacar-feeder.svg)
+![Diagrama TicketMaster](https://github.com/Tom-y-Jerry/Proyecto/blob/master/ticketmaster-feeder.svg)
+---
+## Diagrama business unit
+![Diagrama TicketMaster](https://github.com/Tom-y-Jerry/Proyecto/blob/master/business-unit.svg)
+---
+## Diagrama event store builder
+![Diagrama TicketMaster](https://github.com/Tom-y-Jerry/Proyecto/blob/master/event-store-builder.svg)
+
+
+---
 
 ## Módulos del proyecto
 | Módulo | Patrón | Responsabilidad |
