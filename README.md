@@ -91,7 +91,7 @@ Cada módulo es independiente, se comunican a través del broker de mensajes, y 
 ## Instalación y Compilación
 
 ```bash
-git clone https://github.com/Tom-y-Jerry/Proyecto/tree/master
+git clone https://github.com/Tom-y-Jerry/Proyecto
 cd Proyecto
 mvn clean install
 ```
