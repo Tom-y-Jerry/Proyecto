@@ -1,0 +1,41 @@
+Index: ticketmaster-feeder/src/main/java/es/ulpgc/dacd/adapters/TicketMasterEventProvider.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.ulpgc.dacd.adapters;\r\n\r\nimport com.google.gson.*;\r\nimport es.ulpgc.dacd.domain.Event;\r\nimport es.ulpgc.dacd.ports.EventProvider;\r\nimport okhttp3.OkHttpClient;\r\nimport okhttp3.Request;\r\nimport okhttp3.Response;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class TicketMasterEventProvider implements EventProvider {\r\n    private final OkHttpClient client = new OkHttpClient();\r\n    private final Gson gson = new Gson();\r\n\r\n    private final String eventsUrl;\r\n    private final String apiKey;\r\n\r\n    public TicketMasterEventProvider(String eventsUrl, String apiKey) {\r\n        this.eventsUrl = eventsUrl;\r\n        this.apiKey = apiKey;\r\n    }\r\n\r\n    @Override\r\n    public List<Event> provide() {\r\n        List<Event> events = new ArrayList<>();\r\n\r\n        try {\r\n            Request request = new Request.Builder()\r\n                    .url(eventsUrl + \"?apikey=\" + apiKey + \"&countryCode=GB&size=200\")\r\n                    .build();\r\n\r\n            Response response = client.newCall(request).execute();\r\n            String body = response.body().string();\r\n\r\n            JsonObject json = gson.fromJson(body, JsonObject.class);\r\n            JsonArray eventsArray = json.getAsJsonObject(\"_embedded\").getAsJsonArray(\"events\");\r\n\r\n            for (JsonElement e : eventsArray) {\r\n                JsonObject obj = e.getAsJsonObject();\r\n\r\n                String id = obj.get(\"id\").getAsString();\r\n                String name = obj.get(\"name\").getAsString();\r\n                String date = obj.getAsJsonObject(\"dates\")\r\n                        .getAsJsonObject(\"start\")\r\n                        .get(\"localDate\").getAsString();\r\n\r\n                String city = obj.getAsJsonObject(\"_embedded\")\r\n                        .getAsJsonArray(\"venues\")\r\n                        .get(0).getAsJsonObject()\r\n                        .getAsJsonObject(\"city\")\r\n                        .get(\"name\").getAsString();\r\n\r\n                events.add(new Event(id, name, date, city));\r\n            }\r\n\r\n        } catch (Exception e) {\r\n            System.err.println(\"Error al obtener eventos: \" + e.getMessage());\r\n        }\r\n\r\n        return events;\r\n    }\r\n}\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ticketmaster-feeder/src/main/java/es/ulpgc/dacd/adapters/TicketMasterEventProvider.java b/ticketmaster-feeder/src/main/java/es/ulpgc/dacd/adapters/TicketMasterEventProvider.java
+--- a/ticketmaster-feeder/src/main/java/es/ulpgc/dacd/adapters/TicketMasterEventProvider.java	(revision fd5f1a8033d29d30704a40e4dc2ee64ae24e4fd3)
++++ b/ticketmaster-feeder/src/main/java/es/ulpgc/dacd/adapters/TicketMasterEventProvider.java	(date 1746401144009)
+@@ -2,7 +2,7 @@
+ 
+ import com.google.gson.*;
+ import es.ulpgc.dacd.domain.Event;
+-import es.ulpgc.dacd.ports.EventProvider;
++import es.ulpgc.dacd.ports.EventsProvider;
+ import okhttp3.OkHttpClient;
+ import okhttp3.Request;
+ import okhttp3.Response;
+@@ -10,14 +10,14 @@
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+-public class TicketMasterEventProvider implements EventProvider {
++public class TicketmasterEventProvider implements EventsProvider {
+     private final OkHttpClient client = new OkHttpClient();
+     private final Gson gson = new Gson();
+ 
+     private final String eventsUrl;
+     private final String apiKey;
+ 
+-    public TicketMasterEventProvider(String eventsUrl, String apiKey) {
++    public TicketmasterEventProvider(String eventsUrl, String apiKey) {
+         this.eventsUrl = eventsUrl;
+         this.apiKey = apiKey;
+     }
+@@ -63,4 +63,3 @@
+     }
+ }
+ 
+-

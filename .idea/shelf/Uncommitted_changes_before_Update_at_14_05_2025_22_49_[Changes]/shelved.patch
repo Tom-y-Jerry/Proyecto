@@ -1,0 +1,78 @@
+Index: blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/infrastructure/BlablacarApiClient.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.ulpgc.dacd.blablacarfeeder.infrastructure;\r\nimport com.google.gson.*;\r\nimport okhttp3.*;\r\nimport java.io.IOException;\r\nimport java.time.LocalDate;\r\nimport java.util.*;\r\n\r\npublic class BlablacarApiClient {\r\n    private final OkHttpClient client = new OkHttpClient();\r\n    private final Gson gson = new Gson();\r\n\r\n    private final String stopsUrl;\r\n    private final String faresUrl;\r\n    private final String apiKey;\r\n\r\n    private final List<Integer> originIds = List.of(11, 90, 16, 298, 3, 914, 1671, 1669, 1612, 1590, 1579);\r\n\r\n    public BlablacarApiClient(String stopsUrl, String faresUrl, String apiKey) {\r\n        this.stopsUrl = stopsUrl;\r\n        this.faresUrl = faresUrl;\r\n        this.apiKey = apiKey;\r\n    }\r\n\r\n    public JsonArray fetchStops() throws IOException {\r\n        Request request = new Request.Builder()\r\n                .url(stopsUrl)\r\n                .addHeader(\"Authorization\", \"Token \" + apiKey)\r\n                .build();\r\n        try (Response response = client.newCall(request).execute()) {\r\n            return gson.fromJson(response.body().string(), JsonObject.class).getAsJsonArray(\"stops\");\r\n        }\r\n    }\r\n\r\n    public List<JsonObject> fetchFare() throws IOException {\r\n        String Date = LocalDate.now().toString();\r\n        List<JsonObject> responses = new ArrayList<>();\r\n\r\n        for (int originId : originIds) {\r\n            for (int destinationId : originIds) {\r\n                if (originId == destinationId) continue;\r\n\r\n                String url = faresUrl + \"?origin_id=\" + originId + \"&destination_id=\" + destinationId + \"&date=\" + Date;\r\n\r\n                Request request = new Request.Builder()\r\n                        .url(url)\r\n                        .addHeader(\"Authorization\", \"Token \" + apiKey)\r\n                        .build();\r\n\r\n                try (Response response = client.newCall(request).execute()) {\r\n                    if (!response.isSuccessful()) {\r\n                        System.err.println(\"Error con origen \" + originId + \" y destino \" + destinationId + \": \" + response.code());\r\n                        continue;\r\n                    }\r\n\r\n                    JsonArray fares = gson.fromJson(response.body().string(), JsonObject.class).getAsJsonArray(\"fares\");\r\n\r\n                    if (!fares.isEmpty()) {\r\n                        responses.add(fares.get(0).getAsJsonObject());\r\n                    }\r\n                }\r\n            }\r\n        }\r\n\r\n        return responses;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/infrastructure/BlablacarApiClient.java b/blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/infrastructure/BlablacarApiClient.java
+--- a/blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/infrastructure/BlablacarApiClient.java	(revision c381933c2c7bb65cf40aa0f32a7a558c7621f114)
++++ b/blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/infrastructure/BlablacarApiClient.java	(date 1747254226036)
+@@ -1,6 +1,8 @@
+ package es.ulpgc.dacd.blablacarfeeder.infrastructure;
++
+ import com.google.gson.*;
+ import okhttp3.*;
++
+ import java.io.IOException;
+ import java.time.LocalDate;
+ import java.util.*;
+@@ -13,8 +15,6 @@
+     private final String faresUrl;
+     private final String apiKey;
+ 
+-    private final List<Integer> originIds = List.of(11, 90, 16, 298, 3, 914, 1671, 1669, 1612, 1590, 1579);
+-
+     public BlablacarApiClient(String stopsUrl, String faresUrl, String apiKey) {
+         this.stopsUrl = stopsUrl;
+         this.faresUrl = faresUrl;
+@@ -31,36 +31,21 @@
+         }
+     }
+ 
+-    public List<JsonObject> fetchFare() throws IOException {
+-        String Date = LocalDate.now().toString();
+-        List<JsonObject> responses = new ArrayList<>();
+-
+-        for (int originId : originIds) {
+-            for (int destinationId : originIds) {
+-                if (originId == destinationId) continue;
+-
+-                String url = faresUrl + "?origin_id=" + originId + "&destination_id=" + destinationId + "&date=" + Date;
++    public Optional<JsonObject> fetchFare(int originId, int destinationId) throws IOException {
++        String date = LocalDate.now().toString();
++        String url = faresUrl + "?origin_id=" + originId + "&destination_id=" + destinationId + "&date=" + date;
+ 
+-                Request request = new Request.Builder()
+-                        .url(url)
+-                        .addHeader("Authorization", "Token " + apiKey)
+-                        .build();
++        Request request = new Request.Builder()
++                .url(url)
++                .addHeader("Authorization", "Token " + apiKey)
++                .build();
+ 
+-                try (Response response = client.newCall(request).execute()) {
+-                    if (!response.isSuccessful()) {
+-                        System.err.println("Error con origen " + originId + " y destino " + destinationId + ": " + response.code());
+-                        continue;
+-                    }
++        try (Response response = client.newCall(request).execute()) {
++            JsonArray fares = gson.fromJson(response.body().string(), JsonObject.class)
++                    .getAsJsonArray("fares");
+ 
+-                    JsonArray fares = gson.fromJson(response.body().string(), JsonObject.class).getAsJsonArray("fares");
+-
+-                    if (!fares.isEmpty()) {
+-                        responses.add(fares.get(0).getAsJsonObject());
+-                    }
+-                }
+-            }
++            if (fares.isEmpty()) return Optional.empty();
++            return Optional.of(fares.get(0).getAsJsonObject());
+         }
+-
+-        return responses;
+     }
+ }
+\ No newline at end of file

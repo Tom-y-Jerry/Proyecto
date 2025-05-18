@@ -1,0 +1,13 @@
+<changelist name="Uncommitted_changes_before_Update_at_11_05_2025_22_39_[Changes]" date="1746999565463" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_05_2025_22_39_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 11/05/2025 22:39 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="eventstore/prediction.Events/ticketmaster/20250507.events" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="eventstore/prediction.Events/feeder-ticketmaster/20250507.events" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="eventstore/prediction.Trips/feeder-blablacar/20250507.events" />
+  </binary>
+</changelist>

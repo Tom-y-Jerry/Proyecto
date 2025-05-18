@@ -1,0 +1,802 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5c93e152-fc4e-4db5-a0c4-ee84e2a54999" name="Changes" comment="Change the origins id from blablacar">
+      <change beforePath="$PROJECT_DIR$/bussines-unit/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/datamart/SQLiteInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/datamart/SQLiteInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/datamart/SQLiteSaver.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/datamart/SQLiteSaver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/domain/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/domain/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/domain/Trip.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/domain/Trip.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/gui/EventLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/ActiveMQConnectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/ActiveMQConnectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/ActiveMQConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/ActiveMQConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/HistoricalEventLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/HistoricalEventLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/Processor/BlaBlaCarTripProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/Processor/BlaBlaCarTripProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/Processor/TicketmasterEventProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/adapters/Processor/TicketmasterEventProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/ports/DatamartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/ports/DatamartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/ports/EventProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/java/es/ulpgc/dacd/business/infrastructure/ports/EventProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/resources/bus.png" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/resources/bus.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/test/java/es/ulpgc/dacd/ActiveMQConsumerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/test/java/es/ulpgc/dacd/ActiveMQConsumerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/test/java/es/ulpgc/dacd/BlaBlaCarTripProcessorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/test/java/es/ulpgc/dacd/BlaBlaCarTripProcessorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/test/java/es/ulpgc/dacd/SQLiteSaverTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/test/java/es/ulpgc/dacd/SQLiteSaverTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bussines-unit/src/test/java/es/ulpgc/dacd/TicketMasterEventProcessorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/business-unit/src/test/java/es/ulpgc/dacd/TicketMasterEventProcessorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="develop" />
+                <branch-info repo="$PROJECT_DIR$" source="develop.BlaBlaCar" />
+                <branch-info repo="$PROJECT_DIR$" source="develop.TicketMaster" />
+              </list>
+            </value>
+          </entry>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/develop" />
+                <branch-info repo="$PROJECT_DIR$" source="origin/develop.BlaBlaCar" />
+                <branch-info repo="$PROJECT_DIR$" source="origin/develop.TicketMaster" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;CarlotaAyala&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Tom-y-Jerry/Proyecto.git&quot;,
+    &quot;accountId&quot;: &quot;25a296cd-2ff4-43d1-96a5-d02338c6b164&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2wJ2wG7HgCizb7qJXY7yTdtN6sY" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.BlaBlaCarFeeder.executor": "Run",
+    "Application.BlablaCarFeeder.executor": "Run",
+    "Application.Business-Unit.executor": "Run",
+    "Application.BussinesUnit.executor": "Run",
+    "Application.EventStoreBuilder.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.PrintStationsTest.executor": "Run",
+    "Application.PublisherMain.executor": "Run",
+    "Application.SchedulerMain.executor": "Run",
+    "Application.TicketMasterFeeder.executor": "Run",
+    "Application.TripBuilderTestMain.executor": "Run",
+    "JUnit.ActiveMqConnectionManagerTest.executor": "Run",
+    "JUnit.ActiveMqEventStorageTest.executor": "Run",
+    "JUnit.ActiveMqTripStorageTest.executor": "Run",
+    "JUnit.BlablacarApiClientTest.executor": "Run",
+    "JUnit.BlablacarTripProviderIntegrationTest.executor": "Run",
+    "JUnit.BlablacarTripProviderTest.executor": "Run",
+    "JUnit.ControllerTest.executor": "Run",
+    "JUnit.EventBrokerConnectionTest.executor": "Run",
+    "JUnit.EventTest.executor": "Run",
+    "JUnit.FileEventStoreTest.executor": "Run",
+    "JUnit.TicketMasterEventParserTest.executor": "Run",
+    "JUnit.TripTest.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/carlo/Desktop/Proyecto/event-store-builder/src/test/java",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/carlo/Desktop/Proyecto/bussines-unit/src/main/java/es/ulpgc/dacd/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15039062",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="es.ulpgc.dacd" />
+      <recent name="es.ulpgc.dacd.adapters" />
+      <recent name="es.ulpgc.dacd.ports" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\carlo\Desktop\Proyecto\event-store-builder\src\test\java" />
+      <recent name="C:\Users\carlo\Desktop\Proyecto\blablacar-feeder\src\test\java" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\carlo\Desktop\Proyecto\event-store-builder\src\test\java" />
+      <recent name="C:\Users\carlo\Desktop\Proyecto\blablacar-feeder\src" />
+      <recent name="C:\Users\carlo\Desktop\Proyecto\blablacar-feeder\src\main\java\es\ulpgc\dacd\" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="es.ulpgc.dacd.infrastructure" />
+      <recent name="es.ulpgc.dacd" />
+      <recent name="es.ulpgc.dacd.adapters" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.BussinesUnit">
+    <configuration name="BlaBlaCarFeeder" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="es.ulpgc.dacd.blablacarfeeder.Main" />
+      <module name="blablacar-feeder" />
+      <option name="PROGRAM_PARAMETERS" value="https://bus-api.blablacar.com/v3/stops https://bus-api.blablacar.com/v3/fares HyDMmK8DrlWpta_qQyIBcw tcp://localhost:61616" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es.ulpgc.dacd.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BussinesUnit" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="es.ulpgc.dacd.business.Main" />
+      <module name="business-unit" />
+      <option name="PROGRAM_PARAMETERS" value="tcp://localhost:61616 datamart.db" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es.ulpgc.dacd.business.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EventStoreBuilder" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="es.ulpgc.dacd.eventstorebuilder.Main" />
+      <module name="event-store-builder" />
+      <option name="PROGRAM_PARAMETERS" value="tcp://localhost:61616 event-store-builder Trips Events" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es.ulpgc.dacd.eventstorebuilder.infrastructure.adapters.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="true" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TicketMasterFeeder" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="es.ulpgc.dacd.ticketmasterfeeder.Main" />
+      <module name="ticketmaster-feeder" />
+      <option name="PROGRAM_PARAMETERS" value="https://app.ticketmaster.com/discovery/v2/events.json n6I3H97qoiP7TcPffFgkUiNNPwmXMb1v tcp://localhost:61616" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es.ulpgc.dacd.business.infrastructure.adapters.Processor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.BussinesUnit" />
+      <item itemvalue="Application.BlaBlaCarFeeder" />
+      <item itemvalue="Application.EventStoreBuilder" />
+      <item itemvalue="Application.TicketMasterFeeder" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5c93e152-fc4e-4db5-a0c4-ee84e2a54999" name="Changes" comment="" />
+      <created>1745745594462</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1745745594462</updated>
+      <workItem from="1745745596520" duration="431000" />
+      <workItem from="1745758942421" duration="258000" />
+      <workItem from="1745836874578" duration="83000" />
+      <workItem from="1745844490125" duration="38000" />
+      <workItem from="1745919231171" duration="6807000" />
+      <workItem from="1745947529816" duration="2268000" />
+      <workItem from="1745952428667" duration="6628000" />
+      <workItem from="1746011067978" duration="12068000" />
+      <workItem from="1746033321787" duration="16806000" />
+      <workItem from="1746098534040" duration="7809000" />
+      <workItem from="1746118661731" duration="121000" />
+      <workItem from="1746121971858" duration="34000" />
+      <workItem from="1746190055869" duration="60000" />
+      <workItem from="1746351059215" duration="1299000" />
+      <workItem from="1746355414534" duration="15000" />
+      <workItem from="1746356344145" duration="806000" />
+      <workItem from="1746397001716" duration="1601000" />
+      <workItem from="1746398617668" duration="73000" />
+      <workItem from="1746398706908" duration="4490000" />
+      <workItem from="1746436452834" duration="14740000" />
+      <workItem from="1746463165009" duration="111000" />
+      <workItem from="1746463437683" duration="1808000" />
+      <workItem from="1746605175703" duration="10007000" />
+      <workItem from="1746628885658" duration="4588000" />
+      <workItem from="1746648670723" duration="256000" />
+      <workItem from="1746700686557" duration="93000" />
+      <workItem from="1746784821135" duration="13026000" />
+      <workItem from="1746823102174" duration="1020000" />
+      <workItem from="1746872803303" duration="370000" />
+      <workItem from="1746999532303" duration="3451000" />
+      <workItem from="1747088756896" duration="16791000" />
+      <workItem from="1747141454448" duration="2710000" />
+      <workItem from="1747149119665" duration="3438000" />
+      <workItem from="1747156558365" duration="789000" />
+      <workItem from="1747159696145" duration="966000" />
+      <workItem from="1747214088594" duration="15985000" />
+      <workItem from="1747253189478" duration="82000" />
+      <workItem from="1747254053501" duration="227000" />
+      <workItem from="1747258140153" duration="190000" />
+      <workItem from="1747259374769" duration="628000" />
+      <workItem from="1747296198896" duration="1905000" />
+      <workItem from="1747309702475" duration="44000" />
+      <workItem from="1747318376176" duration="8089000" />
+      <workItem from="1747329587264" duration="8446000" />
+      <workItem from="1747390892091" duration="7259000" />
+      <workItem from="1747401531347" duration="221000" />
+      <workItem from="1747472659472" duration="12821000" />
+      <workItem from="1747495297580" duration="643000" />
+      <workItem from="1747497712451" duration="2205000" />
+      <workItem from="1747571804642" duration="118000" />
+      <workItem from="1747583523817" duration="2834000" />
+      <workItem from="1747587552554" duration="557000" />
+    </task>
+    <task id="LOCAL-00043" summary="add main to repository">
+      <option name="closed" value="true" />
+      <created>1746628946584</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1746628946584</updated>
+    </task>
+    <task id="LOCAL-00044" summary="add duration_minutes column to trips table and update insert method in Datamart">
+      <option name="closed" value="true" />
+      <created>1746786682448</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1746786682448</updated>
+    </task>
+    <task id="LOCAL-00045" summary="compute trip duration in minutes and store it in Datamart">
+      <option name="closed" value="true" />
+      <created>1746786703499</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1746786703499</updated>
+    </task>
+    <task id="LOCAL-00046" summary="define DatamartService interface to decouple persistence logic">
+      <option name="closed" value="true" />
+      <created>1746789623620</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1746789623620</updated>
+    </task>
+    <task id="LOCAL-00047" summary="restructure business-unit into clean architecture">
+      <option name="closed" value="true" />
+      <created>1746789684618</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1746789684618</updated>
+    </task>
+    <task id="LOCAL-00048" summary="add SQLiteDatamart implementation with schema and insert logic">
+      <option name="closed" value="true" />
+      <created>1746789710633</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1746789710633</updated>
+    </task>
+    <task id="LOCAL-00049" summary="isolate BlaBlaCar and Ticketmaster processors implementing EventProcessor">
+      <option name="closed" value="true" />
+      <created>1746789779119</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1746789779119</updated>
+    </task>
+    <task id="LOCAL-00050" summary="update Main to wire clean architecture components and launch GUI">
+      <option name="closed" value="true" />
+      <created>1746789807857</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1746789807858</updated>
+    </task>
+    <task id="LOCAL-00051" summary="relocate Event and Trip models to domain layer">
+      <option name="closed" value="true" />
+      <created>1746789877397</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1746789877397</updated>
+    </task>
+    <task id="LOCAL-00052" summary="move HistoricalEventLoader to messaging infrastructure">
+      <option name="closed" value="true" />
+      <created>1746789897782</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1746789897783</updated>
+    </task>
+    <task id="LOCAL-00053" summary="extract method responsibilities">
+      <option name="closed" value="true" />
+      <created>1747002534467</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1747002534467</updated>
+    </task>
+    <task id="LOCAL-00054" summary="modularize EventViewerGUI constructor and layout setup">
+      <option name="closed" value="true" />
+      <created>1747002586897</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1747002586897</updated>
+    </task>
+    <task id="LOCAL-00055" summary="simplify SQLiteDatamart and isolate SQL creation">
+      <option name="closed" value="true" />
+      <created>1747002614413</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1747002614415</updated>
+    </task>
+    <task id="LOCAL-00056" summary="clean up ProcessTicketmasterEvent with focused logic">
+      <option name="closed" value="true" />
+      <created>1747002646426</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1747002646426</updated>
+    </task>
+    <task id="LOCAL-00057" summary="simplify ProcessBlaBlaCarTrip and extract duration logic">
+      <option name="closed" value="true" />
+      <created>1747002664949</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1747002664949</updated>
+    </task>
+    <task id="LOCAL-00058" summary="split responsibilities">
+      <option name="closed" value="true" />
+      <created>1747002711536</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1747002711536</updated>
+    </task>
+    <task id="LOCAL-00059" summary="improve readability and structure">
+      <option name="closed" value="true" />
+      <created>1747002727187</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1747002727187</updated>
+    </task>
+    <task id="LOCAL-00060" summary="ensure events are published to correct topic">
+      <option name="closed" value="true" />
+      <created>1747139555808</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1747139555809</updated>
+    </task>
+    <task id="LOCAL-00061" summary="add logging to verify trip execution and publication">
+      <option name="closed" value="true" />
+      <created>1747139608119</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1747139608119</updated>
+    </task>
+    <task id="LOCAL-00062" summary="ensure Event model is aligned with incoming JSON format">
+      <option name="closed" value="true" />
+      <created>1747139627930</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1747139627930</updated>
+    </task>
+    <task id="LOCAL-00063" summary="extract broker connection logic into reusable EventBrokerConnection class">
+      <option name="closed" value="true" />
+      <created>1747139671472</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1747139671472</updated>
+    </task>
+    <task id="LOCAL-00064" summary="extract EventListener with non-durable subscriber for simplified testing">
+      <option name="closed" value="true" />
+      <created>1747139686680</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1747139686680</updated>
+    </task>
+    <task id="LOCAL-00065" summary="implement FileEventStore to persist events by topic and source">
+      <option name="closed" value="true" />
+      <created>1747139714199</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1747139714199</updated>
+    </task>
+    <task id="LOCAL-00066" summary="add main class with dynamic topic subscription via command-line args">
+      <option name="closed" value="true" />
+      <created>1747139741971</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1747139741971</updated>
+    </task>
+    <task id="LOCAL-00067" summary="add custom InstantDeserializer and generic JSON parsing to ActiveMQConsumer">
+      <option name="closed" value="true" />
+      <created>1747143339001</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1747143339001</updated>
+    </task>
+    <task id="LOCAL-00068" summary="unify EventListener structure to align with clean messaging flow">
+      <option name="closed" value="true" />
+      <created>1747143375827</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1747143375827</updated>
+    </task>
+    <task id="LOCAL-00069" summary="make HistoricalEventLoader generic and support Instant deserialization">
+      <option name="closed" value="true" />
+      <created>1747143415364</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1747143415364</updated>
+    </task>
+    <task id="LOCAL-00070" summary="adapt Main to use generic HistoricalEventLoader and pass Class&lt;T&gt; to consumer">
+      <option name="closed" value="true" />
+      <created>1747143445792</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1747143445793</updated>
+    </task>
+    <task id="LOCAL-00071" summary="replace trip.toString() with Gson serialization for consistent JSON persistence">
+      <option name="closed" value="true" />
+      <created>1747143470127</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1747143470127</updated>
+    </task>
+    <task id="LOCAL-00072" summary="replace event.toString() with Gson serialization for consistent JSON persistence">
+      <option name="closed" value="true" />
+      <created>1747143488687</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1747143488687</updated>
+    </task>
+    <task id="LOCAL-00073" summary="update BlablacarTripProvider to use fetchFares with multiple originIds">
+      <option name="closed" value="true" />
+      <created>1747152314086</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1747152314086</updated>
+    </task>
+    <task id="LOCAL-00074" summary="enhance BlablacarApiClient to loop through a fixed list of originIds">
+      <option name="closed" value="true" />
+      <created>1747152363431</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1747152363431</updated>
+    </task>
+    <task id="LOCAL-00075" summary="simplify Main by removing originId argument and using updated provider">
+      <option name="closed" value="true" />
+      <created>1747152388873</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1747152388873</updated>
+    </task>
+    <task id="LOCAL-00076" summary="implement trip event publishing in ActiveMqTripStorage">
+      <option name="closed" value="true" />
+      <created>1747152428266</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1747152428266</updated>
+    </task>
+    <task id="LOCAL-00077" summary="route changed to split architecture">
+      <option name="closed" value="true" />
+      <created>1747235284250</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1747235284250</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Change into hexagonal architecture">
+      <option name="closed" value="true" />
+      <created>1747237917986</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1747237917986</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Change into hexagonal architecture">
+      <option name="closed" value="true" />
+      <created>1747250276091</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1747250276091</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Change into hexagonal architecture">
+      <option name="closed" value="true" />
+      <created>1747324580143</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1747324580143</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Change into hexagonal architecture">
+      <option name="closed" value="true" />
+      <created>1747324975476</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1747324975476</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Add unit test for Trip domain model">
+      <option name="closed" value="true" />
+      <created>1747344141483</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1747344141483</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Add unit test for BlablacarTripProvider using mock input">
+      <option name="closed" value="true" />
+      <created>1747344207592</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1747344207592</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Add unit test for Controller to verify trip publishing logic">
+      <option name="closed" value="true" />
+      <created>1747344247114</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1747344247114</updated>
+    </task>
+    <task id="LOCAL-00085" summary="change tests">
+      <option name="closed" value="true" />
+      <created>1747345924063</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1747345924063</updated>
+    </task>
+    <task id="LOCAL-00086" summary="tests created">
+      <option name="closed" value="true" />
+      <created>1747347510967</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1747347510967</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Perfected events visuals">
+      <option name="closed" value="true" />
+      <created>1747401637309</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1747401637310</updated>
+    </task>
+    <task id="LOCAL-00088" summary="TicketMaster tests created">
+      <option name="closed" value="true" />
+      <created>1747488966168</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1747488966169</updated>
+    </task>
+    <task id="LOCAL-00089" summary="tests created">
+      <option name="closed" value="true" />
+      <created>1747494832532</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1747494832532</updated>
+    </task>
+    <task id="LOCAL-00090" summary="refactorized">
+      <option name="closed" value="true" />
+      <created>1747494851625</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1747494851625</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Change the origins id from blablacar">
+      <option name="closed" value="true" />
+      <created>1747586995233</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1747586995233</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="L Cruz" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="feature.bussines-unit" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="extract broker connection logic into reusable EventBrokerConnection class" />
+    <MESSAGE value="extract EventListener with non-durable subscriber for simplified testing" />
+    <MESSAGE value="implement FileEventStore to persist events by topic and source" />
+    <MESSAGE value="add main class with dynamic topic subscription via command-line args" />
+    <MESSAGE value="add custom InstantDeserializer and generic JSON parsing to ActiveMQConsumer" />
+    <MESSAGE value="unify EventListener structure to align with clean messaging flow" />
+    <MESSAGE value="make HistoricalEventLoader generic and support Instant deserialization" />
+    <MESSAGE value="adapt Main to use generic HistoricalEventLoader and pass Class&lt;T&gt; to consumer" />
+    <MESSAGE value="replace trip.toString() with Gson serialization for consistent JSON persistence" />
+    <MESSAGE value="replace event.toString() with Gson serialization for consistent JSON persistence" />
+    <MESSAGE value="update BlablacarTripProvider to use fetchFares with multiple originIds" />
+    <MESSAGE value="enhance BlablacarApiClient to loop through a fixed list of originIds" />
+    <MESSAGE value="simplify Main by removing originId argument and using updated provider" />
+    <MESSAGE value="implement trip event publishing in ActiveMqTripStorage" />
+    <MESSAGE value="route changed to split architecture" />
+    <MESSAGE value="Change into hexagonal architecture" />
+    <MESSAGE value="Add unit test for Trip domain model" />
+    <MESSAGE value="Add unit test for BlablacarTripProvider using mock input" />
+    <MESSAGE value="Add unit test for Controller to verify trip publishing logic" />
+    <MESSAGE value="change tests" />
+    <MESSAGE value="Perfected events visuals" />
+    <MESSAGE value="TicketMaster tests created" />
+    <MESSAGE value="tests created" />
+    <MESSAGE value="refactorized" />
+    <MESSAGE value="Change the origins id from blablacar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change the origins id from blablacar" />
+  </component>
+</project>

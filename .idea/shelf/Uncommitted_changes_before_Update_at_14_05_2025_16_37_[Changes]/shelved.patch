@@ -1,0 +1,14 @@
+Index: event-store-builder/src/main/java/es/ulpgc/dacd/eventstorebuilder/Controller.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/event-store-builder/src/main/java/es/ulpgc/dacd/eventstorebuilder/Controller.java b/event-store-builder/src/main/java/es/ulpgc/dacd/eventstorebuilder/Controller.java
+new file mode 100644
+--- /dev/null	(date 1747236876213)
++++ b/event-store-builder/src/main/java/es/ulpgc/dacd/eventstorebuilder/Controller.java	(date 1747236876213)
+@@ -0,0 +1,4 @@
++package es.ulpgc.dacd.eventstorebuilder;
++
++public class Controller {
++}

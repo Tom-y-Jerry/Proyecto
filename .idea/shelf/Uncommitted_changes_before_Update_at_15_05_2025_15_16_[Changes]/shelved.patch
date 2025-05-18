@@ -1,0 +1,316 @@
+Index: blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/Controller.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.ulpgc.dacd.blablacarfeeder;\r\nimport es.ulpgc.dacd.blablacarfeeder.domain.Trip;\r\nimport es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripProvider;\r\nimport es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripStorage;\r\nimport java.util.List;\r\nimport java.util.concurrent.Executors;\r\nimport java.util.concurrent.ScheduledExecutorService;\r\nimport java.util.concurrent.TimeUnit;\r\n\r\npublic class Controller {\r\n    private final TripProvider tripProvider;\r\n    private final TripStorage store;\r\n\r\n    public Controller(TripProvider tripProvider, TripStorage store) {\r\n        this.tripProvider = tripProvider;\r\n        this.store = store;\r\n    }\r\n\r\n    public void execute() {\r\n        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();\r\n\r\n        scheduler.scheduleAtFixedRate(() -> {\r\n            System.out.println(\"Ejecutando consulta de viajes...\");\r\n            List<Trip> trips = tripProvider.provide();\r\n            for (Trip trip : trips) {\r\n                store.save(trip);\r\n            }\r\n        }, 0, 1, TimeUnit.HOURS);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/Controller.java b/blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/Controller.java
+--- a/blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/Controller.java	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
++++ b/blablacar-feeder/src/main/java/es/ulpgc/dacd/blablacarfeeder/Controller.java	(date 1747298118301)
+@@ -20,7 +20,7 @@
+         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+ 
+         scheduler.scheduleAtFixedRate(() -> {
+-            System.out.println("Ejecutando consulta de viajes...");
++            System.out.println("Executing Trips...");
+             List<Trip> trips = tripProvider.provide();
+             for (Trip trip : trips) {
+                 store.save(trip);
+Index: blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/adapters/BlablacarTripProviderIntegrationTest.java
+===================================================================
+diff --git a/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/adapters/BlablacarTripProviderIntegrationTest.java b/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/adapters/BlablacarTripProviderIntegrationTest.java
+deleted file mode 100644
+--- a/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/adapters/BlablacarTripProviderIntegrationTest.java	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
++++ /dev/null	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
+@@ -1,52 +0,0 @@
+-package es.ulpgc.dacd.infrastructure.adapters;
+-
+-import com.google.gson.JsonObject;
+-import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+-import es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters.BlablacarTripProvider;
+-import org.junit.jupiter.api.Test;
+-
+-import java.time.Instant;
+-import java.util.List;
+-
+-import static org.junit.jupiter.api.Assertions.*;
+-
+-public class BlablacarTripProviderIntegrationTest {
+-
+-    @Test
+-    public void shouldReturnTripsWithFakeApi() {
+-        BlablacarTripProvider provider = new FakeBlablacarTripProvider();
+-        List<Trip> trips = provider.provide();
+-
+-        assertEquals(1, trips.size());
+-        Trip trip = trips.get(0);
+-        assertEquals("Las Palmas", trip.getOrigin());
+-        assertEquals("Tenerife", trip.getDestination());
+-        assertEquals(30.0, trip.getPrice(), 0.01);
+-        assertEquals("EUR", trip.getCurrency());
+-    }
+-
+-    private static class FakeBlablacarTripProvider extends BlablacarTripProvider {
+-        public FakeBlablacarTripProvider() {
+-            super("fakeUrl1", "fakeUrl2", "fakeKey", 1);
+-        }
+-
+-        @Override
+-        public List<Trip> provide() {
+-            JsonObject fare = new JsonObject();
+-            fare.addProperty("departure", "2025-05-06T10:00:00Z");
+-            fare.addProperty("arrival", "2025-05-06T13:00:00Z");
+-            fare.addProperty("price_cents", 3000);
+-            fare.addProperty("price_currency", "EUR");
+-
+-            Trip trip = new Trip(
+-                    "feeder-blablacar", "Las Palmas", "Tenerife",
+-                    Instant.parse(fare.get("departure").getAsString()),
+-                    Instant.parse(fare.get("arrival").getAsString()),
+-                    fare.get("price_cents").getAsInt() / 100.0,
+-                    fare.get("price_currency").getAsString()
+-            );
+-
+-            return List.of(trip);
+-        }
+-    }
+-}
+Index: blablacar-feeder/src/test/java/es/ulpgc/dacd/domain/TripTest.java
+===================================================================
+diff --git a/blablacar-feeder/src/test/java/es/ulpgc/dacd/domain/TripTest.java b/blablacar-feeder/src/test/java/es/ulpgc/dacd/domain/TripTest.java
+deleted file mode 100644
+--- a/blablacar-feeder/src/test/java/es/ulpgc/dacd/domain/TripTest.java	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
++++ /dev/null	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
+@@ -1,27 +0,0 @@
+-package es.ulpgc.dacd.domain;
+-
+-import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+-import org.junit.jupiter.api.Test;
+-
+-import java.time.Instant;
+-
+-import static org.junit.jupiter.api.Assertions.*;
+-
+-public class TripTest {
+-
+-    @Test
+-    public void shouldCreateTripWithCorrectFields() {
+-        Instant departure = Instant.parse("2025-05-06T10:00:00Z");
+-        Instant arrival = Instant.parse("2025-05-06T12:00:00Z");
+-        Trip trip = new Trip("feeder-blablacar", "Las Palmas", "Tenerife", departure, arrival, 15.5, "EUR");
+-
+-        assertEquals("feeder-blablacar", trip.getSs());
+-        assertEquals("Las Palmas", trip.getOrigin());
+-        assertEquals("Tenerife", trip.getDestination());
+-        assertEquals(departure, trip.getDeparture());
+-        assertEquals(arrival, trip.getArrival());
+-        assertEquals(15.5, trip.getPrice());
+-        assertEquals("EUR", trip.getCurrency());
+-        assertNotNull(trip.getTs());
+-    }
+-}
+Index: blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/adapters/BlablacarTripProviderTest.java
+===================================================================
+diff --git a/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/adapters/BlablacarTripProviderTest.java b/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/adapters/BlablacarTripProviderTest.java
+deleted file mode 100644
+--- a/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/adapters/BlablacarTripProviderTest.java	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
++++ /dev/null	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
+@@ -1,37 +0,0 @@
+-package es.ulpgc.dacd.infrastructure.adapters;
+-
+-import com.google.gson.JsonObject;
+-import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+-import es.ulpgc.dacd.blablacarfeeder.infrastructure.adapters.BlablacarTripProvider;
+-import org.junit.jupiter.api.Test;
+-
+-import java.time.Instant;
+-
+-import static org.junit.jupiter.api.Assertions.*;
+-
+-public class BlablacarTripProviderTest {
+-
+-    @Test
+-    public void shouldMapJsonToTripCorrectly() {
+-        JsonObject fare = new JsonObject();
+-        fare.addProperty("departure", "2025-05-06T10:00:00Z");
+-        fare.addProperty("arrival", "2025-05-06T13:30:00Z");
+-        fare.addProperty("price_cents", 2450);
+-        fare.addProperty("price_currency", "EUR");
+-
+-        BlablacarTripProvider provider = new BlablacarTripProvider(null, null, null, 0);
+-        Trip trip = new Trip(
+-                "feeder-blablacar", "Las Palmas", "Tenerife",
+-                Instant.parse(fare.get("departure").getAsString()),
+-                Instant.parse(fare.get("arrival").getAsString()),
+-                fare.get("price_cents").getAsInt() / 100.0,
+-                fare.get("price_currency").getAsString()
+-        );
+-
+-        assertEquals("feeder-blablacar", trip.getSs());
+-        assertEquals("Las Palmas", trip.getOrigin());
+-        assertEquals("Tenerife", trip.getDestination());
+-        assertEquals(24.5, trip.getPrice(), 0.01);
+-        assertEquals("EUR", trip.getCurrency());
+-    }
+-}
+Index: blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/BlablacarApiClientTest.java
+===================================================================
+diff --git a/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/BlablacarApiClientTest.java b/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/BlablacarApiClientTest.java
+deleted file mode 100644
+--- a/blablacar-feeder/src/test/java/es/ulpgc/dacd/infrastructure/BlablacarApiClientTest.java	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
++++ /dev/null	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
+@@ -1,51 +0,0 @@
+-package es.ulpgc.dacd.infrastructure;
+-
+-import com.google.gson.JsonArray;
+-import com.google.gson.JsonElement;
+-import com.google.gson.JsonObject;
+-import es.ulpgc.dacd.blablacarfeeder.infrastructure.BlablacarApiClient;
+-import org.junit.jupiter.api.Test;
+-
+-import java.util.HashMap;
+-import java.util.Map;
+-
+-import static org.junit.jupiter.api.Assertions.*;
+-import static org.mockito.Mockito.*;
+-
+-public class BlablacarApiClientTest {
+-
+-    @Test
+-    public void shouldExtractOriginIdsCorrectly() throws Exception {
+-        BlablacarApiClient client = mock(BlablacarApiClient.class);
+-
+-        JsonArray stops = new JsonArray();
+-
+-        JsonObject stop1 = new JsonObject();
+-        stop1.addProperty("id", 1);
+-        stop1.addProperty("short_name", "Las Palmas");
+-        stop1.add("destinations_ids", new JsonArray());
+-        stops.add(stop1);
+-
+-        JsonObject stop2 = new JsonObject();
+-        stop2.addProperty("id", 2);
+-        stop2.addProperty("short_name", "Tenerife");
+-        stop2.add("destinations_ids", new JsonArray());
+-        stops.add(stop2);
+-
+-        when(client.fetchStops()).thenReturn(stops);
+-        JsonArray fetchedStops = client.fetchStops();
+-
+-        Map<Integer, String> origins = new HashMap<>();
+-        for (JsonElement el : stops) {
+-            JsonObject stop = el.getAsJsonObject();
+-            if (stop.has("id") && stop.has("short_name")) {
+-                origins.put(stop.get("id").getAsInt(), stop.get("short_name").getAsString());
+-            }
+-        }
+-
+-
+-        assertEquals(2, origins.size());
+-        assertEquals("Las Palmas", origins.get(1));
+-        assertEquals("Tenerife", origins.get(2));
+-    }
+-}
+Index: blablacar-feeder/src/test/java/es/ulpgc/dacd/ControllerTest.java
+===================================================================
+diff --git a/blablacar-feeder/src/test/java/es/ulpgc/dacd/ControllerTest.java b/blablacar-feeder/src/test/java/es/ulpgc/dacd/ControllerTest.java
+deleted file mode 100644
+--- a/blablacar-feeder/src/test/java/es/ulpgc/dacd/ControllerTest.java	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
++++ /dev/null	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
+@@ -1,60 +0,0 @@
+-package es.ulpgc.dacd;
+-
+-import es.ulpgc.dacd.blablacarfeeder.Controller;
+-import es.ulpgc.dacd.blablacarfeeder.domain.Trip;
+-import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripProvider;
+-import es.ulpgc.dacd.blablacarfeeder.infrastructure.ports.TripStorage;
+-import org.junit.jupiter.api.Test;
+-
+-import java.time.Instant;
+-import java.util.ArrayList;
+-import java.util.List;
+-
+-import static org.junit.jupiter.api.Assertions.*;
+-
+-public class ControllerTest {
+-
+-    @Test
+-    public void shouldStoreAllProvidedTrips() {
+-        FakeTripProvider provider = new FakeTripProvider();
+-        FakeTripStorage storage = new FakeTripStorage();
+-
+-        Controller controller = new Controller(provider, storage);
+-        controller.execute();
+-
+-        assertEquals(2, storage.getStored().size());
+-        assertEquals("Las Palmas", storage.getStored().get(0).getOrigin());
+-        assertEquals("Madrid", storage.getStored().get(1).getDestination());
+-    }
+-
+-    static class FakeTripProvider implements TripProvider {
+-        @Override
+-        public List<Trip> provide() {
+-            Trip t1 = new Trip("feeder-blablacar", "Las Palmas", "Tenerife",
+-                    Instant.parse("2025-05-06T10:00:00Z"),
+-                    Instant.parse("2025-05-06T13:00:00Z"),
+-                    25.0, "EUR");
+-
+-            Trip t2 = new Trip("feeder-blablacar", "Tenerife", "Madrid",
+-                    Instant.parse("2025-05-07T08:00:00Z"),
+-                    Instant.parse("2025-05-07T14:00:00Z"),
+-                    50.0, "EUR");
+-
+-            return List.of(t1, t2);
+-        }
+-    }
+-
+-    static class FakeTripStorage implements TripStorage {
+-        private final List<Trip> stored = new ArrayList<>();
+-
+-        @Override
+-        public void save(Trip trip) {
+-            stored.add(trip);
+-        }
+-
+-        public List<Trip> getStored() {
+-            return stored;
+-        }
+-    }
+-}
+-
+Index: ticketmaster-feeder/src/main/java/es/ulpgc/dacd/ticketmasterfeeder/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.ulpgc.dacd.ticketmasterfeeder;\r\n\r\nimport es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.TicketMasterEventProvider;\r\nimport es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.ActiveMQEventStorage;\r\n\r\npublic class Main {\r\n    public static void main(String[] args) {\r\n        if (args.length < 2) {\r\n            System.out.println(\"Argumentos requeridos: <eventsUrl> <apiKey> <brokerUrl>\");\r\n            return;\r\n        }\r\n\r\n        String eventsUrl = args[0];\r\n        String apiKey = args[1];\r\n        String brokerurl = args[2];\r\n\r\n        var provider = new TicketMasterEventProvider(eventsUrl, apiKey);\r\n        var storage = new ActiveMQEventStorage(brokerurl);\r\n\r\n        new Controller(provider, storage).execute();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ticketmaster-feeder/src/main/java/es/ulpgc/dacd/ticketmasterfeeder/Main.java b/ticketmaster-feeder/src/main/java/es/ulpgc/dacd/ticketmasterfeeder/Main.java
+--- a/ticketmaster-feeder/src/main/java/es/ulpgc/dacd/ticketmasterfeeder/Main.java	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
++++ b/ticketmaster-feeder/src/main/java/es/ulpgc/dacd/ticketmasterfeeder/Main.java	(date 1747298118310)
+@@ -1,5 +1,4 @@
+ package es.ulpgc.dacd.ticketmasterfeeder;
+-
+ import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.TicketMasterEventProvider;
+ import es.ulpgc.dacd.ticketmasterfeeder.infrastructure.adapter.ActiveMQEventStorage;
+ 
+Index: bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.ulpgc.dacd.business.gui;\r\n\r\nimport javax.swing.*;\r\nimport javax.swing.border.EmptyBorder;\r\nimport java.awt.*;\r\nimport java.util.*;\r\nimport java.util.List;\r\n\r\npublic class EventViewerGUI extends JFrame {\r\n    private final EventController controller;\r\n    private final DefaultListModel<Event> eventListModel = new DefaultListModel<>();\r\n    private final JTextArea tripArea = new JTextArea();\r\n    private final JComboBox<String> originBox = new JComboBox<>();\r\n    private String selectedOrigin = null;\r\n\r\n    public EventViewerGUI(String dbPath) throws Exception {\r\n        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());\r\n        this.controller = new EventController(dbPath);\r\n        setupWindow();\r\n        setupTopPanel();\r\n        setupSplitPanel();\r\n        setupEventListeners();\r\n        loadOrigins();\r\n        startAutoRefresh();\r\n    }\r\n\r\n    private void setupWindow() {\r\n        setTitle(\"Ticketmaster Travel Assistant\");\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setSize(1200, 700);\r\n        setLayout(new BorderLayout());\r\n    }\r\n\r\n    private void setupTopPanel() {\r\n        JPanel topPanel = new JPanel(new BorderLayout());\r\n        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));\r\n        topPanel.setBackground(new Color(0, 100, 182));\r\n\r\n        JLabel titleLabel = new JLabel(\"Selecciona el origen:  \");\r\n        titleLabel.setFont(new Font(\"Verdana\", Font.BOLD, 14));\r\n        titleLabel.setForeground(Color.WHITE);\r\n        topPanel.add(titleLabel, BorderLayout.WEST);\r\n\r\n        originBox.setFont(new Font(\"Verdana\", Font.PLAIN, 14));\r\n        originBox.setBackground(Color.WHITE);\r\n        originBox.setForeground(new Color(33, 33, 33));\r\n        originBox.setRenderer(customOriginRenderer());\r\n\r\n        topPanel.add(originBox, BorderLayout.CENTER);\r\n        add(topPanel, BorderLayout.NORTH);\r\n    }\r\n\r\n    private DefaultListCellRenderer customOriginRenderer() {\r\n        return new DefaultListCellRenderer() {\r\n            @Override\r\n            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {\r\n                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);\r\n                label.setFont(new Font(\"Verdana\", Font.PLAIN, 14));\r\n                label.setBackground(isSelected ? new Color(27, 137, 177) : Color.WHITE);\r\n                label.setForeground(isSelected ? Color.WHITE : new Color(33, 33, 33));\r\n                return label;\r\n            }\r\n        };\r\n    }\r\n\r\n    private void setupSplitPanel() {\r\n        JList<Event> eventList = new JList<>(eventListModel);\r\n        eventList.setFont(new Font(\"Verdana\", Font.PLAIN, 13));\r\n        eventList.setBackground(Color.WHITE);\r\n        eventList.setSelectionBackground(new Color(27, 137, 177));\r\n        eventList.setSelectionForeground(Color.WHITE);\r\n\r\n        JScrollPane scrollEvents = new JScrollPane(eventList);\r\n        scrollEvents.setBorder(BorderFactory.createTitledBorder(\"Eventos disponibles\"));\r\n        scrollEvents.setPreferredSize(new Dimension(500, 0));\r\n\r\n        tripArea.setEditable(false);\r\n        tripArea.setFont(new Font(\"SansSerif\", Font.PLAIN, 13));\r\n        tripArea.setBackground(Color.WHITE);\r\n        tripArea.setForeground(new Color(33, 33, 33));\r\n        tripArea.setMargin(new Insets(10, 10, 10, 10));\r\n\r\n        JScrollPane scrollTrips = new JScrollPane(tripArea);\r\n        scrollTrips.setBorder(BorderFactory.createTitledBorder(\"Viajes disponibles\"));\r\n        scrollTrips.setPreferredSize(new Dimension(600, 100));\r\n\r\n        JPanel rightPanel = new JPanel();\r\n        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));\r\n        rightPanel.add(scrollTrips);\r\n\r\n        JLabel imageLabel = new JLabel(new ImageIcon(new ImageIcon(\"bussines-unit/src/main/resources/bus.png\")\r\n                .getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH)));\r\n        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);\r\n        rightPanel.add(imageLabel);\r\n\r\n        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollEvents, rightPanel);\r\n        splitPane.setDividerLocation(700);\r\n        splitPane.setResizeWeight(0.8);\r\n        add(splitPane, BorderLayout.CENTER);\r\n\r\n        eventList.addListSelectionListener(e -> {\r\n            if (!e.getValueIsAdjusting()) {\r\n                Event selected = eventList.getSelectedValue();\r\n                if (selected != null && selectedOrigin != null) showTripsFor(selected);\r\n            }\r\n        });\r\n    }\r\n\r\n    private void setupEventListeners() {\r\n        originBox.addActionListener(e -> {\r\n            selectedOrigin = (String) originBox.getSelectedItem();\r\n            loadEvents();\r\n        });\r\n    }\r\n\r\n    private void startAutoRefresh() {\r\n        new java.util.Timer().schedule(new java.util.TimerTask() {\r\n            public void run() {\r\n                SwingUtilities.invokeLater(() -> {\r\n                    String old = (String) originBox.getSelectedItem();\r\n                    loadOrigins();\r\n                    if (old != null) {\r\n                        originBox.setSelectedItem(old);\r\n                        selectedOrigin = old;\r\n                        loadEvents();\r\n                    }\r\n                });\r\n            }\r\n        }, 0, 5000);\r\n    }\r\n\r\n    private void loadOrigins() {\r\n        Set<String> current = new HashSet<>();\r\n        for (int i = 0; i < originBox.getItemCount(); i++) {\r\n            current.add(originBox.getItemAt(i));\r\n        }\r\n        Set<String> newOrigins = controller.loadOrigins(current);\r\n        for (String o : newOrigins) originBox.addItem(o);\r\n    }\r\n\r\n    private void loadEvents() {\r\n        eventListModel.clear();\r\n        if (selectedOrigin == null) return;\r\n        List<Event> events = controller.loadEvents(selectedOrigin);\r\n        eventListModel.addAll(events);\r\n    }\r\n\r\n    private void showTripsFor(Event event) {\r\n        tripArea.setText(\"\uD83D\uDD0E Resultados de viajes desde: \" + selectedOrigin + \" para: \" + event.city() + \"\\n\\n\");\r\n        List<String> trips = controller.loadTrips(selectedOrigin, event.city());\r\n        if (trips.isEmpty()) {\r\n            tripArea.append(\"No trips found from \" + selectedOrigin + \" to \" + event.city());\r\n        } else {\r\n            trips.forEach(s -> tripArea.append(s + \"\\n\"));\r\n        }\r\n    }\r\n\r\n    public record Event(String id, String name, String date, String time, String city) {\r\n        @Override\r\n        public String toString() {\r\n            String cleanDate = date.length() > 10 ? date.substring(0, 10) : date;\r\n            String cleanTime = time.replace(\"T\", \"\").replace(\"Z\", \"\").split(\"\\\\.\")[0];\r\n            if (cleanTime.equalsIgnoreCase(\"Not specified\")) cleanTime = \"--:--\";\r\n            return String.format(\"%s - %s %s [%s]\", name, cleanDate, cleanTime, city);\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java b/bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java
+--- a/bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java	(revision 7e07a5f6e57ac8685db3843199d57988c3dbbb4e)
++++ b/bussines-unit/src/main/java/es/ulpgc/dacd/business/gui/EventViewerGUI.java	(date 1747298118289)
+@@ -146,7 +146,7 @@
+     }
+ 
+     private void showTripsFor(Event event) {
+-        tripArea.setText("🔎 Resultados de viajes desde: " + selectedOrigin + " para: " + event.city() + "\n\n");
++        tripArea.setText("Resultados de viajes desde: " + selectedOrigin + " para: " + event.city() + "\n\n");
+         List<String> trips = controller.loadTrips(selectedOrigin, event.city());
+         if (trips.isEmpty()) {
+             tripArea.append("No trips found from " + selectedOrigin + " to " + event.city());
