@@ -10,10 +10,10 @@
 
 ## Autoras
 
-| Nombre | GitHub |
-|--------|--------|
+| Nombre | GitHub                                           |
+|--------|--------------------------------------------------|
 | Carlota Ayala Pérez | [@carlotaayala](https://github.com/carlotaayala) |
-| Lucía Cruz Toste  | [@luciacruz](https://github.com/luciacruz) |
+| Lucía Cruz Toste  | [@l-cruz](https://github.com/l-cruz)             |
 
 ---
 
