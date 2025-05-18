@@ -202,11 +202,10 @@ Con tres clics el usuario descubre un evento y elige la opción de viaje más ec
 
 ## Estructura de archivos generados
 ```
-event-store-builder/
+eventstore/
 └── Trips/ | Events/
     └── feeder-*/YYYYMMDD.events
 
-business-unit/
 datamart.db
 ```
 > Cada línea de un `.events` es un objeto JSON serializado.
