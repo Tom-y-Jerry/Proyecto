@@ -17,8 +17,7 @@ public class BlablacarApiClient {
     private final String faresUrl;
     private final String apiKey;
 
-    private final List<Integer> originIds = List.of(11, 90, 16, 298, 3, 1669, 1612, 1590, 1579, 808, 1578,
-            1566, 139, 731, 331, 420);
+    private final List<Integer> originIds = List.of(11, 16, 298, 3, 1590, 1579, 1578, 139, 731, 331, 13);
 
     public BlablacarApiClient(String stopsUrl, String faresUrl, String apiKey) {
         this.stopsUrl = stopsUrl;
